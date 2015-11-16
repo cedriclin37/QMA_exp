@@ -1,0 +1,174 @@
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,lmargin=1in,rmargin=1in}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\theoremstyle{plain}
+\newtheorem{thm}{\protect\theoremname}
+  \theoremstyle{definition}
+  \newtheorem{defn}[thm]{\protect\definitionname}
+  \theoremstyle{plain}
+  \newtheorem{lem}[thm]{\protect\lemmaname}
+  \theoremstyle{definition}
+  \newtheorem{problem}[thm]{\protect\problemname}
+  \theoremstyle{remark}
+  \newtheorem{rem}[thm]{\protect\remarkname}
+  \theoremstyle{remark}
+  \newtheorem*{rem*}{\protect\remarkname}
+  \theoremstyle{plain}
+  \newtheorem{algorithm}[thm]{\protect\algorithmname}
+
+\@ifundefined{date}{}{\date{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz} 
+
+%\input{Qcircuit}
+\input{macros}
+\makeatother
+
+\usepackage{babel}
+  \providecommand{\algorithmname}{Algorithm}
+  \providecommand{\definitionname}{Definition}
+  \providecommand{\lemmaname}{Lemma}
+  \providecommand{\problemname}{Problem}
+  \providecommand{\remarkname}{Remark}
+\providecommand{\theoremname}{Theorem}
+
+\newcommand{\Expect}{{\rm I\kern-.3em E}}
+
+\begin{document}
+
+\title{The complexity of QMA with inverse exponential gap}
+\author{Bill Fefferman, Cedric Lin}
+\date{\today}
+\maketitle
+%\begin{abstract}
+%
+%\end{abstract}
+
+We will study the complexity of QMA proof systems with inverse exponential gap. Define $\text{QMA}(c,s)$ to be QMA with completeness $c$ and soundness $s$, and write $\text{QMA}_{exp} := \cup_{c}\text{QMA}(c,c-2^{-\text{poly}})$. Our goal  will be to study the relationship between $\text{QMA}_{exp}$ and PSPACE.
+
+\begin{con}
+$\text{\emph{QMA}}_{exp}=\text{\emph{PSPACE}}$.
+\end{con}
+
+It is already known that
+\begin{thm}[Ito et al., Theorem 11] 
+$\text{\emph{QMA}}(1,<1)\subseteq\text{\emph{PSPACE}}$.
+\end{thm}
+Some other useful results:
+\begin{thm}[Watrous]
+$\text{\emph{PQP}} = \text{\emph{PP}}$, where \emph{PQP} is the unbounded-gap version of \emph{BQP}.
+\end{thm}
+\begin{thm}
+$\text{\emph{PQPSPACE}} = \text{\emph{PPSPACE}} = \text{\emph{PSPACE}} $.
+\end{thm}
+\begin{thm}[Aaronson]
+$\text{\emph{PostBQP}} = \text{\emph{PP}}$.
+\end{thm}
+
+\section{$\text{QMA}_{exp} \subseteq \text{PSPACE}$}
+In this section we will sketch a proof of the following result:
+\begin{thm}[claimed]
+$\text{\emph{QMA}}_{exp} \subseteq \text{\emph{PSPACE}}$.
+\end{thm}
+\begin{proof}
+Let $L = (L_{yes},L_{no})$ be a promise problem in $\text{QMA}_m(c,s)$ with $c - s = 2^{-\text{poly}}$, where $m \in \text{poly}$ indicates the number of qubits in the witness. Suppose the collection of circuits $\{C'_x\}_x$ is a verification procedure for $L$; that is, each circuit $C'_x$ acts on $k+m$ qubits for some $k \in \text{poly}$, and if $x \in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
+\begin{equation}
+\L(\bra{\psi}\otimes \bra{0^k}\R) C'^\dagger_x \ket{1}\bra{1}_{out} C'_x \L(\ket{\psi}\otimes \ket{0^k}\R) \ge c
+\end{equation}
+whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have
+\begin{equation}
+\L(\bra{\psi}\otimes \bra{0^k}\R) C'^\dagger_x \ket{1}\bra{1}_{out} C'_x \L(\ket{\psi}\otimes \ket{0^k}\R) \le s.
+\end{equation}
+
+We will use the following steps to decide which is the case in PSPACE.
+
+\subsection{Gap Amplification}
+
+Define the projectors
+\begin{align}
+\Pi_0 &= I_m \otimes \bra{0^k}\ket{0^k} \\
+\Pi_1 &= C'^\dagger_x \L(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\R) C'_x
+\end{align}
+and the reflections
+\begin{align}
+R_0 &= 2\Pi_0 - I \\
+R_1 &= 2\Pi_1 - I.
+\end{align}
+Note that we are asked to decide whether there exists $\ket{\psi}$ satisfying $\L(\bra{\psi}\otimes \bra{0^k}\R) \Pi_1 \L(\ket{\psi}\otimes \ket{0^k}\R) \ge c$, or that all states $\ket{\psi}$ satisfy $\L(\bra{\psi}\otimes \bra{0^k}\R) \Pi_1 \L(\ket{\psi}\otimes \ket{0^k}\R) \ge s$.
+According to the fast QMA amplification procedure of Nagaj, Wocjan, and Zhang [arXiv:0904.1549], the following procedure will determine which is the case, with completeness at least $1-2^{-r}$ and soundness at most $2^{-r}$:
+
+\begin{enumerate}
+\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with $O(\log(c-s)) = O(\text{poly})$ bits of precision and $1/16$ failure probability. 
+\item If the median of the $r$ results is at least $\phi_c = \arccos\sqrt{c}/\pi$, output YES; otherwise if the result is at most $\phi_s = \arccos\sqrt{s}/\pi$, output NO.
+\end{enumerate}
+
+Phase estimation of an operator $U$ up to $a$ bits of precision requires $O(a)$ ancilla qubits and $O(2^a)$ applications of the control-$U$ operation. Therefore this gap amplification procedure, for any polynomial $r$, requires an exponential number of gates to implement, but only a polynomial number of extra ancilla qubits.
+
+We therefore see that we can obtain a (possibly exponentially long) circuit $C_x$, acting on $k+p$ qubits for some $p \in \text{poly}$, such that if $x \in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
+\begin{equation}
+\L(\bra{\psi}\otimes \bra{0^p}\R) C^\dagger_x \ket{1}\bra{1}_{out} C_x \L(\ket{\psi}\otimes \ket{0^p}\R) \ge 1-2^{-r}
+\end{equation}
+whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have
+\begin{equation}
+\L(\bra{\psi}\otimes \bra{0^p}\R) C^\dagger_x \ket{1}\bra{1}_{out} C_x \L(\ket{\psi}\otimes \ket{0^p}\R) \le 2^{-r}
+\end{equation}
+for some $r \in \text{poly}$. For convenience, define the $2^m \times 2^m$ matrix
+\begin{equation}
+Q_x := \L(I_{2^m}\otimes \bra{0^p}\R) C^\dagger_x \ket{1}\bra{1}_{out} C_x \L(I_{2^m}\otimes \ket{0^p}\R).
+\end{equation}
+Note that $Q_x$ is positive definite, and $\bra{\psi}Q_x\ket{\psi}$ is the acceptance probability of our procedure on witness $\psi$ (at least $1-2^{-r}$ in the YES case, at most $2^{-r}$ in the NO case).
+
+I now see two different ways of proceeding from here, which I will detail in two separate subsections.
+
+\subsection{Directly applying the $\text{PQPSPACE=PSPACE}$ relation}
+Let us pick a Haar random\footnote{Even though picking a Haar random state is computationally infeasible, picking from a state $t$-design for sufficiently large $t$ should work as well.} $m$-qubit state $\ket{\psi}$. Assume $x \in L_{yes}$ for now; then suppose the optimal witness in the YES case is $\ket{\psi*}$, and let $\ket{\psi} = \sqrt{\lambda}\ket{\psi^*} + \sqrt{1-\lambda}\ket{\psi^{*\perp}}$ for some real number $\lambda \in [0,1]$. In this case we have
+\begin{align}
+\bra{\psi}Q_x\ket{\psi} &= \lambda \bra{\psi^*}Q_x\ket{\psi^*} + (1-\lambda) \bra{\psi^{*\perp}}Q_x\ket{\psi^{*\perp}} \\ 
+&\ge \lambda \bra{\psi^*}Q_x\ket{\psi^*} \\
+&\ge \lambda(1 - 2^{-r})
+\end{align}
+where the equality in the first line holds because $\ket{\psi^*}$ is an eigenstate of $Q_x$, and the inequality in the second lines holds because $Q_x$ is positive semidefinite. Since $\lambda$ is chosen from the Haar distribution, $\Expect [\lambda] = 2^{-m/2}$; therefore $\Expect [\bra{\psi}Q_x\ket{\psi}] \ge 2^{-m/2}(1-2^{-r}) := c'$.
+
+On the other hand, if $x \in L_{no}$ then we already know that $\bra{\psi}Q_x\ket{\psi} \le 2^{-r} := s'$. For sufficiently large polynomial $r$ we have $c' > s'$ and $c' - s' = 2^{-\text{poly}}$. Thus we have reduced our original problem to determining whether an exponentially long quantum computation with \emph{no} witness, acting on a polynomial number of qubits, accepts with probability at least $c'$ or at most $s'$ with $c' - s'$ being exponentially small. This is a PQPSPACE (unbounded probabilitistic quantum polynomial space) problem; using Watrous's result that $\text{PQPSPACE=PSPACE}$ we immediately get that this is a PSPACE problem as well. Thus $\text{QMA}_{exp} \subseteq \text{PSPACE}$, as claimed.
+
+\subsection{Using path integrals}
+We now present the other approach, which was our original idea. Pick $r = m+2$; then we want to distinguish between the YES case, where $Q_x$ has an eigenvalue at least $1-2^{-(m+2)}$; and the NO case, where $Q_x$ has an eigenvalue at most $2^{-(m+2)}$.
+
+We use the following reduction from Marriott and Watrous: note that in the YES case $\tr[Q_x]\ge 1 - 2^{-m/2} \ge 3/4$, since the trace is at least the largest eigenvalue; while in the NO case $\tr[Q_x]\le 2^m \cdot 2^{-m/2} =1/4$ since the trace is the sum of the $2^m$ eigenvalues, each of which is less than $2^{-m/2}$. Therefore our problem reduces to determining whether the trace of $Q_x$ is at least $3/4$ or at most $1/4$.
+
+Write $\Delta_1 = \ket{1}\bra{1}_{out}$; then we want to calculate the quantity
+\begin{equation}
+\tr[Q_x] = \sum_{s_0 \in [2^m] \times \{0^p\}} \bra{s_0} C^\dagger_x \Delta_1 C_x \ket{s_0}.
+\end{equation}
+Let $C = U_TU_{T-1}\cdots U_1$ for single-qubit or two-qubit unitaries $U_i$; then
+\begin{equation}
+\tr[Q_x] = \sum_{s_0 \in [2^m] \times \{0^p\}} \bra{s_0} U_1^\dagger \cdots U_T^\dagger \Delta_1 U_T\cdots U_1 \ket{s_0}.
+\end{equation}
+Inserting complete sets of states $\ket{s'_1},\cdots,\ket{s'_T},\ket{s_T},\cdots,\ket{s_1}$ where $s'_i,s_i \in [2^{m+p}]$ we obtain
+\begin{equation}
+\tr[Q_x] = \sum_{s_0 \in [2^m] \times \{0^p\}} \sum_{s'_i,s_i \in [2^{m+p}]} \bra{s_0} U_1^\dagger \ket{s'_1}\bra{s'_1}U_2^\dagger\ket{s'_2} \cdots \bra{s'_{T-1}}U_T^\dagger\ket{s'_T} \bra{s'_T}\Delta_1 \ket{s_T}\bra{s_T}U_T\ket{s_{T-1}}\cdots \bra{s_1}U_1 \ket{s_0}.
+\end{equation}
+Thus we see that $\tr[Q_x]$ is a sum over doubly exponentially many summands, each of which is a product over exponentially many factors. Nevertheless, by using the path integral approach of Fortnow and Rogers it should be possible to turn the approximation of $\tr[Q_x]$ into a GapPSPACE problem, and therefore determining whether $\tr[Q_x] \ge c'$ or $\le s'$ into a $\text{PPSPACE} = \text{PSPACE}$ problem. It should be clear how to do this if all the transition amplitudes in the unitaries $U_i$ are rational; the general case (with algebraic amplitudes) will take more work.
+
+\end{proof}
+
+\section{Lower bounds}
+We now discuss the lower bounds we have for $\text{QMA}_{exp}$.
+\subsection{$\text{PP}\subseteq \text{QMA}_{exp}$}
+The containment $\text{PP}\subseteq \text{QMA}_{exp}$ is fairly obvious: the completeness-soundness gap is at least inverse exponential for PP, and giving quantum power as well as a potential witness can only increase its power.
+\subsection{$\text{PSPACE}$ lower bound?}
+Ito, Kobayashi, and Watrous prove the result $\text{QMA}(1,<1)\subseteq\text{PSPACE}$. They do this by defining an exponentially-sized matrix $A_x$ which encodes the success probability of the verifying circuit, and noticing that the YES case corresponds to the case where $A_x$ has an 1 as an eigenvalue, i.e. $\det(A-I)$ is singular. Since each entry of $A$ can be computed in PSPACE, Csanky's algorithm can be used to compute the determinant of $A-I$ in PSPACE as well.
+
+A recent paper [arXiv:1210.1451] (not sure if there are any other references) shows that it is a PSPACE-complete problem to compute the determinant of a succintly-encoded matrix, i.e. a matrix whose each entry can be computed in polynomial time.\footnote{Note polynomial time, and not polynomial space, suffices.} If we can somehow encode a PSPACE-complete family instances of matrix determinant into $\text{QMA}(1,<1)$, we might be able to show that $\text{PSPACE} \subseteq \text{QMA}(1,<1)$ as well.
+
+\end{document}
