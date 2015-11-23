@@ -120,35 +120,31 @@ Phase estimation of an operator $U$ up to $a$ bits of precision requires $O(a)$ 
 
 We therefore see that we can obtain a (possibly exponentially long) circuit $C_x$, acting on $m+p$ qubits for some $p \in \text{poly}$, such that if $x \in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
 \begin{equation}
-\L(\bra{\psi}\otimes \bra{0^p}\R) C^\dagger_x \ket{1}\bra{1}_{out} C_x \L(\ket{\psi}\otimes \ket{0^p}\R) \ge 1-2^{-r}
+\L(\bra{\psi}\otimes \bra{0^p}\R) C^\dagger_x \ket{1}\bra{1}_{out} C_x \L(\ket{\psi}\otimes \ket{0^p}\R) \ge 1-2^{-(m+2)}
 \end{equation}
 whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have
 \begin{equation}
-\L(\bra{\psi}\otimes \bra{0^p}\R) C^\dagger_x \ket{1}\bra{1}_{out} C_x \L(\ket{\psi}\otimes \ket{0^p}\R) \le 2^{-r}
+\L(\bra{\psi}\otimes \bra{0^p}\R) C^\dagger_x \ket{1}\bra{1}_{out} C_x \L(\ket{\psi}\otimes \ket{0^p}\R) \le 2^{-(m+2)}.
 \end{equation}
-for some $r \in \text{poly}$. For convenience, define the $2^m \times 2^m$ matrix
+For convenience, define the $2^m \times 2^m$ matrix
 \begin{equation}
 Q_x := \L(I_{2^m}\otimes \bra{0^p}\R) C^\dagger_x \ket{1}\bra{1}_{out} C_x \L(I_{2^m}\otimes \ket{0^p}\R).
 \end{equation}
 Note that $Q_x$ is positive semidefinite, and $\bra{\psi}Q_x\ket{\psi}$ is the acceptance probability of our procedure on witness $\psi$ (at least $1-2^{-r}$ in the YES case, at most $2^{-r}$ in the NO case).
 
+We use the following reduction from Marriott and Watrous: note that in the YES case $\tr[Q_x]\ge 1 - 2^{-m/2} \ge 3/4$, since the trace is at least the largest eigenvalue; while in the NO case $\tr[Q_x]\le 2^m \cdot 2^{-m/2} =1/4$ since the trace is the sum of the $2^m$ eigenvalues, each of which is at most $2^{-m/2}$. Therefore our problem reduces to determining whether the trace of $Q_x$ is at least $3/4$ or at most $1/4$.
+
 We now see two different ways of proceeding from here, which we will detail in two separate subsections.
 
 \subsection{Directly applying the $\text{PQPSPACE=PSPACE}$ relation}
-Let us pick a Haar random\footnote{Even though picking a Haar random state is computationally infeasible, picking from a state $t$-design for sufficiently large $t$ should work as well.} $m$-qubit state $\ket{\psi}$. Assume $x \in L_{yes}$ for now; then suppose the optimal witness in the YES case is $\ket{\psi^*}$, i.e. $\ket{\psi^*}$ is the eigenstate of $Q_x$ with maximum eigenvalue. (If there are many such witnesses pick an arbitrary one.) Let $\ket{\psi} = \sqrt{\lambda}\ket{\psi^*} + \sqrt{1-\lambda}\ket{\psi^{*\perp}}$ for some real number $\lambda \in [0,1]$ and state $\ket{\psi^{*\perp}}$ orthogonal to $\ket{\psi}$. In this case we have
-\begin{align}
-\bra{\psi}Q_x\ket{\psi} &= \lambda \bra{\psi^*}Q_x\ket{\psi^*} + (1-\lambda) \bra{\psi^{*\perp}}Q_x\ket{\psi^{*\perp}} \\ 
-&\ge \lambda \bra{\psi^*}Q_x\ket{\psi^*} \\
-&\ge \lambda(1 - 2^{-r})
-\end{align}
-where the equality in the first line holds because $\ket{\psi^*}$ is an eigenstate of $Q_x$, and the inequality in the second lines holds because $Q_x$ is positive semidefinite. Since $\ket{\psi}$ is chosen from the Haar distribution, $\Expect [\lambda] = 2^{-m}$; therefore $\Expect [\bra{\psi}Q_x\ket{\psi}] \ge 2^{-m}(1-2^{-r}) := c'$.
-
-On the other hand, if $x \in L_{no}$ then we already know that $\bra{\psi}Q_x\ket{\psi} \le 2^{-r} := s'$. For sufficiently large polynomial $r$ we have $c' > s'$ and $c' - s' = 2^{-\text{poly}}$. Thus we have reduced our original problem to determining whether an exponentially long quantum computation with \emph{no} witness, acting on a polynomial number of qubits, accepts with probability at least $c'$ or at most $s'$ with $c' - s'$ being exponentially small. This is a PQPSPACE (unbounded-error probabilitistic quantum polynomial space) problem; using Watrous's result that $\text{PQPSPACE=PSPACE}$ we immediately get that this is a PSPACE problem as well. Thus $\text{QMA}_{exp} \subseteq \text{PSPACE}$, as claimed.
+We use the following idea, already present in the proof of Theorem 3.6 of Marriott and Watrous. Simply use the totally mixed state (alternatively, a random computational basis state) as the witness of the verification procedure encoded by $Q_x$. The totally mixed state is $2^{-m}I_m$, and therefore the acceptance probability is given by
+\begin{equation}
+\tr(Q_x 2^{-m}I_m) = 2^{-m} \tr(Q_x)
+\end{equation}
+which is at least $2^{-m} \cdot 3/4$ for the YES case, and at most $2^{-m} \cdot 1/4$ for the NO case. Thus we have reduced our original problem to determining whether an exponentially long quantum computation with \emph{no} witness, acting on a polynomial number of qubits, accepts with probability at least $c'$ or at most $s'$ with $c' - s'$ being exponentially small. This is a PQPSPACE (unbounded-error probabilitistic quantum polynomial space) problem; using Watrous's result that $\text{PQPSPACE=PSPACE}$ we immediately get that this is a PSPACE problem as well. Therefore $\text{QMA}_{exp} \subseteq \text{PSPACE}$, as claimed.
 
 \subsection{Using path integrals}
-We now present the other approach, which was our original idea. Pick $r = m+2$; then we want to distinguish between the YES case, where $Q_x$ has an eigenvalue at least $1-2^{-(m+2)}$; and the NO case, where all eigenvalues of $Q_x$ are at most $2^{-(m+2)}$.
-
-We use the following reduction from Marriott and Watrous: note that in the YES case $\tr[Q_x]\ge 1 - 2^{-m/2} \ge 3/4$, since the trace is at least the largest eigenvalue; while in the NO case $\tr[Q_x]\le 2^m \cdot 2^{-m/2} =1/4$ since the trace is the sum of the $2^m$ eigenvalues, each of which is at most $2^{-m/2}$. Therefore our problem reduces to determining whether the trace of $Q_x$ is at least $3/4$ or at most $1/4$.
+We now present the other approach, which was our original idea. 
 
 Write $\Delta_1 = \ket{1}\bra{1}_{out}$; then we want to calculate the quantity
 \begin{equation}
@@ -166,13 +162,140 @@ Since $T$ could be exponentially large, we see that $\tr[Q_x]$ is a sum over dou
 
 \end{proof}
 
-\section{Lower bounds}
-We now discuss lower bounds for $\text{QMA}_{exp}$.
-\subsection{$\text{PP}\subseteq \text{QMA}_{exp}$}
-The containment $\text{PP}\subseteq \text{QMA}_{exp}$ is fairly obvious: the completeness-soundness gap is at least inverse exponential for PP, and giving the verifier quantum power as well as a potential witness can only increase its power.
-\subsection{$\text{PSPACE}$ lower bound?}
-Ito, Kobayashi, and Watrous prove the result $\text{QMA}(1,<1)\subseteq\text{PSPACE}$. They do this by defining an exponentially-sized matrix $A_x$ which encodes the success probability of the verifying circuit, and noticing that the YES case corresponds to the case where $A_x$ has 1 as an eigenvalue, i.e. $\det(A_x-I)=0$. Since each entry of $A_x$ can be computed in PSPACE, Csanky's algorithm can be used to compute the determinant of $A_x-I$ in PSPACE as well.
+\section{Lower bound}
+We now discuss lower bounds for $\text{QMA}_{exp}$. The containment $\text{PP}\subseteq \text{QMA}_{exp}$ is fairly obvious: the completeness-soundness gap is at least inverse exponential for PP, and giving the verifier quantum power as well as a potential witness can only increase its power.
 
-A recent paper [arXiv:1210.1451] (not sure if there are any other references) shows that it is a PSPACE-complete problem to compute the determinant of an exponentially large but succintly encoded matrix, i.e. a matrix whose each entry can be computed in polynomial time.\footnote{Note polynomial time, and not polynomial space, suffices.} If we can somehow encode a PSPACE-complete family of instances of matrix determinant into $\text{QMA}(1,<1)$, we might be able to show that $\text{PSPACE} \subseteq \text{QMA}(1,<1)$ as well.
+We will show something stronger:
+\begin{thm}
+$ \text{\emph{PSPACE}} \subseteq \text{\emph{QMA}}_{exp}$.
+\end{thm}
+
+\begin{proof}
+
+Consider the problem of determining whether an exponentially-large, succinctly representable, sparse symmetric matrix is singular; we will show that this problem is PSPACE-complete. Note then that determining whether a sparse matrix $A$ is singular is equivalent to determining whether $A$ has 0 as an eigenvalue; we will show that the latter can be solved in $\text{QMA}_{exp}$.
+
+By a matrix being succinctly representable and sparse, we mean the following:
+\begin{defn}
+Let $M$ be a $2^{\text{poly}(n)} \times 2^{\text{poly}(n)}$ matrix, where $n$ is the input size. We say that $M$ is a \emph{succinctly representable sparse} matrix if there are at most polynomially many nonzero entries in each row, and moreover there is a (uniformly generated) circuit to output the nonzero entries of any given row in $\text{poly}(n)$ time.
+\end{defn}
+
+\subsection{Sparse matrix singularity is PSPACE-complete}
+
+We first state the following result of [arXiv:1210.1451]:
+\begin{lem}
+Let $A'$ be an exponentially-large, succinctly representable sparse matrix, whose determinant is promised to be 0, 1, or -1. Moreover, each column of $A'$ has at most two 1s. It is PSPACE-complete to determine if the determinant of $A'$ vanishes.
+\end{lem}
+
+We proceed to reproduce the proof of [arXiv:1210.1451] of this result, as we will need to modify it for our purposes.
+
+\begin{proof}
+Csanky's algorithm immediately gives that this problem is in PSPACE, and therefore we only need to show PSPACE-hardness.
+
+Let $L=(L_{yes},L_{no}) \in \text{PSPACE}$ be decided by a deterministic Turing Machine $M$ in polynomial space. Consider the configuration graph $G^M$ of the matrix $M$: each vertex of $G_M$ corresponds to one of the exponentially many configurations of $M$, each of which is describable with polynomially many bits. The configuration graph $G^M$ has an edge from $c$ to $c'$ if and only if $c'$ can be reached from $c$ in one step of computation. It is straightforward to see that $G^M$ has the following properties:
+\begin{itemize}
+\item Since $M$ is deterministic, all vertices of $G^M$ have out-degree at most 1, and $G_M$ has no cycles.
+\item The adjacency matrix of $G_M$ is a succinctly representable sparse matrix.
+\item $M$ accepts input $x$ if and only if there is a path in $G^M$ from the starting configuration $s_x$ to the accepting configuration $t$.
+\end{itemize}
+
+Now on input $x$, consider the graph $G^M_x$ obtained by adding an edge from the accepting configuration $t$ to the starting configuration $s_x$, and adding self-loops on all other vertices. Let $A^M_x$ be the adjacency matrix of $G^M_x$. It then turns out that $\det(A^M_x) = \pm 1$ if and only if there is a path from $s_x$ to $t$, i.e. $M$ accepts input $x$; otherwise $\det(A^M_x) = 0$. Therefore computing $\det(A^M_x)$ is PSPACE-hard.
+\end{proof}
+We can immediately see the following:
+\begin{cor}
+Let $A$ be an exponentially-large, succinctly representable sparse matrix, whose determinant is promised to be 0, or 1. Moreover, $A$ is symmetric and positive semidefinite. It is PSPACE-complete to determine if the determinant of $A$ vanishes.
+\end{cor}
+\begin{proof}
+Note that the matrix $(A^M_x)^T A^M_x$ is a succinctly representable sparse matrix, because there at most two 1s in each column of $A^M_x$; and deciding whether $\det((A^M_x)^T A^M_x) = \det(A^M_x)^2$ vanishes is PSPACE-hard.
+\end{proof}
+
+From here, we would like to argue that given a succinctly representable sparse and symmetric matrix $A$, it is PSPACE-complete to distinguish to determine whether $\det(A) = 0$ or $|\det(A)| > 2^{-\text{poly}}$, promised that one of this is the case. We will see later that this problem can be solved in $\text{QMA}_{exp}$. Unfortunately, this promise does not generally hold for succinctly representable sparse symmetric matrices; at worse if $A$ is nonsingular the smallest eigenvalue can still be doubly exponentially small. We will therefore need to modify the PSPACE-complete construction a bit.
+
+First of all, we make the following definition:
+\begin{defn}
+A deterministic Turing machine $M$ is reversible if all vertices of the configuration graph $G^M$ have in-degree at most 1.
+\end{defn}
+Since we already know vertices of $G^M$ have out-degree at most 1, this implies that $G^M$ is simply a collection of disjoint paths.
+\begin{thm}[Lange et al.]
+Every bijective function computable by a deterministic Turing machine in space $S(n)$ can be computed by a reversible deterministic Turing machine in the same space $S(n)$.
+\end{thm}
+This is good news for us: it means it suffices to examine the case where $G^M$ is a collection of disjoint paths, and so the calculation of the eigenvalues of $G^M_x$ will be much simpler. In fact, [Lange] shows we can even assume the starting configuration $s_x$ has in-degree 0, as long as the input $x$ is kept on the tape at the end; the accepting configuration $t_x$ will therefore depend on $x$. 
+
+Therefore if $\det(A^M_x) \neq 0$, i.e. if $M$ accepts $x$, there is a maximal path in $G^M$ starting from $s_x$ and ending at $t_x$. Assume the path has $\ell+1$ vertices, where $\ell = 2^{O(\text{poly})}$. $G^M_x$ adds an edge from $t_x$ to $s_x$ and adds a self-loop to all other vertices. Therefore if we reorder vertices and remove vertices not connected to $s_x$ and $t_x$, the relevant block of adjacency matrix $A^M_x$ is the $(\ell+1) \times (\ell+1)$ matrix
+\begin{equation}
+A'^M_x = 
+\begin{bmatrix}
+    0 & 0 & 0 & 0 & \dots  & 0  & 1 \\
+    1 & 1 & 0 & 0 &\dots  & 0 & 0 \\
+    0 & 1 & 1 & 0 & \dots  & 0 & 0 \\
+     0 & 0 & 1 & 1 & \dots  & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 0
+\end{bmatrix}
+\end{equation}
+We can directly evaluate $(A'^M_x)^T A'^M_x$, obtaining the following matrix:
+\begin{equation}
+(A'^M_x)^T A'^M_x = 
+\begin{bmatrix}
+    1 & 1 & 0 & 0 & \dots  & 0 & 0  & 0 \\
+    1 & 2 & 1 & 0 &\dots  & 0 & 0 & 0 \\
+    0 & 1 & 2 & 1 & \dots  & 0 & 0 & 0 \\
+     0 & 0 & 1 & 2 & \dots  & 0 & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 2 & 1 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 2 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+For purposes of calculating the smallest eigenvalue the last row and column can be ignored, leaving an $\ell \times \ell$ matrix. The characteristic equation for the eigenvalues $\lambda$ is then $p_\ell(\lambda) = 0$, where
+\begin{equation}
+p_\ell(\lambda) := 
+\det \L(
+\begin{bmatrix}
+    1 - \lambda & 1 & 0 & 0 & \dots  & 0 & 0  \\
+    1 & 2 - \lambda & 1 & 0 &\dots  & 0 & 0 \\
+    0 & 1 & 2 - \lambda & 1 & \dots  & 0 & 0 \\
+     0 & 0 & 1 & 2 - \lambda & \dots  & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 2 - \lambda & 1 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 2 - \lambda \\
+\end{bmatrix} \R).
+\end{equation}
+Now define the polynomial $q_n(x)$ to be the following $n \times n$ determinant:
+\begin{equation}
+q_n(x) := 
+\det \L(
+\begin{bmatrix}
+    x & 1 & 0 & \dots  & 0 & 0  \\
+    1 & x & 1 &\dots  & 0 & 0 \\
+    0 & 1 & x  & \dots  & 0 & 0 \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & 0 & \dots  & x & 1 \\
+    0 & 0 & 0 & \dots  & 1 & x \\
+\end{bmatrix} \R)
+\end{equation}
+Note that $p_\ell(\lambda) = q_\ell(2-\lambda) - q_{\ell-1}(2-\lambda)$. Moreover, $q_n(x)$ satisfies the recurrence
+\begin{equation}
+q_0(x) = 1, \quad q_1(x) = x, \quad q_n(x) = x q_{n-1}(x) - q_{n-2} (x)
+\end{equation}
+This is the same recurrence satisfied by $U_n(x/2)$, where $U_n(x)$ is the $n$-th degree Chebyshev polynomial of the second kind. Therefore $q_n(x) = U_n(x/2)$. Moreover, using $U_n(\cos\theta) = \sin((n+1)\theta)/\sin(\theta)$ we can evaluate
+\begin{align}
+q_\ell(x) - q_{\ell}(x) &= \frac{\sin((\ell+1)\theta) - \sin(\ell \theta)}{\sin\theta} \\
+&= \frac{\sin((2\ell+1)\theta/2)}{\sin (\theta/2)}
+\end{align}
+and therefore the zeroes of $q_\ell(x) - q_{\ell}(x)$ are $2\cos\L(\frac{2k}{2\ell + 1}\pi\R)$, $k = 1,\cdots,\ell$. The zeroes of the polynomial $p_\ell(\lambda) = q_\ell(2-\lambda) - q_{\ell-1}(2-\lambda)$ are therefore 
+\begin{equation}
+\lambda_k = 2\L(1 - \cos\L(\frac{2k}{2\ell+1}\pi\R)\R)
+\end{equation}
+and the smallest eigenvalue $\lambda_1 = \Theta(\ell^{-2})$ is inverse exponentially bounded away from zero, because $\ell = 2^{O(\text{poly})}$.
+
+\subsection{Sparse matrix singularity is in $\text{QMA}_{exp}$}
+We will now give a $\text{QMA}_{exp}$ algorithm for testing if the determinant of a succinctly representable sparse matrix $M$ vanishes, i.e. if 0 is an eigenvalue of $M$. First note the following:
+\begin{rem}
+Suppose a 0-1 matrix $M$ has at most $d$ nonzero entries per row. Then $\| M \| \le d$.
+\end{rem}
+
+
+\end{proof}
 
 \end{document}
