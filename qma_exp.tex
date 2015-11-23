@@ -30,7 +30,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 \usepackage{tikz} 
 
-%\input{Qcircuit}
+\input{Qcircuit}
 \input{macros}
 \makeatother
 
@@ -183,14 +183,12 @@ Let $M$ be a $2^{\text{poly}(n)} \times 2^{\text{poly}(n)}$ matrix, where $n$ is
 
 We first state the following result of [arXiv:1210.1451]:
 \begin{lem}
-Let $A'$ be an exponentially-large, succinctly representable sparse matrix, whose determinant is promised to be 0, 1, or -1. Moreover, each column of $A'$ has at most two 1s. It is PSPACE-complete to determine if the determinant of $A'$ vanishes.
+Let $A'$ be an exponentially-large, succinctly representable sparse matrix, whose determinant is promised to be 0, 1, or -1. Moreover, each column of $A'$ has at most two 1s. It is PSPACE-hard to determine if the determinant of $A'$ vanishes.
 \end{lem}
 
 We proceed to reproduce the proof of [arXiv:1210.1451] of this result, as we will need to modify it for our purposes.
 
 \begin{proof}
-Csanky's algorithm immediately gives that this problem is in PSPACE, and therefore we only need to show PSPACE-hardness.
-
 Let $L=(L_{yes},L_{no}) \in \text{PSPACE}$ be decided by a deterministic Turing Machine $M$ in polynomial space. Consider the configuration graph $G^M$ of the matrix $M$: each vertex of $G_M$ corresponds to one of the exponentially many configurations of $M$, each of which is describable with polynomially many bits. The configuration graph $G^M$ has an edge from $c$ to $c'$ if and only if $c'$ can be reached from $c$ in one step of computation. It is straightforward to see that $G^M$ has the following properties:
 \begin{itemize}
 \item Since $M$ is deterministic, all vertices of $G^M$ have out-degree at most 1, and $G_M$ has no cycles.
@@ -278,7 +276,7 @@ Note that $p_\ell(\lambda) = q_\ell(2-\lambda) - q_{\ell-1}(2-\lambda)$. Moreove
 \begin{equation}
 q_0(x) = 1, \quad q_1(x) = x, \quad q_n(x) = x q_{n-1}(x) - q_{n-2} (x)
 \end{equation}
-This is the same recurrence satisfied by $U_n(x/2)$, where $U_n(x)$ is the $n$-th degree Chebyshev polynomial of the second kind. Therefore $q_n(x) = U_n(x/2)$. Moreover, using $U_n(\cos\theta) = \sin((n+1)\theta)/\sin(\theta)$ we can evaluate
+This is the same recurrence satisfied by $U_n(x/2)$, where $U_n(x)$ is the $n$-th degree Chebyshev polynomial of the second kind. Therefore $q_n(x) = U_n(x/2)$. Using $U_n(\cos\theta) = \sin((n+1)\theta)/\sin(\theta)$ we can evaluate
 \begin{align}
 q_\ell(x) - q_{\ell}(x) &= \frac{\sin((\ell+1)\theta) - \sin(\ell \theta)}{\sin\theta} \\
 &= \frac{\sin((2\ell+1)\theta/2)}{\sin (\theta/2)}
@@ -289,13 +287,39 @@ and therefore the zeroes of $q_\ell(x) - q_{\ell}(x)$ are $2\cos\L(\frac{2k}{2\e
 \end{equation}
 and the smallest eigenvalue $\lambda_1 = \Theta(\ell^{-2})$ is inverse exponentially bounded away from zero, because $\ell = 2^{O(\text{poly})}$.
 
+We have therefore shown the following:
+\begin{lem}
+Let $A$ be an exponentially-large, positive semidefinite, symmetric, and succinctly representable sparse matrix, whose entries are 0, 1, or 2; moreover the smallest eigenvalue of $A$ is promised to be either zero or at least $2^{-O(\text{poly})}$. It is PSPACE-hard to decide which is the case.
+\end{lem}
+
 \subsection{Sparse matrix singularity is in $\text{QMA}_{exp}$}
-We will now give a $\text{QMA}_{exp}$ algorithm for testing if the determinant of a succinctly representable sparse matrix $M$ vanishes, i.e. if 0 is an eigenvalue of $M$. First note the following:
+We show the following in this section:
+\begin{lem}
+Let $A$ be an exponentially-large, positive semidefinite, symmetric, and succinctly representable sparse matrix, whose entries are 0, 1, or 2; moreover the smallest eigenvalue of $A$ is promised to be either zero or at least $2^{-g(n)}$ for some polynomial $g(n)$. There is a $QMA_{exp}$ protocol for deciding which is the case.
+\end{lem}
+Our strategy will essentially be to simulate the time evolution of the sparse Hamiltonian $e^{-iAt}$ using known simulation methods, and then use a stripped-down version of phase estimation to estimate an eigenvalue of $A$. We first note the following result for sparse matrix simulation:
+\begin{thm}[arXiv:1312.1414, arXiv:1501.01715] \label{thm:ham_sim}
+Suppose $A$ is a $2^n \times 2^n$ symmetric and succinctly representable sparse matrix, with at most $d$ nonzero entries in each row. Then treated as a Hamiltonian, the time evolution $\exp(-iAt)$ can be simulated using $\text{\emph{poly}}(n,d,\|H\|, t, \log(d\|H\|t/\epsilon))$ operations.
+\end{thm}
+Note that we can upper bound $\|A\|$ with the following observation:
 \begin{rem}
-Suppose a 0-1 matrix $M$ has at most $d$ nonzero entries per row. Then $\| M \| \le d$.
+Suppose a matrix $A$ has at most $d$ nonzero entries per row, each of which is no more than $k$ in absolute value. Then $\| A \| \le kd$.
 \end{rem}
+The crucial thing to notice in Thm \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$: this implies that we can obtain exponential precision in $\exp(-iAt)$ using only polynomially many operations. 
 
-
+Once we have a very accurate simulation of $\exp(-iAt)$, and given an eigenstate of $A$, we can perform phase estimation to estimate the eigenvalue (assuming $t$ is small enough, to prevent the phase from wrapping around). In our situation we need to distinguish the phase up to exponential precision, which would normally require exponentially many operations in the usual phase estimation routine. Instead, we will simply do phase estimation with one bit:
+\begin{align}
+%&\Qcircuit @C=1em @R=.7em {
+%\lstick{\ket{c}}& \multigate{1}{CP_{0}} &\qw & \rstick{\ket{c}} \qw \\
+%\lstick{\ket{i}}&\ghost{CP_{0}}  &\qw & \rstick{(1-x_i)\ket{i}} \qw
+%}
+%&\begin{array}{c}    \\ = \end{array}&
+&\Qcircuit @C=1em @R=.7em {
+\lstick{\ket{0}}& \gate{H} & \ctrl{1} & \gate{H} & \rstick{\frac{1+e^{-i\lambda t}}{2}\ket{0} +\frac{1-e^{-i\lambda t}}{2}\ket{1} } \qw \\
+\lstick{\ket{\psi}}& \qw & \gate{e^{-iAt}}  & \qw & \rstick{\ket{\psi}} \qw
+}
+\end{align}
+In the above we've assumed $\ket{\psi}$ is an eigenstate of $A$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $1 - (1-\cos(\lambda t))/2 \approx 1 - (\lambda t)^2/4$. Therefore if $\psi$ is a zero eigenstate, we can verify this with high probability (up to the error in the time evolution of the sparse Hamiltonian); otherwise no state $\psi$ will make us accept with probability greater than $1 - \text{poly}(\lambda_min) = 1 - 2^{-O(\text{poly})}$. This gives us a $\text{QMA}_{exp}$ protocol.
 \end{proof}
 
 \end{document}
