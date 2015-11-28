@@ -218,45 +218,49 @@ Every bijective function computable by a deterministic Turing machine in space $
 \end{thm}
 This is good news for us: it means it suffices to examine the case where $G^M$ is a collection of disjoint paths, and so the calculation of the eigenvalues of $G^M_x$ will be much simpler. In fact, [Lange] shows we can even assume the starting configuration $s_x$ has in-degree 0, as long as the input $x$ is kept on the tape at the end; the accepting configuration $t_x$ will therefore depend on $x$. 
 
-Therefore if $\det(A^M_x) \neq 0$, i.e. if $M$ accepts $x$, there is a maximal path in $G^M$ starting from $s_x$ and ending at $t_x$. Assume the path has $\ell+1$ vertices, where $\ell = 2^{O(\text{poly})}$. $G^M_x$ adds an edge from $t_x$ to $s_x$ and adds a self-loop to all other vertices. Therefore if we reorder vertices and remove vertices not connected to $s_x$ and $t_x$, the relevant block of adjacency matrix $A^M_x$ is the $(\ell+1) \times (\ell+1)$ matrix
+Therefore if $\det(A^M_x) \neq 0$, i.e. if $M$ accepts $x$, there is a maximal path in $G^M$ starting from $s_x$ and ending at $t_x$. Assume the path has $\ell+1$ vertices, where $\ell = 2^{O(\text{poly})}$. $G^M_x$ adds an edge from $t_x$ to $s_x$ and adds a self-loop to all other vertices. Therefore if $M$ accepts $x$, $G^M_x$ is a disjoint union of connected graphs $G^M_{x,i}$, where
+\begin{enumerate}
+\item If $s_x, t_x$ are not vertices of $G^M_{x,i}$, $G^M_{x,i}$ is a path with additional self-loops on all vertices of the path.
+\item If $s_x, t_x$ are vertices of $G^M_{x,i}$, $G^M_{x,i}$ is a cycle, with $s_x$ coming directly after $t_x$ in the cycle, and with additional self-loops on all vertices in the cycle except for $s_x$ and $t_x$.
+\end{enumerate}
+Let us look at these two cases separately. Assume a subgraph of the first type has $\ell$ vertices (i.e. the path has length $\ell-1$); then its adjacency matrix is, after appropriate relabelling of vertices, the following $\ell \times \ell$ matrix:
 \begin{equation}
-A'^M_x = 
+A_{1,\ell} := 
 \begin{bmatrix}
-    0 & 0 & 0 & 0 & \dots  & 0  & 1 \\
+    1 & 0 & 0 & 0 & \dots  & 0  & 0 \\
     1 & 1 & 0 & 0 &\dots  & 0 & 0 \\
     0 & 1 & 1 & 0 & \dots  & 0 & 0 \\
      0 & 0 & 1 & 1 & \dots  & 0 & 0 \\
     \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
     0 & 0 & 0 & 0 & \dots  & 1 & 0 \\
-    0 & 0 & 0 & 0 & \dots  & 1 & 0
-\end{bmatrix}
+    0 & 0 & 0 & 0 & \dots  & 1 & 1
+\end{bmatrix}.
 \end{equation}
-We can directly evaluate $(A'^M_x)^T A'^M_x$, obtaining the following matrix:
-\begin{equation}
-(A'^M_x)^T A'^M_x = 
+Computing $A_{1,\ell}^T A_{1,\ell}$, we see that it is
+\begin{equation} \label{eq:psd_mat}
+A_{1,\ell}^T A_{1,\ell} := 
 \begin{bmatrix}
-    1 & 1 & 0 & 0 & \dots  & 0 & 0  & 0 \\
-    1 & 2 & 1 & 0 &\dots  & 0 & 0 & 0 \\
-    0 & 1 & 2 & 1 & \dots  & 0 & 0 & 0 \\
-     0 & 0 & 1 & 2 & \dots  & 0 & 0 & 0 \\
+    2 & 1 & 0 & 0 & \dots  & 0  & 0 \\
+    1 & 2 & 1 & 0 &\dots  & 0 & 0 \\
+    0 & 1 & 2 & 1 & \dots  & 0 & 0 \\
+     0 & 0 & 1 & 2 & \dots  & 0 & 0 \\
     \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
-    0 & 0 & 0 & 0 & \dots  & 2 & 1 & 0 \\
-    0 & 0 & 0 & 0 & \dots  & 1 & 2 & 0 \\
-    0 & 0 & 0 & 0 & \dots  & 0 & 0 & 1
-\end{bmatrix}
+    0 & 0 & 0 & 0 & \dots  & 2 & 1 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 1
+\end{bmatrix}.
 \end{equation}
-For purposes of calculating the smallest eigenvalue the last row and column can be ignored, leaving an $\ell \times \ell$ matrix. The characteristic equation for the eigenvalues $\lambda$ is then $p_\ell(\lambda) = 0$, where
-\begin{equation}
+The characteristic equation for the eigenvalues $\lambda$ is then $p_\ell(\lambda) = 0$, where
+\begin{equation} \label{eq:char_p}
 p_\ell(\lambda) := 
 \det \L(
 \begin{bmatrix}
-    1 - \lambda & 1 & 0 & 0 & \dots  & 0 & 0  \\
+    2 - \lambda & 1 & 0 & 0 & \dots  & 0 & 0  \\
     1 & 2 - \lambda & 1 & 0 &\dots  & 0 & 0 \\
     0 & 1 & 2 - \lambda & 1 & \dots  & 0 & 0 \\
      0 & 0 & 1 & 2 - \lambda & \dots  & 0 & 0 \\
     \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
     0 & 0 & 0 & 0 & \dots  & 2 - \lambda & 1 \\
-    0 & 0 & 0 & 0 & \dots  & 1 & 2 - \lambda \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 1 - \lambda \\
 \end{bmatrix} \R).
 \end{equation}
 Now define the polynomial $q_n(x)$ to be the following $n \times n$ determinant:
@@ -286,6 +290,35 @@ and therefore the zeroes of $q_\ell(x) - q_{\ell}(x)$ are $2\cos\L(\frac{2k}{2\e
 \lambda_k = 2\L(1 - \cos\L(\frac{2k}{2\ell+1}\pi\R)\R)
 \end{equation}
 and the smallest eigenvalue $\lambda_1 = \Theta(\ell^{-2})$ is inverse exponentially bounded away from zero, because $\ell = 2^{O(\text{poly})}$.
+
+We now look at the other case, where the subgraph is of the second type, i.e. it contains $s_x$ and $t_x$. The adjacency matrix of this subgraph is, assuming there are $\ell$ vertices, the $\ell \times \ell $ matrix
+\begin{equation}
+A_{2,\ell} := 
+\begin{bmatrix}
+    0 & 0 & 0 & 0 & \dots  & 0  & 1 \\
+    1 & 1 & 0 & 0 &\dots  & 0 & 0 \\
+    0 & 1 & 1 & 0 & \dots  & 0 & 0 \\
+     0 & 0 & 1 & 1 & \dots  & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 0
+\end{bmatrix}
+\end{equation}
+We can directly evaluate $A_{2,\ell}^T A_{2,\ell}$, obtaining the following matrix:
+\begin{equation}
+A_{2,\ell}^T A_{2,\ell} = 
+\begin{bmatrix}
+    1 & 1 & 0 & 0 & \dots  & 0 & 0  & 0 \\
+    1 & 2 & 1 & 0 &\dots  & 0 & 0 & 0 \\
+    0 & 1 & 2 & 1 & \dots  & 0 & 0 & 0 \\
+     0 & 0 & 1 & 2 & \dots  & 0 & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 2 & 1 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 2 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+For purposes of calculating the smallest eigenvalue the last row and column can be ignored, leaving an $(\ell-1) \times (\ell-1)$ matrix. Looking back at \ref{eq:psd_mat} and \ref{eq:char_p}, we see that the characteristic equation is exactly $p_{\ell-1}(\lambda) = 0$. Therefore once again the smallest eigenvalue is inverse exponentially bounded away from zero.
 
 We have therefore shown the following:
 \begin{lem}
@@ -319,7 +352,7 @@ Once we have a very accurate simulation of $\exp(-iAt)$, and given an eigenstate
 \lstick{\ket{\psi}}& \qw & \gate{e^{-iAt}}  & \qw & \rstick{\ket{\psi}} \qw
 }
 \end{align}
-In the above we've assumed $\ket{\psi}$ is an eigenstate of $A$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $1 - (1-\cos(\lambda t))/2 \approx 1 - (\lambda t)^2/4$. Therefore if $\psi$ is a zero eigenstate, we can verify this with high probability (up to the error in the time evolution of the sparse Hamiltonian); otherwise no state $\psi$ will make us accept with probability greater than $1 - \text{poly}(\lambda_min) = 1 - 2^{-O(\text{poly})}$. This gives us a $\text{QMA}_{exp}$ protocol.
+In the above we've assumed $\ket{\psi}$ is an eigenstate of $A$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $1 - (1-\cos(\lambda t))/2 \approx 1 - (\lambda t)^2/4$. Therefore if $\psi$ is a zero eigenstate, we can verify this with probability close to 1 (up to the error in the time evolution of the sparse Hamiltonian); otherwise no state $\psi$ will make us accept with probability greater than $1 - \text{poly}(\lambda_{min}) = 1 - 2^{-O(\text{poly})}$. This gives us a $\text{QMA}_{exp}$ protocol.
 \end{proof}
 
 \end{document}
