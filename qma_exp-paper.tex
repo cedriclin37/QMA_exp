@@ -1,0 +1,472 @@
+\documentclass[11pt]{article}
+%\usepackage{geometry} % to change the page dimensions
+%\geometry{margin=1in} % for example, change the margins to 2 inches all round
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{varioref}
+\usepackage{verbatim} 
+\usepackage{multicol}
+\usepackage{lmodern}
+\usepackage{enumerate}
+\usepackage[normalem]{ulem}
+%\usepackage[margin=1in]{geometry}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{authblk}
+
+\usepackage{mathrsfs}
+
+\usepackage{url}\urlstyle{same}
+\usepackage{xspace}
+\usepackage{thm-restate}
+
+\usepackage{hyperref}
+\hypersetup{
+    bookmarksnumbered=true, % If Acrobat bookmarks are requested, include section numbers
+    unicode=false, % non-Latin characters in Acrobat bookmarks
+    pdfstartview={}, % fits the width of the page to the window
+    pdftitle={}, % title
+    pdfauthor={}, % author
+    pdfsubject={}, % subject of the document
+    pdfcreator={}, % creator of the document
+    pdfproducer={}, % producer of the document
+    pdfkeywords={}, % list of keywords
+    pdfnewwindow=true, % links in new window
+    colorlinks=true, % false: boxed links; true: colored links
+    linkcolor=blue, % color of internal links
+    citecolor=blue, % color of links to bibliography
+    filecolor=blue, % color of file links
+    urlcolor=blue % color of external links
+}
+
+%-----------------------------------------------------------------------------%
+% Theorem-like environments and related macros:
+%-----------------------------------------------------------------------------%
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}{Claim}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{condition}{Condition}
+\theoremstyle{definition}
+\newtheorem{alg}{Algorithm}
+\theoremstyle{remark}
+\newtheorem*{pr_sk}{Proof Sketch}
+\newtheorem*{alg_in}{Input}
+\newtheorem*{alg_out}{Output}
+
+
+\usepackage{tikz} 
+
+\input{Qcircuit}
+\input{macros}
+\makeatother
+
+
+%Bill's complexity class commmands\
+\newcommand\EXP{{\sf{EXP}}}
+%\newcommand\QMA{{\sf{QMA}}}
+%\newcommand\QCMA{{\sf{QCMA}}}
+\newcommand\PSPACE{{\sf{PSPACE}}}
+\newcommand\PP{\sf{PP}}
+\newcommand\expQCMA{{\sf{QCMA_{exp,poly}}}}
+%\newcommand\NP{{\sf{NP}}}
+\newcommand\AM{{\sf{AM}}}
+%\newcommand\BQP{{\sf{BQP}}}
+
+\newcommand\QCIP{{\sf{QCIP}}}
+\newcommand\QMAexp{{\sf{QMA}_{exp}}}
+\newcommand\bddQMA[5]{{\left(#1,#2\right)}\textit{-bounded }\QMA_{#3}(#4,#5)}
+\newcommand\PQPSPACE{{\sf{PQPSPACE}}}
+\newcommand\revPSPACE{{\sf{revPSPACE}}}
+\newcommand\succdet{\textit{Succinct Determinant Checking}}
+\newcommand\gappedsuccdet{\textit{Gapped Succinct Determinant Checking}}
+%
+%\newcommand{\eq}[1]{(\hyperref[eq:#1]{\ref*{eq:#1}})}
+
+
+\newcommand{\ee}{\mathcal{E}}
+\newcommand{\ii}{\mathbb{I}}
+\newcommand{\rl}{\rangle\langle}
+\newcommand{\mg}{\mathcal{G}}
+\newcommand{\hn}[1]{\|#1\|^H_{1\rightarrow 1}}
+\newcommand{\ve}[1]{|#1\rangle\!\rangle}
+\newcommand{\ro}[1]{\langle\!\langle#1|}
+\newcommand{\bkett}[1]{|#1\rangle\!\rangle\langle\!\langle#1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\bk}[1]{|#1\rangle\langle#1|}
+
+
+\newcommand{\tth}[0]{\textsuperscript{th}}
+\newcommand{\st}[0]{\textsuperscript{st}}
+\newcommand{\nd}[0]{\textsuperscript{nd}}
+\newcommand{\rd}[0]{\textsuperscript{rd}}
+
+
+\usepackage{xcolor}
+\newcommand{\todo}[1]{{\color{red}{[{\bf TODO:}#1]}}}
+\newcommand{\wf}[1]{{\color{violet}{[{\bf wf:}#1]}}}
+\newcommand{\tocite}[1]{{\color{blue}{[{\bf CITE:}#1]}}}
+\newcommand{\tocheck}[1]{{\color{red}{[{\bf TO CHECK:}#1]}}}
+
+\DeclareMathAlphabet{\matheu}{U}{eus}{m}{n}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\id}{id}
+\newcommand{\Favg}{\overline{F}}
+\newcommand{\Paulis}{{\matheu P}}
+\newcommand{\Clifs}{{\matheu C}}
+\newcommand{\Hilb}{{\matheu H}}
+\newcommand{\T}{{\matheu T}}
+\newcommand{\sop}[1]{{\mathcal #1}}
+\newcommand{\PL}[1]{{#1}^{P\!L}}
+\newcommand{\BHn}{{{\mathcal B}({\mathcal H}^{\otimes n})}}
+\newcommand{\I}{{\mathbb I}}
+\newcommand{\CNOT}{{\mathrm{CNOT}}}
+\newcommand{\plr}[1]{\hat{#1}} %pauli-liouville-represenation
+\newcommand{\poly}{\textrm{poly}}
+
+%\newcommand{\ket}[1]{|{#1}\rangle}
+%\newcommand{\bra}[1]{\langle{#1}|}
+\newcommand{\braket}[2]{\langle{#1}|{#2}\rangle}
+\newcommand{\ketbra}[2]{|{#1}\rangle\!\langle{#2}|}
+\newcommand{\kket}[1]{|{#1}\rangle\!\rangle}
+\newcommand{\bbra}[1]{\langle\!\langle{#1}|}
+\newcommand{\bbrakket}[2]{\langle\!\langle{#1}|{#2}\rangle\!\rangle}
+
+\newcommand{\no}{\nonumber\\}
+\newcommand{\even}{_\textrm{even}}
+\newcommand{\odd}{_\textrm{odd}}
+
+\newcommand{\ns}{{\textsc{ns}}}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\se}{\succcurlyeq}
+\newcommand{\di}{\textrm{diag}}
+\newcommand{\orcl}{{\pmb{\sop O}}}
+\newcommand{\SA}{{\mathbf{S}_X^n}}
+\newcommand{\SB}{{\mathbf{S}_Y^n}}
+\newcommand{\Si}{{\mathbf{S}_1}}
+\newcommand{\Sj}{{\mathbf{S}_2}}
+\newcommand{\SU}{S_U}
+\newcommand{\Ugroup}[1]{\mathbf{U}^{#1}}
+\usepackage{mathtools}
+\newcommand{\pc}{preimage-correct}
+\newcommand{\rpc}{randomized-preimage-correct}
+\newcommand{\spi}{\pmb{\sigma}_{\textrm{pre}}}
+\newcommand{\sperm}{S_{\textrm{pre}}}
+\newcommand{\Swit}{\mathbf{S}_{i,\textrm{wit}}}
+\newcommand{\Sprime}{\mathbf{S}''}
+\newcommand{\porcl}{{\pmb{\sop P}}}
+
+%-----------------------------------------------------------------------------%
+
+
+
+
+\begin{document}
+
+
+%+Title
+\title{Quantum Merlin Arthur with Exponentially Small Gap}
+\author[1]{Bill Fefferman}
+\author[1]{Cedric Lin}
+\affil[1]{Joint Center for Quantum Information and Computer Science (QuICS), University of Maryland}
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+We will study the complexity of QMA proof systems with inverse exponentially small promise gap.  We will show that $\QMAexp=\PSPACE$.
+\end{abstract}
+
+\section{Introduction}
+\section{Definitions}
+
+\subsection{Quantum Merlin Arthur}\label{def:qma}
+\begin{definition}We say a language $L=(L_{yes},L_{no})$ is in $\bddQMA{t}{k}{m}{c}{s}$ if there exists a uniform family of quantum circuits $\{ V_x\}_{x\in\{0,1\}^n}$, each of size at most $t(|x|)$, acting on $k(|x|)+m(|x|)$ qubits, so that:\\
+
+If $x \in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that:
+\begin{equation}
+\left(\bra{\psi}\otimes \bra{0^k}\right) V^\dagger_x \ket{1}\bra{1}_{out} V_x \left(\ket{\psi}\otimes \ket{0^k}\right) \ge c
+\end{equation}
+Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
+\begin{equation}
+\left(\bra{\psi}\otimes \bra{0^k}\right) V^\dagger_x \ket{1}\bra{1}_{out} V_x \left(\ket{\psi}\otimes \ket{0^k}\right) \le s.
+\end{equation}
+
+  \end{definition}
+
+\begin{definition} $\QMA=\bddQMA{poly}{poly}{poly}{2/3}{1/3}$\end{definition}
+\begin{definition} $\QMAexp=\bddQMA{poly}{poly}{poly}{c}{c-2^{-poly}}$	
+\end{definition}
+
+\subsection{Space complexity classes}
+\begin{definition}We say a language $L=(L_{yes},L_{no})$ is in $\PQPSPACE$ (unbounded-error quantum polynomial space) if there exists a uniform family of quantum circuits acting on at most polynomial number of qubits that accepts every string $x\in L_{yes}$ with probability strictly greater than $1/2$ and accepts every string $x \in L_{no}$ with probability at most at most 1/2.
+	
+\end{definition}
+\begin{theorem}[Watrous \cite{Watrous99}]\label{thm:pqpspace} $\PQPSPACE=\PSPACE$
+\end{theorem}
+
+\section{Upper bound}
+In this section, our goal will be to prove that $\QMAexp\subseteq\PSPACE$.  We will proceed in two steps, the first will show how to use in-place $\QMA$ amplification techniques from Nagaj, Wocjan, and Zhang \cite{nwz11} to decide any language in $\QMAexp$ with a quantum protocol in which the verifier is allowed exponential time, polynomial space (i.e., acts on a polynomial number of proof and ancilla qubits), completeness $1-2^{-poly(n)}$ and soundness $2^{-poly(n)}$.  We then appeal to results of Marriott and Watrous \cite{mw05} and  Watrous \cite{Watrous99} to show that such protocols can be simulated in $\PSPACE$.
+\subsection{In-place gap amplification of $\QMA_{exp}$ using phase estimation techniques}
+\begin{theorem}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] For any $r>0$, \[\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}(rt(c-s))}{\mathcal{O}(k+log(c-s))}{m}{1-2^r}{2^{r}}\]
+\end{theorem}
+\begin{proof}
+	Let $L=(L_{yes}, L_{no})$ be a language in $\QMA(c,s)$ and $\{V_x\}_{x\in\{0,1\}^n}$ the corresponding uniform family of verification circuits.
+Define the projectors:
+\begin{align}
+\Pi_0 &= I_m \otimes \ket{0^k}\bra{0^k} \\
+\Pi_1 &= V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
+\end{align}
+and the corresponding reflections:
+\begin{align}
+R_0 &= 2\Pi_0 - I \\
+R_1 &= 2\Pi_1 - I.
+\end{align}
+Now consider the following procedure, which we repeat $r$ times:
+\begin{enumerate}
+\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with $O(\log(c-s)) = O(\text{poly})$ bits of precision and $1/16$ failure probability. 
+\item If the median of the $r$ results is at most $\phi_c = \arccos\sqrt{c}/\pi$, output YES; otherwise if the result is at least $\phi_s = \arccos\sqrt{s}/\pi$, output NO.
+\end{enumerate}
+Phase estimation of an operator $U$ up to $a$ bits of precision requires $\mathcal{O}(a)$ ancilla qubits and $\mathcal{O}(2^a)$ applications of the control-$U$ operation.  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\alpha=\mathcal{O}(\log(c-s))$ on the $V_x$ operator, can be implemented by a circuit of size $\mathcal{O}(rt2^{\alpha})=\mathcal{O}(rt(c-s))$ using $\mathcal{O}(\alpha)$ ancillia bits.
+ Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^r$ and soundness at most $2^r$.
+\end{proof}
+
+Thus, we get the following corollaries:
+\begin{corollary}\label{obvious1}For all $r>0$,
+$\QMAexp\subseteq\bddQMA{\mathcal{O}(r2^{\poly})}{\poly}{\poly}{1-2^r}{2^r}$.
+\end{corollary}
+
+\begin{corollary}\label{obvious2}For every language $L\in\QMAexp$, there exists an $m \in \poly$ so that:
+\[L\in\bddQMA{\mathcal{O}(2^{\poly})}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\]
+\end{corollary}
+Notice that Corollary \ref{obvious2} follows from the definition of $\QMAexp$ and Corollary \ref{obvious1} with $r=m+2$.
+\subsection{$\PSPACE$ simulation}
+\begin{theorem}
+For all $m>0$:\[\bddQMA{\mathcal{O}(2^{\poly})}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\subseteq\PQPSPACE\]\end{theorem}
+\begin{proof}
+For any $m>0$, consider a language $L\in\bddQMA{\mathcal{O}(2^{\poly})}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^n}$ be the corresponding uniform family of verification circuits.
+If $x\in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
+\begin{equation}
+\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \ge 1-2^{-(m+2)}
+\end{equation}
+whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have
+\begin{equation}
+\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \le 2^{-(m+2)}.
+\end{equation}
+For convenience, define the $2^m \times 2^m$ matrix:
+\begin{equation}
+Q_x := \left(I_{2^m}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(I_{2^m}\otimes \ket{0^p}\right).
+\end{equation}
+Note that $Q_x$ is positive semidefinite, and $\bra{\psi}Q_x\ket{\psi}$ is the acceptance probability of $V'_x$ on witness $\psi$.
+
+Note that:     \[x\in L_{yes} \Rightarrow tr[Q_x]\ge 1 - 2^{-(m+2)} \ge 3/4\] Since the trace is at least the largest eigenvalue, and $m\geq 0$; likewise: \[x\in L_{no} \Rightarrow \tr[Q_x]\le 2^m \cdot 2^{-(m+2)} = 1/4\] Since the trace is the sum of the $2^m$ eigenvalues, each of which is at most $2^{-(m+2)}$. 
+
+Therefore our problem reduces to determining whether the trace of $Q_x$ is at least $3/4$ or at most $1/4$.  Now we will show that using the totally mixed state $2^{-m}I_m$ (alternatively, a random computational basis state) as the witness of the verification procedure encoded by $Q_x$, succeeds with the desired completeness and soundness bounds.  The acceptance probability is given by
+\begin{equation}
+\tr(Q_x 2^{-m}I_m) = 2^{-m} \tr(Q_x)
+\end{equation}
+which is at least $2^{-m} \cdot 3/4$ if $x\in L_{yes}$, and at most $2^{-m} \cdot 1/4$ if $x\in L_{no}$. Thus we have reduced our original problem to determining whether an exponentially long quantum computation with \emph{no} witness, acting on a polynomial number of qubits, accepts with probability at least $c'$ or at most $s'$ with $c' - s'$ being exponentially small. 
+
+This is a $\PQPSPACE$ (unbounded-error probabilistic quantum polynomial space) problem; using Watrous's result, Theorem \ref{thm:pqpspace}, which states that $\PQPSPACE=\PSPACE$ we immediately get that this problem is in PSPACE as well. Therefore $\QMAexp \subseteq \PSPACE$, as claimed.
+
+
+\end{proof}
+
+\section{Lower bound}
+In this section we will show that $\PSPACE\subseteq\QMAexp$.  To do this we proceed with two steps.  In the first, we show that, given a succinctly representable sparse matrix and promised that either the smallest eigenvalue is 0 or at most $1/2^{\poly}$, deciding which is the case is a $\PSPACE$-complete problem.  In the second step, we give a $\QMAexp$ protocol for this problem.
+
+By a matrix being succinctly representable and sparse, we mean the following:
+\begin{definition}
+Let $M$ be a $2^{\poly(n)} \times 2^{\poly(n)}$ matrix, where $n$ is the input size. We say that $M$ is a \emph{succinctly representable sparse} matrix if there are at most polynomially many nonzero entries in each row, and moreover there is a (uniformly generated) circuit, \emph{the succinct encoding}, that outputs the nonzero entries of any given row in $\poly(n)$ time.
+\end{definition}
+\subsection{The Succinct Determinant problem}
+\begin{definition}[\succdet]
+Given as input a succinct encoding of $A$, an exponentially-large sparse matrix, whose determinant is promised to be 0, 1, or -1. Moreover, each column of $A$ has at no more than two 1s.  Does $\det(A)$ vanish?
+\end{definition}
+\begin{theorem}\label{thm:succdet}[Grenet, Koiran and Portier \cite{GKP13}]
+$\succdet$ is $\PSPACE$-hard.
+\end{theorem}
+\begin{proof}
+Let $L=(L_{yes},L_{no}) \in \PSPACE$ be decided by a polynomial space deterministic Turing Machine $M$. Consider the configuration graph $G^M$ of the matrix $M$: each vertex of $G^M$ corresponds to one of the exponentially many configurations of $M$, each of which is describable with polynomially many bits. The configuration graph $G^M$ has an edge from $c$ to $c'$ if and only if $c'$ can be reached from $c$ in one step of computation. It is straightforward to see that $G^M$ has the following properties:
+\begin{itemize}
+\item Since $M$ is deterministic, all vertices of $G^M$ have out-degree at most 1, and $G_M$ has no cycles.
+\item The adjacency matrix of $G^M$ is a succinctly representable sparse matrix.
+\item $M$ accepts input $x$ if and only if there is a path in $G^M$ from the starting configuration $s_x$ to the accepting configuration $t$.
+\end{itemize}
+
+Now on input $x$, consider the graph $G^M_x$ obtained by adding an edge from the accepting configuration $t$ to the starting configuration $s_x$, and adding self-loops on all other vertices. 
+
+Recall that a {\sl cycle cover} of a directed graph is a set of cycles that are subgraphs containing all the vertices of the graph.  We define the {\sl signed weight} of a cycle cover to be the product of the weights of the edges in the cycle cover, multiplied by $-1^\ell$, where $\ell$ is the number of cycles of even length in the cycle cover.  We can interpret the Determinant of the adjacency matrix of a directed graph as the sum of the signed weights of all cycle covers of the graph. 
+
+Let $A^M_x$ be the adjacency matrix of $G_x^M$.  Now $G^M_x$ has a cycle cover if and only if $M$ accepts $x$ and there is a path from $s_x$ to $t$, and so $\det(A^M_x) = \pm 1$, corresponding to the signed weight of the cycle cover, and otherwise $\det(A^M_x) = 0$. Therefore deciding deciding if $\det{A^M_x}$ vanishes is $\PSPACE$-hard.	
+
+We can immediately see that the complexity of the $\succdet$ problem doesn't get easier if we are promised that the succinctly representable input matrix $A$ is symmetric.  Notice that the  matrix $(A^M_x)^T A^M_x$ is succinctly representable because there are at most two 1's in each column of $A^M_x$ and if we can decide if $\det((A^M_x)^T A^M_x)=\det(A^M_x)^2$ vanishes (or is equal to $1$), we can certainly decide if $\det(A^M_x)$ vanishes. 
+\end{proof}
+ For our purposes, we need to consider the complexity of the problem with the additional promise that either the determinant vanishes or is of magnitude at least $1/2^{-\poly}$.  This is not true for arbitrary succinctly specifiable sparse symmetric matrices; in general the smallest eigenvalue can be doubly exponentially small, and thus the determinant of the matrix will also be doubly exponentially small.  Thus we introduce the $\gappedsuccdet$ problem and show that it too is $\PSPACE$-hard.
+\begin{definition}[$\gappedsuccdet$]
+Given as input a succinct encoding of $A$, an exponentially-large, succinctly representable sparse symmetric matrix with entries either 0, 1, or 2, whose determinant is promised to be $0$ or of magnitude at least $1/2^{\poly}$. Does $\det(A)$ vanish?
+\end{definition}
+\begin{theorem}\label{thm:gappedsuccdet}
+$\gappedsuccdet$ is $\PSPACE$-hard.
+\end{theorem}
+
+\begin{proof}
+	In this theorem, we will adapt the construction of Theorem \ref{thm:succdet} to analyze the spectrum of the underlying $\PSPACE$ machine configuration graph.
+	 It was proven by Bennett \cite{bennett89} that $\PSPACE=\revPSPACE$, and indeed a result of Lange, McKenzie and Tapp \cite{lange00} proves that for any space-constructible $s$, ${\sf{DSPACE}[s]}\subseteq{\sf{revSPACE}[s]}$, at a cost of an exponential time blow-up.  In fact, they also show without loss of generality that the starting configuration of the reversible machine has in-degree $0$, as long as the input $x$ is kept on the tape at the end of the computation (and so the accepting configuration depends on $x$).
+	
+	Thus, an arbitrary $\PSPACE$ language $L$ can be decided by a polynomial space reversible Turing machine $M$, and the resulting configuration graph $G^M$ is a collection of disjoint paths. 
+		
+Now, if $\det(A^M_x) \neq 0$, i.e. if $M$ accepts $x$, there is a maximal path in $G^M$ starting from $s_x$ and ending at $t_x$. Assume the path has $\ell+1$ vertices, where $\ell \in 2^{\poly}$. $G^M_x$ adds an edge from $t_x$ to $s_x$ and adds a self-loop to all other vertices. Therefore if $M$ accepts $x$, $G^M_x$ is a disjoint union of connected graphs $G^M_{x,i}$, where:
+\begin{enumerate}
+\item If $s_x, t_x$ are not vertices of $G^M_{x,i}$, $G^M_{x,i}$ is a path with additional self-loops on all vertices of the path.
+\item If $s_x, t_x$ are vertices of $G^M_{x,i}$, $G^M_{x,i}$ is a cycle, with $s_x$ coming directly after $t_x$ in the cycle, and with additional self-loops on all vertices in the cycle except for $s_x$ and $t_x$.
+\end{enumerate}
+Let us look at these two cases separately. Assume a subgraph of the first type has $\ell$ vertices (i.e. the path has length $\ell-1$); then its adjacency matrix is, after appropriate relabelling of vertices, the following $\ell \times \ell$ matrix:
+\begin{equation}
+A_{1,\ell} := 
+\begin{bmatrix}
+    1 & 0 & 0 & 0 & \dots  & 0  & 0 \\
+    1 & 1 & 0 & 0 &\dots  & 0 & 0 \\
+    0 & 1 & 1 & 0 & \dots  & 0 & 0 \\
+     0 & 0 & 1 & 1 & \dots  & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 1
+\end{bmatrix}.
+\end{equation}
+Computing $A_{1,\ell}^T A_{1,\ell}$, we see that it is:
+\begin{equation} \label{eq:psd_mat}
+A_{1,\ell}^T A_{1,\ell} := 
+\begin{bmatrix}
+    2 & 1 & 0 & 0 & \dots  & 0  & 0 \\
+    1 & 2 & 1 & 0 &\dots  & 0 & 0 \\
+    0 & 1 & 2 & 1 & \dots  & 0 & 0 \\
+     0 & 0 & 1 & 2 & \dots  & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 2 & 1 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 1
+\end{bmatrix}.
+\end{equation}
+The characteristic equation for the eigenvalues $\lambda$ is then $p_\ell(\lambda) = 0$, where
+\begin{equation} \label{eq:char_p}
+p_\ell(\lambda) := 
+\det \left(
+\begin{bmatrix}
+    2 - \lambda & 1 & 0 & 0 & \dots  & 0 & 0  \\
+    1 & 2 - \lambda & 1 & 0 &\dots  & 0 & 0 \\
+    0 & 1 & 2 - \lambda & 1 & \dots  & 0 & 0 \\
+     0 & 0 & 1 & 2 - \lambda & \dots  & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 2 - \lambda & 1 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 1 - \lambda \\
+\end{bmatrix} \right).
+\end{equation}
+Now define the polynomial $q_n(x)$ to be the following $n \times n$ determinant:
+\begin{equation}
+q_n(x) := 
+\det \left(
+\begin{bmatrix}
+    x & 1 & 0 & \dots  & 0 & 0  \\
+    1 & x & 1 &\dots  & 0 & 0 \\
+    0 & 1 & x  & \dots  & 0 & 0 \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & 0 & \dots  & x & 1 \\
+    0 & 0 & 0 & \dots  & 1 & x \\
+\end{bmatrix} \right)
+\end{equation}
+Note that $p_\ell(\lambda) = q_\ell(2-\lambda) - q_{\ell-1}(2-\lambda)$. Moreover, $q_n(x)$ satisfies the recurrence
+\begin{equation}
+q_0(x) = 1, \quad q_1(x) = x, \quad q_n(x) = x q_{n-1}(x) - q_{n-2} (x)
+\end{equation}
+This is the same recurrence satisfied by $U_n(x/2)$, where $U_n(x)$ is the $n$-th degree Chebyshev polynomial of the second kind. Therefore $q_n(x) = U_n(x/2)$. Using $U_n(\cos\theta) = \sin((n+1)\theta)/\sin(\theta)$ we can evaluate:
+\begin{align}
+q_\ell(x) - q_{\ell}(x) &= \frac{\sin((\ell+1)\theta) - \sin(\ell \theta)}{\sin\theta} \\
+&= \frac{\sin((2\ell+1)\theta/2)}{\sin (\theta/2)}
+\end{align}
+and therefore the zeroes of $q_\ell(x) - q_{\ell}(x)$ are $2\cos\left(\frac{2k}{2\ell + 1}\pi\right)$, $k = 1,\cdots,\ell$. The zeroes of the polynomial $p_\ell(\lambda) = q_\ell(2-\lambda) - q_{\ell-1}(2-\lambda)$ are therefore 
+\begin{equation}
+\lambda_k = 2\left(1 - \cos\left(\frac{2k}{2\ell+1}\pi\right)\right)
+\end{equation}
+and the smallest eigenvalue $\lambda_1 = \Theta(\ell^{-2})$ is inverse exponentially bounded away from zero, because $\ell = 2^{O(\poly)}$.
+
+We now look at the other case, where the subgraph is of the second type, i.e. it contains $s_x$ and $t_x$. The adjacency matrix of this subgraph is, assuming there are $\ell$ vertices, the $\ell \times \ell $ matrix:
+\begin{equation}
+A_{2,\ell} := 
+\begin{bmatrix}
+    0 & 0 & 0 & 0 & \dots  & 0  & 1 \\
+    1 & 1 & 0 & 0 &\dots  & 0 & 0 \\
+    0 & 1 & 1 & 0 & \dots  & 0 & 0 \\
+     0 & 0 & 1 & 1 & \dots  & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 0
+\end{bmatrix}
+\end{equation}
+We can directly evaluate $A_{2,\ell}^T A_{2,\ell}$, obtaining the following matrix:
+\begin{equation}
+A_{2,\ell}^T A_{2,\ell} = 
+\begin{bmatrix}
+    1 & 1 & 0 & 0 & \dots  & 0 & 0  & 0 \\
+    1 & 2 & 1 & 0 &\dots  & 0 & 0 & 0 \\
+    0 & 1 & 2 & 1 & \dots  & 0 & 0 & 0 \\
+     0 & 0 & 1 & 2 & \dots  & 0 & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+    0 & 0 & 0 & 0 & \dots  & 2 & 1 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 1 & 2 & 0 \\
+    0 & 0 & 0 & 0 & \dots  & 0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+For purposes of calculating the smallest eigenvalue the last row and column can be ignored, leaving an $(\ell-1) \times (\ell-1)$ matrix. Looking back at \ref{eq:psd_mat} and \ref{eq:char_p}, we see that the characteristic equation is exactly $p_{\ell-1}(\lambda) = 0$. Therefore once again the smallest eigenvalue is inverse exponentially bounded away from zero.
+
+\end{proof}
+\subsection{$\gappedsuccdet$ is in $\QMAexp$}
+In this section, we now proceed to show a $\QMAexp$ protocol for the particular instances of\\ $\gappedsuccdet$ that came from Theorem \ref{thm:gappedsuccdet}.
+\begin{lemma}
+Let $A$ be an exponentially-large, positive semidefinite, symmetric, and succinctly representable sparse matrix, whose entries are 0, 1, or 2; moreover the smallest eigenvalue of $A$ is promised to be either zero or at least $2^{-g(n)}$ for some polynomial $g(n)$. There is a $\QMAexp$ protocol for deciding which is the case.
+\end{lemma}
+Our strategy will essentially be to simulate the time evolution of the sparse Hamiltonian $e^{-iAt}$ using known simulation methods, and then use a stripped-down version of phase estimation to estimate an eigenvalue of $A$. We first note the following result for sparse matrix simulation:
+\begin{theorem}[\cite{berry14}, \cite{berry15}] \label{thm:ham_sim}
+Suppose $A$ is a $2^n \times 2^n$ symmetric and succinctly representable sparse matrix, with at most $d$ nonzero entries in each row. Then treated as a Hamiltonian, the time evolution $\exp(-iAt)$ can be simulated using $\text{\emph{poly}}(n,d,\|H\|, t, \log(d\|H\|t/\epsilon))$ operations.
+\end{theorem}
+Note that we can upper bound $\|A\|$ with the following observation:
+\begin{remark}
+Suppose a matrix $A$ has at most $d$ nonzero entries per row, each of which is no more than $k$ in absolute value. Then $\| A \| \le kd$.
+\end{remark}
+\begin{proof}
+The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain exponential precision in $\exp(-iAt)$ using only polynomially many operations. 
+
+Once we have a very accurate simulation of $\exp(-iAt)$, and given an eigenstate of $A$, we can perform phase estimation to estimate the eigenvalue (assuming $t$ is small enough, to prevent the phase from wrapping around). In our situation we need to distinguish the phase up to exponential precision, which would normally require exponentially many operations in the usual phase estimation routine. Instead, we will simply do phase estimation with one bit:
+\begin{align}
+%&\Qcircuit @C=1em @R=.7em {
+%\lstick{\ket{c}}& \multigate{1}{CP_{0}} &\qw & \rstick{\ket{c}} \qw \\
+%\lstick{\ket{i}}&\ghost{CP_{0}}  &\qw & \rstick{(1-x_i)\ket{i}} \qw
+%}
+%&\begin{array}{c}    \\ = \end{array}&
+&\Qcircuit @C=1em @R=.7em {
+\lstick{\ket{0}}& \gate{H} & \ctrl{1} & \gate{H} & \rstick{\frac{1+e^{-i\lambda t}}{2}\ket{0} +\frac{1-e^{-i\lambda t}}{2}\ket{1} } \qw \\
+\lstick{\ket{\psi}}& \qw & \gate{e^{-iAt}}  & \qw & \rstick{\ket{\psi}} \qw
+}
+\end{align}
+In the above we've assumed $\ket{\psi}$ is an eigenstate of $A$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $1 - (1-\cos(\lambda t))/2 \approx 1 - (\lambda t)^2/4$. Therefore if $\psi$ is a zero eigenstate, we can verify this with probability close to 1 (up to the error in the time evolution of the sparse Hamiltonian); otherwise no state $\psi$ will make us accept with probability greater than $1 - \text{poly}(\lambda_{min}) = 1 - 2^{-O(\text{poly})}$. This gives us a $\QMAexp$ protocol.
+\end{proof}
+\section{Conclusion}
+\section{Acknowledgements}
+
+\bibliography{qmaexp-bib}
+\bibliographystyle{plain}
+\end{document}
