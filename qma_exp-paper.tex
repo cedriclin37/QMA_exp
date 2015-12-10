@@ -90,7 +90,7 @@
 \newcommand\PQPSPACE{{\sf{PQPSPACE}}}
 \newcommand\revPSPACE{{\sf{revPSPACE}}}
 \newcommand\succdet{\textit{Succinct Determinant Checking}}
-\newcommand\gappedsuccdet{\textit{Gapped Succinct Determinant Checking}}
+\newcommand\gappedsucc{\textit{Gapped Succinct Matrix Singularity}}
 %
 %\newcommand{\eq}[1]{(\hyperref[eq:#1]{\ref*{eq:#1}})}
 
@@ -220,7 +220,7 @@ Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
 \begin{theorem}[Watrous \cite{Watrous99}]\label{thm:pqpspace} $\PQPSPACE=\PSPACE$
 \begin{definition}We say a language $L=(L_{yes},L_{no})$ is in $\revPSPACE$ (reversible polynomial space) if it can be decided by a polynomial space reversible Turing machine, i.e., a machine in which every configuration has at most one immediate predecessor.  	
 \end{definition}
-\begin{theorem}\label{thm:revpspace}[Bennett\cite{bennett89}]$\revPSPACE=\PSPACE$
+\begin{theorem}\label{thm:revpspace}[Bennett\cite{bennett89}] $\revPSPACE=\PSPACE$
 \end{theorem}
 
 \section{Upper bound}
@@ -246,7 +246,7 @@ Now consider the following procedure:
 \item If the median of the $r$ results is at most $\phi_c = \arccos\sqrt{c}/\pi$, output YES; otherwise if the result is at least $\phi_s = \arccos\sqrt{s}/\pi$, output NO.
 \end{enumerate}
 Phase estimation of an operator $U$ up to $a$ bits of precision requires $\mathcal{O}(a)$ ancilla qubits and $\mathcal{O}(2^a)$ applications of the control-$U$ operation.  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\alpha=\mathcal{O}(\log(c-s))$ on the $V_x$ operator, can be implemented by a circuit of size $\mathcal{O}(rt2^{\alpha})=\mathcal{O}(rt(c-s))$ using $\mathcal{O}(\alpha)$ ancillia bits.
- Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^r$ and soundness at most $2^r$.
+ Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
 \end{proof}
 
 Thus, we get the following corollaries:
@@ -291,7 +291,7 @@ This is a $\PQPSPACE$ (unbounded-error probabilistic quantum polynomial space) p
 \end{proof}
 
 \section{Lower bound}
-In this section we will show that $\PSPACE\subseteq\QMAexp$.  To do this we proceed with two steps.  In the first, we show that, given a succinctly representable sparse matrix and promised that either the smallest eigenvalue is 0 or at most $1/2^{\poly}$, deciding which is the case is a $\PSPACE$-complete problem.  In the second step, we give a $\QMAexp$ protocol for this problem.
+In this section we will show that $\PSPACE\subseteq\QMAexp$.  To do this we proceed with two steps.  In the first we show that, given a succinctly representable sparse matrix and promised that either the smallest eigenvalue is 0 or at most $1/2^{\poly}$, deciding which is the case is a $\PSPACE$-complete problem.  In the second step, we give a $\QMAexp$ protocol for this problem.
 
 By a matrix being succinctly representable and sparse, we mean the following:
 \begin{definition}
@@ -318,14 +318,14 @@ Recall that a {\sl cycle cover} of a directed graph is a set of cycles that are 
 
 Let $A^M_x$ be the adjacency matrix of $G_x^M$.  Now $G^M_x$ has a cycle cover if and only if $M$ accepts $x$ and there is a path from $s_x$ to $t$, and so $\det(A^M_x) = \pm 1$, corresponding to the signed weight of the cycle cover, and otherwise $\det(A^M_x) = 0$. Therefore deciding deciding if $\det{A^M_x}$ vanishes is $\PSPACE$-hard.	
 
-We can immediately see that the complexity of the $\succdet$ problem doesn't get easier if we are promised that the succinctly representable sparse input matrix $A$ is symmetric.  Notice that the  matrix $(A^M_x)^T A^M_x$ is succinctly representable sparse because there are at most two 1's in each column of $A^M_x$ and if we can decide if $\det((A^M_x)^T A^M_x)=\det(A^M_x)^2$ vanishes (or is equal to $1$), we can certainly decide if $\det(A^M_x)$ vanishes. 
-\end{proof}
- For our purposes, we need to consider the complexity of the problem with the additional promise that either the determinant vanishes or is of magnitude at least $1/2^{-\poly}$.  This is not true for arbitrary succinctly representable sparse symmetric matrices; in general the smallest eigenvalue can be doubly exponentially small, and thus the determinant of the matrix will also be doubly exponentially small.  Thus we introduce the $\gappedsuccdet$ problem and show that it too is $\PSPACE$-hard.
-\begin{definition}[$\gappedsuccdet$]
-Given as input a succinct encoding of $A$, a succinctly representable sparse symmetric matrix with entries either 0, 1, or 2, whose determinant is promised to be $0$ or of magnitude at least $1/2^{\poly}$. Does $\det(A)$ vanish?
+We can immediately see that the complexity of the $\succdet$ problem doesn't get easier if we are promised that the succinctly representable sparse input matrix $A$ is symmetric.  Notice that the  matrix $(A^M_x)^T A^M_x$ is succinctly representable sparse because there are at most two $1$'s in each column of $A^M_x$ and if we can decide if $\det((A^M_x)^T A^M_x)=\det(A^M_x)^2$ vanishes (or is equal to $1$), we can certainly decide if $\det(A^M_x)$ vanishes. 
+
+From here, we would like to argue that given a succinctly representable sparse and symmetric matrix $A$, it is $\PSPACE$-complete to determine whether $\det(A) = 0$ or $|\det(A)| > 2^{-\text{poly}}$, promised that one of these is the case. We will see later that this problem can be solved in $\QMAexp$. Unfortunately, this promise does not generally hold for succinctly representable sparse symmetric matrices; at worst if $A$ is nonsingular the smallest eigenvalue can still be doubly exponentially small. For our purposes, we need to consider the complexity of a related problem: checking if the smallest eigenvalue of a succinctly representable sparse matrix is $0$ or at least $2^{-\poly}$.  Thus we introduce the $\gappedsucc$ problem and modify the prior hardness construction to show that it too is $\PSPACE$-hard.
+\begin{definition}[$\gappedsucc$]
+Given as input the succinct encoding of $A$, a positive semidefinite, symmetric, and succinctly representable sparse matrix, whose entries are 0, 1, or 2, if the smallest eigenvalue of $A$ is promised to be either zero or at least $2^{-g(n)}$ for some polynomial $g(n)$, which is the case?
 \end{definition}
-\begin{theorem}\label{thm:gappedsuccdet}
-$\gappedsuccdet$ is $\PSPACE$-hard.
+\begin{theorem}\label{thm:gappedsucc}
+$\gappedsucc$ is $\PSPACE$-hard.
 \end{theorem}
 
 \begin{proof}
@@ -438,8 +438,8 @@ A_{2,\ell}^T A_{2,\ell} =
 For purposes of calculating the smallest eigenvalue the last row and column can be ignored, leaving an $(\ell-1) \times (\ell-1)$ matrix. Looking back at \ref{eq:psd_mat} and \ref{eq:char_p}, we see that the characteristic equation is exactly $p_{\ell-1}(\lambda) = 0$. Therefore once again the smallest eigenvalue is inverse exponentially bounded away from zero.
 
 \end{proof}
-\subsection{$\gappedsuccdet$ is in $\QMAexp$}
-In this section, we now proceed to show a $\QMAexp$ protocol for the particular instances of\\ $\gappedsuccdet$ that came from Theorem \ref{thm:gappedsuccdet}.
+\subsection{$\gappedsucc$ is in $\QMAexp$}
+In this section, we now proceed to show a $\QMAexp$ protocol for $\gappedsucc$.
 \begin{lemma}
 Let $A$ be a positive semidefinite, symmetric, and succinctly representable sparse matrix, whose entries are 0, 1, or 2; moreover the smallest eigenvalue of $A$ is promised to be either zero or at least $2^{-g(n)}$ for some polynomial $g(n)$. There is a $\QMAexp$ protocol for deciding which is the case.
 \end{lemma}
