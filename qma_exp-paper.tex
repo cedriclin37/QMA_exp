@@ -222,8 +222,8 @@ Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
 
 \section{Upper bound}
 In this section, our goal will be to prove that $\QMAexp\subseteq\PSPACE$.  We will proceed in two steps, the first will show how to use in-place $\QMA$ amplification techniques from Nagaj, Wocjan, and Zhang \cite{nwz11} to decide any language in $\QMAexp$ with a quantum protocol in which the verifier is allowed exponential time, polynomial space (i.e., acts on a polynomial number of proof and ancilla qubits), completeness $1-2^{-poly(n)}$ and soundness $2^{-poly(n)}$.  We then appeal to results of Marriott and Watrous \cite{mw05} and  Watrous \cite{Watrous99} to show that such protocols can be simulated in $\PSPACE$.
-\subsection{In-place gap amplification of $\QMA_{exp}$ using phase estimation techniques}
-\begin{theorem}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] For any $r>0$, \[\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}(rt(c-s))}{\mathcal{O}(k+log(c-s))}{m}{1-2^r}{2^{r}}\]
+\subsection{In-place gap amplification of $\QMAexp$ using phase estimation techniques}
+\begin{theorem}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] For any $r>0$, \[\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}(rt(c-s))}{\mathcal{O}(k+log(c-s))}{m}{1-2^{-r}}{2^{-r}}\]
 \end{theorem}
 \begin{proof}
 	Let $L=(L_{yes}, L_{no})$ be a language in $\QMA(c,s)$ and $\{V_x\}_{x\in\{0,1\}^n}$ the corresponding uniform family of verification circuits.
@@ -248,18 +248,18 @@ Phase estimation of an operator $U$ up to $a$ bits of precision requires $\mathc
 
 Thus, we get the following corollaries:
 \begin{corollary}\label{obvious1}For all $r>0$,
-$\QMAexp\subseteq\bddQMA{\mathcal{O}(r2^{\poly})}{\poly}{\poly}{1-2^r}{2^r}$.
+$\QMAexp\subseteq\bddQMA{r2^{\poly}}{\poly}{\poly}{1-2^{-r}}{2^{-r}}$.
 \end{corollary}
 
 \begin{corollary}\label{obvious2}For every language $L\in\QMAexp$, there exists an $m \in \poly$ so that:
-\[L\in\bddQMA{\mathcal{O}(2^{\poly})}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\]
+\[L\in\bddQMA{2^{\poly}}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\]
 \end{corollary}
 Notice that Corollary \ref{obvious2} follows from the definition of $\QMAexp$ and Corollary \ref{obvious1} with $r=m+2$.
 \subsection{$\PSPACE$ simulation}
 \begin{theorem}
-For all $m>0$:\[\bddQMA{\mathcal{O}(2^{\poly})}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\subseteq\PQPSPACE\]\end{theorem}
+For all $m\in\poly$:\[\bddQMA{2^{\poly}}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\subseteq\PQPSPACE\]\end{theorem}
 \begin{proof}
-For any $m>0$, consider a language $L\in\bddQMA{\mathcal{O}(2^{\poly})}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^n}$ be the corresponding uniform family of verification circuits.
+For any $m\in\poly$, consider a language $L\in\bddQMA{2^{\poly}}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^n}$ be the corresponding uniform family of verification circuits.
 If $x\in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
 \begin{equation}
 \left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \ge 1-2^{-(m+2)}
@@ -331,6 +331,7 @@ $\gappedsuccdet$ is $\PSPACE$-hard.
 	
 	Thus, an arbitrary $\PSPACE$ language $L$ can be decided by a polynomial space reversible Turing machine $M$, and the resulting configuration graph $G^M$ is a collection of disjoint paths. 
 		
+As before consider the graph $G^M_x$ obtained by adding an edge from the accepting configuration $t$ to the starting configuration $s_x$, and adding self-loops on all other vertices. 
 Now, if $\det(A^M_x) \neq 0$, i.e. if $M$ accepts $x$, there is a maximal path in $G^M$ starting from $s_x$ and ending at $t_x$. Assume the path has $\ell+1$ vertices, where $\ell \in 2^{\poly}$. $G^M_x$ adds an edge from $t_x$ to $s_x$ and adds a self-loop to all other vertices. Therefore if $M$ accepts $x$, $G^M_x$ is a disjoint union of connected graphs $G^M_{x,i}$, where:
 \begin{enumerate}
 \item If $s_x, t_x$ are not vertices of $G^M_{x,i}$, $G^M_{x,i}$ is a path with additional self-loops on all vertices of the path.
