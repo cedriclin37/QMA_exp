@@ -189,7 +189,7 @@
 \maketitle
 
 \begin{abstract}
-We will study the complexity of QMA proof systems with inverse exponentially small promise gap.  We will show that $\QMAexp=\PSPACE$.
+We will study the complexity of QMA proof systems with inverse exponentially small promise gap.  We will show that this class, $\QMAexp$ can be exactly characterized by $\PSPACE$.
 \end{abstract}
 
 \section{Introduction}
@@ -218,10 +218,13 @@ Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
 	
 \end{definition}
 \begin{theorem}[Watrous \cite{Watrous99}]\label{thm:pqpspace} $\PQPSPACE=\PSPACE$
+\begin{definition}We say a language $L=(L_{yes},L_{no})$ is in $\revPSPACE$ (reversible polynomial space) if it can be decided by a polynomial space reversible Turing machine, i.e., a machine in which every configuration has at most one immediate predecessor.  	
+\end{definition}
+\begin{theorem}\label{thm:revpspace}[Bennett\cite{bennett89}]$\revPSPACE=\PSPACE$
 \end{theorem}
 
 \section{Upper bound}
-In this section, our goal will be to prove that $\QMAexp\subseteq\PSPACE$.  We will proceed in two steps, the first will show how to use in-place $\QMA$ amplification techniques from Nagaj, Wocjan, and Zhang \cite{nwz11} to decide any language in $\QMAexp$ with a quantum protocol in which the verifier is allowed exponential time, polynomial space (i.e., acts on a polynomial number of proof and ancilla qubits), completeness $1-2^{-poly(n)}$ and soundness $2^{-poly(n)}$.  We then appeal to results of Marriott and Watrous \cite{mw05} and  Watrous \cite{Watrous99} to show that such protocols can be simulated in $\PSPACE$.
+In this section, our goal will be to prove that $\QMAexp\subseteq\PSPACE$.  We will proceed in two steps, the first will show how to use in-place $\QMA$ amplification techniques from Nagaj, Wocjan, and Zhang \cite{nwz11} to decide any language in $\QMAexp$ with a quantum protocol in which the verifier is allowed exponential time, polynomial space (i.e., acts on a polynomial number of proof and ancilla qubits), completeness $1-2^{-\poly(n)}$ and soundness $2^{-\poly(n)}$.  We then appeal to results of Marriott and Watrous \cite{mw05} and  Watrous \cite{Watrous99} to show that such protocols can be simulated in $\PSPACE$.
 \subsection{In-place gap amplification of $\QMAexp$ using phase estimation techniques}
 \begin{theorem}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] For any $r>0$, \[\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}(rt(c-s))}{\mathcal{O}(k+log(c-s))}{m}{1-2^{-r}}{2^{-r}}\]
 \end{theorem}
@@ -237,7 +240,7 @@ and the corresponding reflections:
 R_0 &= 2\Pi_0 - I \\
 R_1 &= 2\Pi_1 - I.
 \end{align}
-Now consider the following procedure, which we repeat $r$ times:
+Now consider the following procedure:
 \begin{enumerate}
 \item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with $O(\log(c-s)) = O(\text{poly})$ bits of precision and $1/16$ failure probability. 
 \item If the median of the $r$ results is at most $\phi_c = \arccos\sqrt{c}/\pi$, output YES; otherwise if the result is at least $\phi_s = \arccos\sqrt{s}/\pi$, output NO.
@@ -296,7 +299,7 @@ Let $M$ be a $2^{\poly(n)} \times 2^{\poly(n)}$ matrix, where $n$ is the input s
 \end{definition}
 \subsection{The Succinct Determinant problem}
 \begin{definition}[\succdet]
-Given as input a succinct encoding of $A$, an exponentially-large sparse matrix, whose determinant is promised to be 0, 1, or -1. Moreover, each column of $A$ has at no more than two 1s.  Does $\det(A)$ vanish?
+Given as input a succinct encoding of $A$, a succinctly representable matrix, whose determinant is promised to be 0, 1, or -1. Moreover, each column of $A$ has at no more than two 1s.  Does $\det(A)$ vanish?
 \end{definition}
 \begin{theorem}\label{thm:succdet}[Grenet, Koiran and Portier \cite{GKP13}]
 $\succdet$ is $\PSPACE$-hard.
@@ -317,17 +320,17 @@ Let $A^M_x$ be the adjacency matrix of $G_x^M$.  Now $G^M_x$ has a cycle cover i
 
 We can immediately see that the complexity of the $\succdet$ problem doesn't get easier if we are promised that the succinctly representable input matrix $A$ is symmetric.  Notice that the  matrix $(A^M_x)^T A^M_x$ is succinctly representable because there are at most two 1's in each column of $A^M_x$ and if we can decide if $\det((A^M_x)^T A^M_x)=\det(A^M_x)^2$ vanishes (or is equal to $1$), we can certainly decide if $\det(A^M_x)$ vanishes. 
 \end{proof}
- For our purposes, we need to consider the complexity of the problem with the additional promise that either the determinant vanishes or is of magnitude at least $1/2^{-\poly}$.  This is not true for arbitrary succinctly specifiable sparse symmetric matrices; in general the smallest eigenvalue can be doubly exponentially small, and thus the determinant of the matrix will also be doubly exponentially small.  Thus we introduce the $\gappedsuccdet$ problem and show that it too is $\PSPACE$-hard.
+ For our purposes, we need to consider the complexity of the problem with the additional promise that either the determinant vanishes or is of magnitude at least $1/2^{-\poly}$.  This is not true for arbitrary succinctly representable sparse symmetric matrices; in general the smallest eigenvalue can be doubly exponentially small, and thus the determinant of the matrix will also be doubly exponentially small.  Thus we introduce the $\gappedsuccdet$ problem and show that it too is $\PSPACE$-hard.
 \begin{definition}[$\gappedsuccdet$]
-Given as input a succinct encoding of $A$, an exponentially-large, succinctly representable sparse symmetric matrix with entries either 0, 1, or 2, whose determinant is promised to be $0$ or of magnitude at least $1/2^{\poly}$. Does $\det(A)$ vanish?
+Given as input a succinct encoding of $A$, a succinctly representable symmetric matrix with entries either 0, 1, or 2, whose determinant is promised to be $0$ or of magnitude at least $1/2^{\poly}$. Does $\det(A)$ vanish?
 \end{definition}
 \begin{theorem}\label{thm:gappedsuccdet}
 $\gappedsuccdet$ is $\PSPACE$-hard.
 \end{theorem}
 
 \begin{proof}
-	In this theorem, we will adapt the construction of Theorem \ref{thm:succdet} to analyze the spectrum of the underlying $\PSPACE$ machine configuration graph.
-	 It was proven by Bennett \cite{bennett89} that $\PSPACE=\revPSPACE$, and indeed a result of Lange, McKenzie and Tapp \cite{lange00} proves that for any space-constructible $s$, ${\sf{DSPACE}[s]}\subseteq{\sf{revSPACE}[s]}$, at a cost of an exponential time blow-up.  In fact, they also show without loss of generality that the starting configuration of the reversible machine has in-degree $0$, as long as the input $x$ is kept on the tape at the end of the computation (and so the accepting configuration depends on $x$).
+	In this theorem, we will adapt the construction of Theorem \ref{thm:succdet} to analyze the spectrum of the underlying $\PSPACE$ machine configuration graph.  
+	 Recall we defined $\revPSPACE$ to be the class of languages decidable in polynomial space by a reversible Turing Machine.  Theorem \ref{thm:revpspace} that $\PSPACE=\revPSPACE$, and indeed a result of Lange, McKenzie and Tapp \cite{lange00} proves that for any space-constructible $s$, ${\sf{DSPACE}[s]}\subseteq{\sf{revSPACE}[s]}$, at a cost of an exponential time blow-up.  In fact, they also show without loss of generality that the starting configuration of the reversible machine has in-degree $0$, as long as the input $x$ is kept on the tape at the end of the computation (and so the accepting configuration depends on $x$).
 	
 	Thus, an arbitrary $\PSPACE$ language $L$ can be decided by a polynomial space reversible Turing machine $M$, and the resulting configuration graph $G^M$ is a collection of disjoint paths. 
 		
@@ -438,7 +441,7 @@ For purposes of calculating the smallest eigenvalue the last row and column can 
 \subsection{$\gappedsuccdet$ is in $\QMAexp$}
 In this section, we now proceed to show a $\QMAexp$ protocol for the particular instances of\\ $\gappedsuccdet$ that came from Theorem \ref{thm:gappedsuccdet}.
 \begin{lemma}
-Let $A$ be an exponentially-large, positive semidefinite, symmetric, and succinctly representable sparse matrix, whose entries are 0, 1, or 2; moreover the smallest eigenvalue of $A$ is promised to be either zero or at least $2^{-g(n)}$ for some polynomial $g(n)$. There is a $\QMAexp$ protocol for deciding which is the case.
+Let $A$ be a positive semidefinite, symmetric, and succinctly representable sparse matrix, whose entries are 0, 1, or 2; moreover the smallest eigenvalue of $A$ is promised to be either zero or at least $2^{-g(n)}$ for some polynomial $g(n)$. There is a $\QMAexp$ protocol for deciding which is the case.
 \end{lemma}
 Our strategy will essentially be to simulate the time evolution of the sparse Hamiltonian $e^{-iAt}$ using known simulation methods, and then use a stripped-down version of phase estimation to estimate an eigenvalue of $A$. We first note the following result for sparse matrix simulation:
 \begin{theorem}[\cite{berry14}, \cite{berry15}] \label{thm:ham_sim}
