@@ -91,6 +91,9 @@
 \newcommand\revPSPACE{{\sf{revPSPACE}}}
 \newcommand\succdet{\textit{Succinct Determinant Checking}}
 \newcommand\gappedsucc{\textit{Gapped Succinct Matrix Singularity}}
+\newcommand\preciselh{\textit{Precise Local Hamiltonian}}
+\newcommand\preciseklh{\textit{Precise }$k$-\textit{Local Hamiltonian}}
+\newcommand\preciseilh[1]{\textit{Precise #1-Local Hamiltonian}}
 %
 %\newcommand{\eq}[1]{(\hyperref[eq:#1]{\ref*{eq:#1}})}
 
@@ -467,7 +470,7 @@ Suppose a matrix $A$ has at most $d$ nonzero entries per row, each of which is n
 \begin{proof}[Proof of Lemma \ref{lem:qmaexp protocol}]
 We are given a succinct encoding of an symmetric PSD $d$-sparse matrix $A$, and it is promised that the smallest eigenvalue $\lambda_{min}$ of $A$ is either zero or at least $2^{-g(n)}$ for some polynomial $g(n)$. Merlin would like to convince us that $\lambda_{min} = 0$; he will send us a purported eigenstate $\ket{\psi}$ of $A$ with zero eigenvalue. We will carry out a stripped-down version of phase estimation on $\exp(-iAt)$ acting on $\ket{\psi}$ to decide, with exponentially small completeness-soundness gap, whether Merlin is telling the truth. Let us choose $t = \pi / (kd) \le \pi / \|A\|$; then all eigenvalues of $At$ lie in the range $[0,\pi]$, and the output of phase estimation will be unambiguous.
 
-To implement phase estimation, we first need to be able to implement $\exp(-iAt)$ efficiently and to high precision. This is what Theorem \ref{thm:ham_sim} gives us: we can implement $\exp(-iAt)$ up to error $\epsilon = 2^{-2g(n)}t^2/16$ using only a polynomial number of operations.
+To implement phase estimation, we first need to be able to implement $\exp(-iAt)$ efficiently and to high precision. This is what Theorem \ref{thm:ham_sim} gives us: we can implement $\exp(-iAt)$ up to error $\epsilon = 2^{-\poly(n)}$ using only a polynomial number of operations, for
 
 Now to use phase estimation to distinguish the phase up to exponential precision, we would normally require exponentially many operations in the usual phase estimation routine. Instead, we will simply do phase estimation with one bit:
 \begin{align}
@@ -481,8 +484,30 @@ Now to use phase estimation to distinguish the phase up to exponential precision
 \lstick{\ket{\psi}}& \qw & \gate{e^{-iAt}}  & \qw & \rstick{\ket{\psi}} \qw
 }
 \end{align}
-In the above we've assumed $\ket{\psi}$ is an eigenstate of $A$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $1 - (1-\cos(\lambda t))/2 = 1 - (\lambda t)^2/4 + O(\lambda^4t^4)$. Therefore if $\psi$ is a zero eigenstate, we can verify this with probability at least $1 - \epsilon = 1 - 2^{-2g(n)}t^2/16$, where recall $\epsilon$ is the error in the implementation of $\exp(-iAt)$. Otherwise if $\lambda_{min} \ge 2^{-g(n)}$, no state $\psi$ will be accepted with probability greater than $1 -  3 \cdot 2^{-2g(n)}t^2/16 + O(2^{-4g(n)}t^4)$. The separation between the completeness and soundness probabilities is exponentially small, and this therefore gives us a $\QMAexp$ protocol.
+In the above we've assumed $\ket{\psi}$ is an eigenstate of $A$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $1 - (1-\cos(\lambda t))/2 = 1 - (\lambda t)^2/4 + O(\lambda^4t^4)$. Therefore if $\psi$ is a zero eigenstate, we can verify this with probability at least $1 - \epsilon$, where recall $\epsilon$ is the error in the implementation of $\exp(-iAt)$. Otherwise if $\lambda_{min} \ge 2^{-g(n)}$, no state $\psi$ will be accepted with probability greater than $1 -  2^{-2g(n)}t^2/4 + \epsilon + O(2^{-4g(n)}t^4)$. The separation between the completeness and soundness probabilities is exponentially small if we pick $\epsilon \le 2^{-2g(n)}t^2/16$, and this therefore gives us a $\QMAexp$ protocol.
 \end{proof}
+\section{A $\PSPACE$-complete variant of the Local Hamiltonian problem}
+The classic $\QMA$-complete problem is the Local Hamiltonian problem: given a local Hamiltonian $H$, and parameters $a < b$ with $b-a > 1/\poly$, it is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$; decide which is the case. We now show that if we weaken the promise gap from polynomially small to only exponentially small, then this problem becomes $\PSPACE$-complete.
+\begin{definition}[\preciseklh]
+Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_k\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
+\end{definition}
+\begin{theorem}
+For any $3 \le k \le O(\log(n))$, \preciseklh \ is $\QMAexp$-complete, and hence $\PSPACE$-complete.
+\end{theorem}
+\begin{proof}
+This proof follows straightforwardly by adapting the proof of \cite{ksv02} and \cite{kr03}. The proof of containment in $\QMAexp$ is identical to the containment of the usual Local Hamiltonian problem in $\QMA$; see \cite{ksv02} for details.
+
+To show $\QMA_{exp}$-hardness, we note that for a $\QMA$-verification procedure with $T$ gates, completeness $c$ and soundness $s$, \cite{kr03} reduces this to a 3-local Hamiltonian with lowest eigenvalue no more than $(1-c) / (T+1)$ in the YES case, or no less than $(1-s) / T^3$ in the NO case. For this to specify a valid \preciselh \ problem we need that
+\begin{equation} \label{eq:preciselh_condition}
+\frac{1-s}{T^3} - \frac{1-c}{T+1} > 2^{-\poly(n)}.
+\end{equation}
+Fortunately, there are indeed values of $c$ and $s$ satisfying the above inequality and that can still specify $\QMAexp$-hard problems. To see this, we recall the proof of Lemma \ref{lem:qmaexp protocol}: there it was shown that any problem in $\PSPACE$ can be reduced to a $\QMAexp$ problem with soundness and completeness
+\begin{equation}
+1-c = \epsilon,\quad 1 - s = \epsilon + 2^{-g'(n)}
+\end{equation}
+for some polynomial $g'(n)$ depending on the problem, and any $\epsilon = 2^{-\poly(n)}$ of our choice. We see that as long as we pick $\epsilon < 2^{-g'(n)}/T^2$, the inequality \ref{eq:preciselh_condition} is satisfied, and hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
+\end{proof}
+
 \section{Conclusion}
 \section{Acknowledgements}
 
