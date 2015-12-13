@@ -220,13 +220,13 @@ Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
 \begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\PQPSPACE$ (unbounded-error quantum polynomial space) if there exists a uniform family of quantum circuits acting on at most polynomial number of qubits that accepts every string $x\in L_{yes}$ with probability strictly greater than $1/2$ and accepts every string $x \in L_{no}$ with probability at most at most 1/2.
 	
 \end{definition}
-\begin{theorem}[Watrous \cite{Watrous99}]\label{thm:pqpspace} $\PQPSPACE=\PSPACE$	
+\begin{theorem}[Watrous \cite{Watrous99}]\label{thm:pqpspace} $\PQPSPACE=\PSPACE$.	
 \end{theorem}
 
 \begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\revPSPACE$ (reversible polynomial space) if it can be decided by a polynomial space reversible Turing machine, i.e., a machine in which every configuration has at most one immediate predecessor.  	
 \end{definition}
 
-\begin{theorem}[Bennett\cite{bennett89}]\label{thm:revpspace}$\revPSPACE=\PSPACE$
+\begin{theorem}[Bennett\cite{bennett89}]\label{thm:revpspace}$\revPSPACE=\PSPACE$.
 \end{theorem}
 
 \section{Upper bound}
@@ -248,7 +248,7 @@ R_1 &= 2\Pi_1 - I.
 \end{align}
 Now consider the following procedure:
 \begin{enumerate}
-\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with $O(\log(c-s)) = O(\text{poly})$ bits of precision and $1/16$ failure probability. 
+\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with $O(\log(c-s))$ bits of precision and $1/16$ failure probability. 
 \item If the median of the $r$ results is at most $\phi_c = \arccos\sqrt{c}/\pi$, output YES; otherwise if the result is at least $\phi_s = \arccos\sqrt{s}/\pi$, output NO.
 \end{enumerate}
 Phase estimation of an operator $U$ up to $a$ bits of precision requires $\mathcal{O}(a)$ ancilla qubits and $\mathcal{O}(2^a)$ applications of the control-$U$ operation.  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\alpha=\mathcal{O}(\log(c-s))$ on the $V_x$ operator, can be implemented by a circuit of size $\mathcal{O}(rt2^{\alpha})=\mathcal{O}(rt(c-s))$ using $\mathcal{O}(r\alpha)$ extra ancillia qubits.
@@ -486,6 +486,16 @@ Now to use phase estimation to distinguish the phase up to exponential precision
 \end{align}
 In the above we've assumed $\ket{\psi}$ is an eigenstate of $A$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $1 - (1-\cos(\lambda t))/2 = 1 - (\lambda t)^2/4 + O(\lambda^4t^4)$. Therefore if $\psi$ is a zero eigenstate, we can verify this with probability at least $1 - \epsilon$, where recall $\epsilon$ is the error in the implementation of $\exp(-iAt)$. Otherwise if $\lambda_{min} \ge 2^{-g(n)}$, no state $\psi$ will be accepted with probability greater than $1 -  2^{-2g(n)}t^2/4 + \epsilon + O(2^{-4g(n)}t^4)$. The separation between the completeness and soundness probabilities is exponentially small if we pick $\epsilon \le 2^{-2g(n)}t^2/16$, and this therefore gives us a $\QMAexp$ protocol.
 \end{proof}
+\begin{theorem}
+$\PSPACE\subseteq\QMAexp$.
+\end{theorem}
+\begin{proof}
+Follows from Theorem \ref{thm:gappedsucc} and Lemma \ref{lem:qmaexp protocol}.
+\end{proof}
+This finishes the proof of our main theorem:
+\begin{theorem}
+$\PSPACE=\QMAexp$.
+\end{theorem}
 \section{A $\PSPACE$-complete variant of the Local Hamiltonian problem}
 The classic $\QMA$-complete problem is the Local Hamiltonian problem: given a local Hamiltonian $H$, and parameters $a < b$ with $b-a > 1/\poly$, it is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$; decide which is the case. We now show that if we weaken the promise gap from polynomially small to only exponentially small, then this problem becomes $\PSPACE$-complete.
 \begin{definition}[\preciseklh]
