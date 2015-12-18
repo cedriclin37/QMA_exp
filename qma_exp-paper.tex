@@ -1,4 +1,5 @@
 \documentclass[11pt]{article}
+\usepackage{etex}
 %\usepackage{geometry} % to change the page dimensions
 %\geometry{margin=1in} % for example, change the margins to 2 inches all round
 \usepackage{amsmath}
@@ -74,15 +75,19 @@
 
 
 %Bill's complexity class commmands\
+\newcommand\NP{{\sf{NP}}}
 \newcommand\EXP{{\sf{EXP}}}
 \newcommand\QMA{{\sf{QMA}}}
 %\newcommand\QCMA{{\sf{QCMA}}}
 \newcommand\PSPACE{{\sf{PSPACE}}}
+\newcommand\FPSPACE{{\sf{FPSPACE}}}
 \newcommand\PP{\sf{PP}}
 \newcommand\expQCMA{{\sf{QCMA_{exp,poly}}}}
 %\newcommand\NP{{\sf{NP}}}
 \newcommand\AM{{\sf{AM}}}
-%\newcommand\BQP{{\sf{BQP}}}
+\newcommand\BQP{{\sf{BQP}}}
+\newcommand\PostBQP{{\sf{PostBQP}}}
+\newcommand\PQP{{\sf{PQP}}}
 
 \newcommand\QCIP{{\sf{QCIP}}}
 \newcommand\QMAexp{{\sf{QMA}_{exp}}}
@@ -196,6 +201,52 @@ We will study the complexity of QMA proof systems with inverse exponentially sma
 \end{abstract}
 
 \section{Introduction}
+The class $\QMA$, \emph{Quantum Merlin-Arthur}, is the quantum analogue of $\NP$, and is one of the central objects of study in quantum complexity theory. $\QMA$ consists of those problems for whose solutions can be verified with high probability using a quantum computer. This class was first shown to have a natural complete problem, the Local Hamiltonian problem, in \cite{ksv02}; since then many more  $\QMA$-complete problems have been discovered (see e.g. \cite{bookatz14}). There has also been much work in trying to prove a quantum version of the PCP theorem; see [CITE] for a review.
+
+To be more precise, we give here the definition of $\QMA$:
+\begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\QMA(c,s)$ if there exists a uniform family of quantum circuits $\{ V_x\}_{x\in\{0,1\}^n}$, each of at most polynomial size, and acting on $k(|x|)+m(|x|)$ qubits for polynomials $k$ and $m$, so that:\\
+
+If $x \in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that:
+\begin{equation}
+\left(\bra{\psi}\otimes \bra{0^k}\right) V^\dagger_x \ket{1}\bra{1}_{out} V_x \left(\ket{\psi}\otimes \ket{0^k}\right) \ge c
+\end{equation}
+Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
+\begin{equation}
+\left(\bra{\psi}\otimes \bra{0^k}\right) V^\dagger_x \ket{1}\bra{1}_{out} V_x \left(\ket{\psi}\otimes \ket{0^k}\right) \le s.
+\end{equation}
+We call $c$ the completeness and $s$ the soundness parameters. Then $\QMA = \QMA(2/3,1/3)$.
+  \end{definition}
+  
+It is natural to wonder whether the precise values of $c$ and $s$ matter. Kitaev showed \cite{ksv02} that as long as $c$ and $s$ are separated by at least an inverse polynomial, then by repeating the verification circuit polynomially many times, it is possible to amplify the promise gap $c-s$ to any constant less than one. Thus $\QMA(c,c-1/\poly) = \QMA$, and quantum Merlin Arthur proof protocols with only a polynomial gap is just as powerful as $\QMA$.
+
+\subsection{Our contribution}
+
+In this work we study the complexity of QMA protocols where the gap is only exponentially small, i.e. $c-s = \exp(-\poly)$. We show that in this case, the problems verifiable by these protocols exactly coincide with the problems solvable in classical polynomial space:
+
+\begin{theorem}
+$\QMAexp := \cup_{c-s > \exp(\poly)}\QMA(c,s) = \PSPACE$.
+\end{theorem}
+
+The closest classical counterpart of $\QMAexp$ is $\NP^{\PP}$: given a classical witness, the verifier runs a classical computation that in the YES case accepts with probability at least $c$, or in the NO case accepts with probability at most $s$, where $c>s$. Note that in the classical case $c - s > \exp(\poly)$ is automatically satisfied. Since $\NP^{PP}$ is in the counting hierarchy [CITE?], we see that the quantum proof protocol is strictly stronger than the classical one, unless the counting hierarchy collapses to the second level.
+
+Our proof of this theorem allows us to tweak the proof of $\QMA$-completeness of Local Hamiltonian \cite{ksv02,kr03} to show the following:
+
+\begin{theorem}
+For any $3 \le k \le O(\log(n))$, determining whether the ground state energy of a $k$-local Hamiltonian is at most $a$ or at least $b$ for $b-a > \exp(-\poly)$ is $\PSPACE$-complete.
+\end{theorem}
+
+In particular, since we can binary search for the ground state energy in classical polynomial space, this shows
+\begin{corollary}
+For any $3 \le k \le O(\log(n))$, computing the ground state energy of a $k$-local Hamiltonian to polynomially many bits of precision is a $\FPSPACE$-complete problem.
+\end{corollary}
+Here recall that $\FPSPACE$ is the set of functions computable in classical polynomial space.
+
+We have therefore shown that there is, unsurprisingly, a large jump in complexity for the local Hamiltonian problem when the promise gap is only exponentially small instead of polynomially small. Perhaps more surprising, $\QMAexp = \PSPACE$ is more powerful than $\PostBQP=\PP$, the class of problems solvable with postselected quantum computation.
+
+Recall that projected entangled pair states, or PEPS, are a natural extension of matrix product states to two and higher dimensions, and can described as the ground state of certain frustration-free local Hamiltonians. A characterization of the computational power of PEPS was given in \cite{swv07}, and can be summarized as follows: let $O_{PEPS}$ be a quantum oracle that, given the description of a PEPS, outputs the PEPS (so the output is quantum). Then $\BQP^{O_{PEPS}} = \PostBQP = \PP$. Moreover, let $\PQP$ stand for the set of problems solvable by a quantum computer with \emph{unbounded error}; then it can be shown that $\PQP^{O_{PEPS}} = \PP$ as well [TODO: write this up in appendix].
+
+On the other hand, suppose we have an oracle $O_{LH}$ that given the description of a local Hamiltonian, outputs its unique ground state\footnote{If the ground space is degenerate, we can always slightly perturb the Hamiltonian to make it nondegenerate}. Then our results show that $\QMAexp = \PSPACE \subseteq \PQP^{O_{LH}}$. This shows that, at least with regards to unbounded-error quantum computation, PEPS do not capture the computational complexity of general local Hamiltonian ground states unless $\PP=\PSPACE$. We leave open the problem of determining the complexity of $\BQP^{O_{LH}}$.
+
 \section{Definitions}
 
 \subsection{Quantum Merlin Arthur}\label{def:qma}
