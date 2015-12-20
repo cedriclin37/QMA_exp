@@ -75,15 +75,15 @@
 
 
 %Bill's complexity class commmands\
-\newcommand\NP{{\sf{NP}}}
+
 \newcommand\EXP{{\sf{EXP}}}
 \newcommand\QMA{{\sf{QMA}}}
-%\newcommand\QCMA{{\sf{QCMA}}}
+\newcommand\QCMA{{\sf{QCMA}}}
 \newcommand\PSPACE{{\sf{PSPACE}}}
 \newcommand\FPSPACE{{\sf{FPSPACE}}}
 \newcommand\PP{\sf{PP}}
 \newcommand\expQCMA{{\sf{QCMA_{exp,poly}}}}
-%\newcommand\NP{{\sf{NP}}}
+\newcommand\NP{{\sf{NP}}}
 \newcommand\AM{{\sf{AM}}}
 \newcommand\BQP{{\sf{BQP}}}
 \newcommand\PostBQP{{\sf{PostBQP}}}
@@ -197,11 +197,11 @@
 \maketitle
 
 \begin{abstract}
-We will study the complexity of QMA proof systems with inverse exponentially small promise gap.  We will show that this class, $\QMAexp$ can be exactly characterized by $\PSPACE$.
+We will study the complexity of $\QMA$ proof systems with inverse exponentially small promise gap.  We will show that this class, $\QMAexp$, can be exactly characterized by $\PSPACE$.
 \end{abstract}
 
 \section{Introduction}
-The class $\QMA$, \emph{Quantum Merlin-Arthur}, is the quantum analogue of $\NP$, and is one of the central objects of study in quantum complexity theory. $\QMA$ consists of those problems for whose solutions can be verified with high probability using a quantum computer. This class was first shown to have a natural complete problem, the Local Hamiltonian problem, in \cite{ksv02}; since then many more  $\QMA$-complete problems have been discovered (see e.g. \cite{bookatz14}). There has also been much work in trying to prove a quantum version of the PCP theorem; see [CITE] for a review.
+The class $\QMA$, \emph{Quantum Merlin-Arthur}, is the quantum analogue of $\NP$, and is one of the central objects of study in quantum complexity theory. $\QMA$ consists of those problems for whose solutions can be verified with high probability using a quantum computer. This class was first shown to have a natural complete problem, the Local Hamiltonian problem, in \cite{ksv02}; since then many more  $\QMA$-complete problems have been discovered (see e.g., \cite{bookatz14}). There has also been much work in trying to prove a quantum version of the PCP theorem; see \cite{qpcpsurvey} for a review.
 
 To be more precise, we give here the definition of $\QMA$:
 \begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\QMA(c,s)$ if there exists a uniform family of quantum circuits $\{ V_x\}_{x\in\{0,1\}^n}$, each of at most polynomial size, and acting on $k(|x|)+m(|x|)$ qubits for polynomials $k$ and $m$, so that:\\
@@ -221,13 +221,13 @@ It is natural to wonder whether the precise values of $c$ and $s$ matter. Kitaev
 
 \subsection{Our contribution}
 
-In this work we study the complexity of QMA protocols where the gap is only exponentially small, i.e. $c-s = \exp(-\poly)$. We show that in this case, the problems verifiable by these protocols exactly coincide with the problems solvable in classical polynomial space:
+In this work we study the complexity of $\QMA$ protocols where the gap is only exponentially small, i.e. $c-s = \exp(-\poly)$. We show that in this case, the problems verifiable by these protocols exactly coincide with the problems solvable in classical polynomial space:
 
 \begin{theorem}
 $\QMAexp := \cup_{c-s > \exp(\poly)}\QMA(c,s) = \PSPACE$.
 \end{theorem}
 
-The closest classical counterpart of $\QMAexp$ is $\NP^{\PP}$: given a classical witness, the verifier runs a classical computation that in the YES case accepts with probability at least $c$, or in the NO case accepts with probability at most $s$, where $c>s$. Note that in the classical case $c - s > \exp(\poly)$ is automatically satisfied. Since $\NP^{PP}$ is in the counting hierarchy [CITE?], we see that the quantum proof protocol is strictly stronger than the classical one, unless the counting hierarchy collapses to the second level.
+The closest classical counterpart of $\QMAexp$ is $\NP^{\PP}$: given a classical witness, the verifier runs a classical computation that in the YES case accepts with probability at least $c$, or in the NO case accepts with probability at most $s$, where $c>s$. Note that in the classical case $c - s > \exp(\poly)$ is automatically satisfied. Since $\NP^{\PP}$ is in the counting hierarchy, the entirety of which is contained in $\PSPACE$ (see e.g., \cite{allenderwagner}), we see that the quantum proof protocol is strictly stronger than the classical one, unless the counting hierarchy collapses to the second level.
 
 Our proof of this theorem allows us to tweak the proof of $\QMA$-completeness of Local Hamiltonian \cite{ksv02,kr03} to show the following:
 
@@ -263,8 +263,8 @@ Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
 
   \end{definition}
 
-\begin{definition} $\QMA=\bddQMA{poly}{poly}{poly}{2/3}{1/3}$\end{definition}
-\begin{definition} $\QMAexp=\bddQMA{poly}{poly}{poly}{c}{c-2^{-poly}}$	
+\begin{definition} $\QMA=\bddQMA{\poly}{\poly}{\poly}{2/3}{1/3}$\end{definition}
+\begin{definition} $\QMAexp=\bddQMA{\poly}{\poly}{\poly}{c}{c-2^{-\poly}}$	
 \end{definition}
 
 \subsection{Space complexity classes}
@@ -368,7 +368,7 @@ Let $M$ be a $2^{\poly(n)} \times 2^{\poly(n)}$ matrix, where $n$ is the input s
 \begin{definition}[\succdet]
 Given as input is a succinct encoding of $A$, a succinctly representable sparse matrix, whose determinant is promised to be 0, 1, or -1. Moreover, each column of $A$ has at no more than two 1s.  Does $\det(A)$ vanish?
 \end{definition}
-\begin{theorem}\label{thm:succdet}[Grenet, Koiran and Portier \cite{GKP13}]
+\begin{theorem}[Grenet, Koiran and Portier \cite{GKP13}]\label{thm:succdet}
 $\succdet$ is $\PSPACE$-hard.
 \end{theorem}
 \begin{proof}
@@ -568,10 +568,8 @@ Fortunately, there are indeed values of $c$ and $s$ satisfying the above inequal
 \end{equation}
 for some polynomial $g'(n)$ depending on the problem, and any $\epsilon = 2^{-\poly(n)}$ of our choice. We see that as long as we pick $\epsilon < 2^{-g'(n)}/T^2$, the inequality \ref{eq:preciselh_condition} is satisfied, and hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
 \end{proof}
-
-\section{Conclusion}
 \section{Acknowledgements}
-
+We are grateful to Sevag Gharibian and Martin Schwarz for helpful conversations.
 \bibliography{qmaexp-bib}
 \bibliographystyle{plain}
 \end{document}
