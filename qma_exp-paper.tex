@@ -401,7 +401,7 @@ $\gappedsucc$ is $\PSPACE$-hard.
 
 \begin{proof}
 	In this theorem, we will adapt the construction of Theorem \ref{thm:succdet} to analyze the spectrum of the underlying $\PSPACE$ machine configuration graph.  
-	 Recall we defined $\revPSPACE$ to be the class of languages decidable in polynomial space by a reversible Turing Machine.  Theorem \ref{thm:revpspace} that $\PSPACE=\revPSPACE$, and indeed a result of Lange, McKenzie and Tapp \cite{lange00} proves that for any space-constructible $s$, ${\sf{DSPACE}[s]}\subseteq{\sf{revSPACE}[s]}$, at a cost of an exponential time blow-up.  In fact, they also show without loss of generality that the starting configuration of the reversible machine has in-degree $0$, as long as the input $x$ is kept on the tape at the end of the computation (and so the accepting configuration depends on $x$).
+	 Recall we defined $\revPSPACE$ to be the class of languages decidable in polynomial space by a reversible Turing Machine.  Theorem \ref{thm:revpspace} states that $\PSPACE=\revPSPACE$, and indeed a result of Lange, McKenzie and Tapp \cite{lange00} proves that for any space-constructible $s$, ${\sf{DSPACE}[s]}\subseteq{\sf{revSPACE}[s]}$, at a cost of an exponential time blow-up.  In fact, they also show without loss of generality that the starting configuration of the reversible machine has in-degree $0$, as long as the input $x$ is kept on the tape at the end of the computation (and so the accepting configuration depends on $x$).
 	
 	Thus, an arbitrary $\PSPACE$ language $L$ can be decided by a polynomial space reversible Turing machine $M$, and the resulting configuration graph $G^M$ is a collection of disjoint paths. 
 		
@@ -516,9 +516,9 @@ Let $A$ be a positive semidefinite, symmetric, and succinctly representable spar
 \end{lemma}
 Our strategy will essentially be to simulate the time evolution of the sparse Hamiltonian $e^{-iAt}$ using known simulation methods, and then use a stripped-down version of phase estimation to estimate an eigenvalue of $A$. We first note the following result for sparse matrix simulation:
 \begin{theorem}[\cite{berry14}, \cite{berry15}] \label{thm:ham_sim}
-Suppose $A$ is a $2^n \times 2^n$ symmetric and succinctly representable sparse matrix, with at most $d$ nonzero entries in each row. Then treated as a Hamiltonian, the time evolution $\exp(-iAt)$ can be simulated using $\text{\emph{poly}}(n,d,\|A\|, t) \cdot \log(1/\epsilon)$ operations.
+Suppose $A$ is a $2^n \times 2^n$ symmetric and succinctly representable sparse matrix, with at most $d$ nonzero entries in each row. Then treated as a Hamiltonian, the time evolution $\exp(-iAt)$ can be simulated using $\text{\emph{poly}}(n,d,\|A\|, t, \log(1/\epsilon))$ operations.
 \end{theorem}
-The crucial thing to notice in Theorem \ref{thm:ham_sim} is the logarithmic scaling in the error $\epsilon$; this implies that we can obtain exponential precision in $\exp(-iAt)$ using only polynomially many operations. Also note that we can upper bound $\|A\|$ with the following observation:
+The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain exponential precision in $\exp(-iAt)$ using only polynomially many operations. Also note that we can upper bound $\|A\|$ with the following observation:
 \begin{remark}
 Suppose a matrix $A$ has at most $d$ nonzero entries per row, each of which is no more than $k$ in absolute value. Then $\| A \| \le kd$.
 \end{remark}
@@ -575,9 +575,9 @@ Fortunately, there are indeed values of $c$ and $s$ that satisfy the above inequ
 \begin{equation}
 1-c = \epsilon,\quad 1 - s = -\epsilon + 2^{-g'(n)}
 \end{equation}
-for some polynomial $g'(n)$ depending on the problem, and any $\epsilon = 2^{-\poly(n)}$ of our choice. The number of operations for that protocol is upper bounded by $T \le h(n) (1+\log (1/\epsilon))$ for some polynomial $h(n)$ independent of $\epsilon$. Now we can pick $\epsilon$ to be a small enough inverse exponential function such that
+for some polynomial $g'(n)$ depending on the problem, and any $\epsilon = 2^{-\poly(n)}$ of our choice. The number of operations for that protocol is upper bounded by $T \le h(n,\log (1/\epsilon))$ for some polynomial $h(x,y)$. Now we can pick $\epsilon$ to be a small enough inverse exponential function such that
 \begin{equation}
-\epsilon (T^2+1) \le \epsilon [h^2(n) (1+\log(1/\epsilon))^2 +1] < 2^{-g'(n)} 
+\epsilon (T^2+1) \le \epsilon [h^2(n,\log(1/\epsilon)) +1] < 2^{-g'(n)} 
 \end{equation}
 holds; this then implies the inequality \ref{eq:preciselh_condition}. Hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
 \end{proof}
