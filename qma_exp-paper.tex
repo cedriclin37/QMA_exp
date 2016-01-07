@@ -246,7 +246,7 @@ Here recall that $\FPSPACE$ is the set of functions computable in classical poly
 
 We have therefore shown that there is, unsurprisingly, a large jump in complexity for the local Hamiltonian problem when the promise gap is only exponentially small instead of polynomially small. Perhaps more surprisingly, $\QMAexp = \PSPACE$ is more powerful than $\PostBQP=\PP$, the class of problems solvable with postselected quantum computation \cite{aaronson05}.
 
-Recall that projected entangled pair states, or PEPS, are a natural extension of matrix product states to two and higher dimensions, and can described as the ground state of certain frustration-free local Hamiltonians. A characterization of the computational power of PEPS was given in \cite{swv07}, and can be summarized as follows: let $O_{PEPS}$ be a quantum oracle that, given the description of a PEPS, outputs the PEPS (so the output is quantum). Then $\BQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PostBQP = \PP$, where (following Aaronson \cite{aaronson05}) the subscript  denotes that only classical nonadaptive queries to the oracle are allowed. Moreover, let $\PQP$ stand for the set of problems solvable by a quantum computer with \emph{unbounded error}; then it can be straightforwardly shown that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$ as well (see Appendix \ref{app:peps} for a proof sketch).
+Recall that projected entangled pair states, or PEPS, are a natural extension of matrix product states to two and higher dimensions, and can described as the ground state of certain frustration-free local Hamiltonians \cite{vc04}. A characterization of the computational power of PEPS was given in \cite{swv07}, and can be summarized as follows: let $O_{PEPS}$ be a quantum oracle that, given the description of a PEPS, outputs the PEPS (so the output is quantum). Then $\BQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PostBQP = \PP$, where (following Aaronson \cite{aaronson05}) the subscript  denotes that only classical nonadaptive queries to the oracle are allowed. Moreover, let $\PQP$ stand for the set of problems solvable by a quantum computer with \emph{unbounded error}; then it can be straightforwardly shown that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$ as well (see Appendix \ref{app:peps} for a proof sketch).
 
 On the other hand, suppose we have an oracle $O_{LH}$ that given the description of a local Hamiltonian, outputs its unique ground state\footnote{If the ground space is degenerate, we can always slightly perturb the Hamiltonian to make it nondegenerate.}. Then our results show that $\QMAexp = \PSPACE \subseteq \PQP^{O_{LH}}_{\parallel,\text{classical}}$. This shows that, at least in the setting of unbounded-error quantum computation, PEPS do not capture the full computational complexity of general local Hamiltonian ground states unless $\PP=\PSPACE$. We leave open the problem of determining the complexity of $\BQP^{O_{LH}}_{\parallel,\text{classical}}$.
 
@@ -275,7 +275,7 @@ Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
 \begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\PQPSPACE$ (unbounded-error quantum polynomial space) if there exists a uniform family of quantum circuits acting on at most polynomial number of qubits that accepts every string $x\in L_{yes}$ with probability at least $c$, and accepts every string $x \in L_{no}$ with probability at most $s$, for some $c > s$.
 	
 \end{definition}
-\begin{theorem}[Watrous \cite{Watrous99}]\label{thm:pqpspace} $\PQPSPACE=\PSPACE$.	
+\begin{theorem}[Watrous \cite{Watrous99,Watrous03}]\label{thm:pqpspace} $\PQPSPACE=\PSPACE$.	
 \end{theorem}
 
 \begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\revPSPACE$ (reversible polynomial space) if it can be decided by a polynomial space reversible Turing machine, i.e., a machine for which every configuration has at most one immediate predecessor.  	
@@ -553,7 +553,7 @@ This finishes the proof of our main theorem:
 \section{A $\PSPACE$-complete variant of the Local Hamiltonian problem}
 The classic $\QMA$-complete problem is the Local Hamiltonian problem: given a local Hamiltonian $H$, and parameters $a < b$ with $b-a > 1/\poly$, it is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$; decide which is the case. We now show that if we weaken the promise gap from polynomially small to only exponentially small, then this problem becomes $\PSPACE$-complete.
 \begin{definition}[\preciseklh]
-Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_k\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
+Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_j\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
 \end{definition}
 
 \begingroup
@@ -582,7 +582,7 @@ for some polynomial $g'(n)$ depending on the problem, and any $\epsilon = 2^{-\p
 holds; this then implies the inequality \ref{eq:preciselh_condition}. Hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
 \end{proof}
 \section{Acknowledgements}
-We are grateful to Sevag Gharibian and Martin Schwarz for helpful conversations.
+We are grateful to Sevag Gharibian and Martin Schwarz for helpful conversations, and to John Watrous for comments on a preliminary draft. This work was supported by the Department of Defense.
 \bibliography{qmaexp-bib}
 \bibliographystyle{plain}
 
