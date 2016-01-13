@@ -189,8 +189,8 @@
 
 %+Title
 \title{Quantum Merlin Arthur with Exponentially Small Gap}
-\author[1]{Bill Fefferman}
-\author[1]{Cedric Lin}
+\author[1]{Bill Fefferman\thanks{wjf@umd.edu}}
+\author[1]{Cedric Yen-Yu Lin\thanks{cedricl@umicas.umd.edu}}
 \affil[1]{Joint Center for Quantum Information and Computer Science (QuICS), University of Maryland}
 \date{\today}
 
@@ -285,9 +285,12 @@ Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
 \end{theorem}
 
 \section{Upper bound}
-In this section, our goal will be to prove that $\QMAexp\subseteq\PSPACE$.  We will proceed in two steps, the first will show how to use in-place $\QMA$ amplification techniques from Nagaj, Wocjan, and Zhang \cite{nwz11} to decide any promise problem in $\QMAexp$ with a quantum protocol in which the verifier is allowed exponential time, polynomial space (i.e., acts on a polynomial number of proof and ancilla qubits), completeness $1-2^{-\poly(n)}$ and soundness $2^{-\poly(n)}$.  We then appeal to results of Marriott and Watrous \cite{mw05} and  Watrous \cite{Watrous99} to show that such protocols can be simulated in $\PSPACE$.
+In this section, our goal will be to prove that $\QMAexp\subseteq\PSPACE$.  We will proceed in two steps, the first will show how to use in-place $\QMA$ amplification techniques from Nagaj, Wocjan, and Zhang \cite{nwz11} to decide any promise problem in $\QMAexp$ with a quantum protocol in which the verifier is allowed exponential time, polynomial space (i.e., acts on a polynomial number of proof and ancilla qubits), completeness $1-2^{-\poly(n)}$ and soundness $2^{-\poly(n)}$.  We then appeal to results of Marriott and Watrous \cite{mw05} and  Watrous \cite{Watrous99,Watrous03} to show that such protocols can be simulated in $\PSPACE$.
 \subsection{In-place gap amplification of $\QMAexp$ using phase estimation techniques}
-\begin{theorem}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] For any $r>0$, \[\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}(rt(c-s))}{\mathcal{O}(k+r\log(c-s))}{m}{1-2^{-r}}{2^{-r}}.\]
+\begin{theorem}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] For any $r>0$, 
+\[
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{t2^r}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.\footnote{Our argument differs slightly from the result in \cite{nwz11}: to reduce the error they perform multiple rounds of phase estimation and do classical postprocessing on the results, while we simply perform one round of phase estimation with lower failure probability, effectively by using higher precision and throwing away the results of the highest order bits. Using their approach directly would instead give a time bound of $\mathcal{O}(rt/(c-s))$ and a space bound of $\mathcal{O}(k+r\log[1/(c-s)])$.}
+\]
 \end{theorem}
 \begin{proof}
 	Let $L=(L_{yes}, L_{no})$ be a promise problem in $\QMA(c,s)$ and $\{V_x\}_{x\in\{0,1\}^n}$ the corresponding uniform family of verification circuits.
@@ -301,18 +304,17 @@ and the corresponding reflections:
 R_0 &= 2\Pi_0 - I \\
 R_1 &= 2\Pi_1 - I.
 \end{align}
-Now consider the following procedure:
+Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$. Now consider the following procedure:
 \begin{enumerate}
-\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with $\mathcal{O}(\log(c-s))$ bits of precision and $1/16$ failure probability. 
-\item If the median of the $r$ results is at most $\phi_c = \arccos\sqrt{c}/\pi$, output YES; otherwise if the result is at least $\phi_s = \arccos\sqrt{s}/\pi$, output NO.
+\item Perform phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with precision $(\phi_s - \phi_c)/2$ and failure probability $2^{-r}$.
+\item Output YES if the phase is at most $(\phi_{c}+\phi_{s})/2$; otherwise output NO.
 \end{enumerate}
-Phase estimation of an operator $U$ up to $a$ bits of precision requires $\mathcal{O}(a)$ ancilla qubits and $\mathcal{O}(2^a)$ applications of the control-$U$ operation.  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\alpha=\mathcal{O}(\log(c-s))$ on the $V_x$ operator, can be implemented by a circuit of size $\mathcal{O}(rt2^{\alpha})=\mathcal{O}(rt(c-s))$ using $\mathcal{O}(r\alpha)$ extra ancillia qubits.
- Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
+Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancillia qubits. Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
 \end{proof}
 
 Thus, we get the following corollaries:
 \begin{corollary}\label{obvious1}For all $r>0$,
-$\QMAexp\subseteq\bddQMA{r2^{\poly}}{r\cdot \poly}{\poly}{1-2^{-r}}{2^{-r}}$.
+$\QMAexp\subseteq\bddQMA{2^{r+\poly}}{r + \poly}{\poly}{1-2^{-r}}{2^{-r}}$.
 \end{corollary}
 
 \begin{corollary}\label{obvious2}For every problem $L\in\QMAexp$, there exists an $m \in \poly$ so that:
@@ -323,7 +325,7 @@ Notice that Corollary \ref{obvious2} follows from the definition of $\QMAexp$ an
 \begin{theorem} \label{thm:pqpspace simulation}
 For all $m\in\poly$:\[\bddQMA{2^{\poly}}{\poly}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\subseteq\PQPSPACE\]\end{theorem}
 \begin{proof}
-For any $m, p \in\poly$, consider a problem $L\in\bddQMA{2^{\poly}}{p}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^n}$ be the corresponding uniform family of verification circuits.
+The proof is very similar to the proof of \cite[Theorem 3.6]{mw05}. For any $m, p \in\poly$, consider a problem $L\in\bddQMA{2^{\poly}}{p}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^n}$ be the corresponding uniform family of verification circuits.
 If $x\in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
 \begin{equation}
 \left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \ge 1-2^{-(m+2)}
@@ -368,7 +370,7 @@ By a matrix being succinctly representable and sparse, we mean the following:
 \begin{definition}
 Let $M$ be a $2^{\poly(n)} \times 2^{\poly(n)}$ matrix, where $n$ is the input size. We say that $M$ is a \emph{succinctly representable sparse} matrix if there are at most polynomially many nonzero entries in each row, and moreover there is a (uniformly generated) circuit, \emph{the succinct encoding}, that outputs the nonzero entries of any given row in $\poly(n)$ time.
 \end{definition}
-\subsection{The Succinct Determinant problem}
+\subsection{The Gapped Succinct Matrix Singularity problem}
 \begin{definition}[\succdet]
 Given as input is a succinct encoding of $A$, a succinctly representable sparse matrix, whose determinant is promised to be 0, 1, or -1. Moreover, each column of $A$ has at no more than two 1s.  Does $\det(A)$ vanish?
 \end{definition}
@@ -506,7 +508,7 @@ A_{2,\ell}^T A_{2,\ell} =
     0 & 0 & 0 & 0 & \dots  & 0 & 0 & 1
 \end{bmatrix}
 \end{equation}
-For purposes of calculating the smallest eigenvalue the last row and column can be ignored, leaving an $(\ell-1) \times (\ell-1)$ matrix. Looking back at \ref{eq:psd_mat} and \ref{eq:char_p}, we see that the characteristic equation is exactly $p_{\ell-1}(\lambda) = 0$. Therefore once again the smallest eigenvalue is inverse exponentially bounded away from zero.
+For purposes of calculating the smallest eigenvalue the last row and column can be ignored, leaving an $(\ell-1) \times (\ell-1)$ matrix. Looking back at (\ref{eq:psd_mat}) and (\ref{eq:char_p}), we see that the characteristic equation is exactly $p_{\ell-1}(\lambda) = 0$. Therefore once again the smallest eigenvalue is inverse exponentially bounded away from zero.
 
 \end{proof}
 \subsection{$\gappedsucc$ is in $\QMAexp$}
@@ -515,7 +517,7 @@ In this section, we now proceed to show a $\QMAexp$ protocol for $\gappedsucc$.
 Let $A$ be a positive semidefinite, symmetric, and succinctly representable sparse matrix, whose entries are 0, 1, or 2; moreover the smallest eigenvalue of $A$ is promised to be either zero or at least $2^{-g(n)}$ for some polynomial $g(n)$. There is a $\QMAexp$ protocol for deciding which is the case.
 \end{lemma}
 Our strategy will essentially be to simulate the time evolution of the sparse Hamiltonian $e^{-iAt}$ using known simulation methods, and then use a stripped-down version of phase estimation to estimate an eigenvalue of $A$. We first note the following result for sparse matrix simulation:
-\begin{theorem}[\cite{berry14}, \cite{berry15}] \label{thm:ham_sim}
+\begin{theorem}[\cite{berry14,berry15}] \label{thm:ham_sim}
 Suppose $A$ is a $2^n \times 2^n$ symmetric and succinctly representable sparse matrix, with at most $d$ nonzero entries in each row. Then treated as a Hamiltonian, the time evolution $\exp(-iAt)$ can be simulated using $\text{\emph{poly}}(n,d,\|A\|, t, \log(1/\epsilon))$ operations.
 \end{theorem}
 The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain exponential precision in $\exp(-iAt)$ using only polynomially many operations. Also note that we can upper bound $\|A\|$ with the following observation:
