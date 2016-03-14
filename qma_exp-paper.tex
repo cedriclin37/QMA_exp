@@ -309,7 +309,7 @@ Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$. Now co
 \item Perform phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with precision $(\phi_s - \phi_c)/2$ and failure probability $2^{-r}$.
 \item Output YES if the phase is at most $(\phi_{c}+\phi_{s})/2$; otherwise output NO.
 \end{enumerate}
-Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancillia qubits. Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
+Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancilla qubits. Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
 \end{proof}
 
 Thus, we get the following corollaries:
@@ -356,7 +356,7 @@ Therefore our problem reduces to determining whether the trace of $Q_x$ is at le
 which is at least $2^{-m} \cdot 3/4$ if $x\in L_{yes}$, and at most $2^{-m} \cdot 1/4$ if $x\in L_{no}$. Thus we have reduced our original problem to determining whether an exponentially long quantum computation with \emph{no} witness, acting on a polynomial number of qubits, accepts with probability at least $c'$ or at most $s'$ with $c' - s'$ being exponentially small. This is a $\PQPSPACE$ problem.
 
 \end{proof}
-\begin{theorem}
+\begin{theorem} \label{thm: pspace upper bound}
 $\QMAexp\subseteq\PSPACE$.
 \end{theorem}
 \begin{proof}
@@ -530,7 +530,7 @@ We are given a succinct encoding of an symmetric PSD $d$-sparse matrix $A$, and 
 To implement phase estimation, we first need to be able to implement $\exp(-iAt)$ efficiently and to high precision. This is what Theorem \ref{thm:ham_sim} gives us: we can implement $\exp(-iAt)$ up to error $\epsilon = 2^{-\poly(n)}$ using only a polynomial number of operations, for any choice of $\epsilon$.
 
 Now to use phase estimation to distinguish the phase up to exponential precision, we would normally require exponentially many operations in the usual phase estimation routine. Instead, we will simply do phase estimation with one bit:
-\begin{align}
+\begin{align} \label{circ: poor man phase estimation}
 %&\Qcircuit @C=1em @R=.7em {
 %\lstick{\ket{c}}& \multigate{1}{CP_{0}} &\qw & \rstick{\ket{c}} \qw \\
 %\lstick{\ket{i}}&\ghost{CP_{0}}  &\qw & \rstick{(1-x_i)\ket{i}} \qw
@@ -551,6 +551,34 @@ Follows from Theorem \ref{thm:gappedsucc} and Lemma \ref{lem:qmaexp protocol}.
 \end{proof}
 This finishes the proof of our main theorem:
 \thmmain*
+\subsection{Achieving perfect completeness for $\QMAexp$}
+We now consider the problem of achieving prefect completeness for $\QMAexp$. Specifically, we will show the following:
+\begin{lemma} \label{lem:qmaexp perfect completeness}
+Let $A$ be a positive semidefinite, symmetric, and succinctly representable sparse matrix, whose entries are 0, 1, or 2; moreover the smallest eigenvalue of $A$ is promised to be either zero or at least $2^{-g(n)}$ for some polynomial $g(n)$. There is a $\QMAexp$ protocol for deciding which is the case; moreover, in the YES case (the smallest eigenvalue is zero) the protocol accepts with probability 1.
+\end{lemma}
+ Since $\gappedsucc$ is $\PSPACE$-hard and therefore (by Theorem \ref{thm: pspace upper bound}) $\QMAexp$-hard, Lemma \ref{lem:qmaexp perfect completeness} will show that any $\QMAexp$ protocol can be reduced to a different $\QMAexp$ protocol with perfect completeness, i.e. in the YES case Arthur accepts Merlin's witness with probability 1. The reduction is rather roundabout, however, and it would be interesting to see if a more direct reduction can be found.
+
+Looking back at Circuit \ref{circ: poor man phase estimation}, we see that we \emph{almost} have perfect completeness in our protocol already - if the Hamiltonian simulation of $e^{-iAt}$ could be done without error, then indeed the protocol has perfect completeness. Our strategy will be perform a different unitary that can be performed exactly, but, like $e^{-iAt}$, also allows us to use phase estimation to distinguish the eigenvalues of $A$.
+
+Given a sparse Hamiltonian $A$ and a number $X \ge \max_{j,\ell}|A_{j\ell}|$ that upper bounds the absolute value of entries of $A$, Andrew Childs defined an efficiently implementable quantum walk \cite{berry14,childs10}. Each step of the quantum walk is a unitary $U$ with eigenvalues $e^{i\tilde{\lambda}}$, where 
+\begin{equation}
+\tilde{\lambda} = \arcsin \frac{\lambda}{Xd}
+\end{equation}
+with $\lambda$ representing eigenvalues of $A$. Note that the YES case $\lambda = 0$ corresponds to $\tilde{\lambda}=0$, and the NO case $\lambda \ge 2^{-g(n)}$ corresponds to $\tilde{\lambda} \ge 2^{-g(n)}/(Xd)$ since $\arcsin x \ge x$ for $|x| \le 1$. In the latter case the $\tilde{\lambda}$ can be at most exponentially small, and therefore the stripped down version of phase estimation still suffices to tell the two cases apart with exponentially small probability.
+
+We now show that $U$ can be implemented exactly with a standard gateset; perfect completeness of the protocol will then follow. If $A$ is a $N \times N$ matrix (where $N=2^n$), $U$ is (see presentation in \cite[Section~3.1~and~Lemma~10]{berry15}) a unitary defined on the enlarged Hilbert space $\mathbb{C}^{2N} \otimes \mathbb{C}^{2N} = (\mathbb{C}^{N} \otimes \mathbb{C}^2) \otimes  (\mathbb{C}^{N} \otimes \mathbb{C}^2)$, as follows:
+\begin{equation}
+U = ST(I_{2N} \otimes (I_{2N} - 2\ket{0}\bra{0}_{2N})) T^\dagger
+\end{equation}
+where the $2N$ subscript indicates a register of dimension $2N$, the unitary $S$ swaps the two registers, and the unitary $T$ is defined by
+\begin{equation}
+T = \sum_{j=0}^{N-1}\sum_{b \in \{0,1\}} (\ket{j}\bra{j} \otimes \ket{b}\bra{b}) \otimes \ket{\varphi_{jb}}\bra{0}_{2N}
+\end{equation}
+with $\ket{\varphi_{j1}} = \ket{0}_N\ket{1}$ and
+\begin{equation}
+\ket{\varphi_{jb}} = \frac{1}{\sqrt{d}} \sum_{\ell \in F_j} \ket{\ell}\left(\sqrt{\frac{A^*_{j\ell}}{X}}\ket{0} + \sqrt{1-\frac{|A^*_{j\ell}|}{X}}\ket{1}\right),
+\end{equation}
+where $F_j$ index the nonzero entries in the $j$-th row. In the statement of Lemma \ref{lem:qmaexp perfect completeness}, we see that for any $j,\ell$, $A_{j\ell}=0$, $1$, or $2$, and hence we can take $X=2$. If we furthermore assume $d$ is a power of 2 (which we can always do by adding indices of zero entries to $F_j$), it is straightforward to see that both $S$ and $T$ can be implemented using just Hadamard gates and classical gates (Pauli-$X$, controlled-$X$, and Toffoli gates). Therefore $U$ can be exactly implemented in any gateset that allows Hadamard gates and classical gates to be implemented exactly.
 
 \section{A $\PSPACE$-complete variant of the Local Hamiltonian problem}
 The classic $\QMA$-complete problem is the Local Hamiltonian problem: given a local Hamiltonian $H$, and parameters $a < b$ with $b-a > 1/\poly$, it is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$; decide which is the case. We now show that if we weaken the promise gap from polynomially small to only exponentially small, then this problem becomes $\PSPACE$-complete.
