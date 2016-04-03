@@ -458,20 +458,8 @@ We will start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$
 \begin{lemma}
 	$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
 \end{lemma}
-\begin{proof}
-This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof here for completeness.  Suppose we are given an $x\in \{0,1\}^n$ and would like to determine if $x\in L_{yes}$ for some $L=\{L_{yes},L_{no}\}\in\unitaryBQSPACE{k}$.  There is a quantum circuit on $k(n)$ qubits, $Q_x=U_TU_{T-1}\cdots U_1$ of size $T=2^{\mathcal{O}(k(n))}$ that decides $x$.  That is, 
-\begin{equation}
-Q_x|\zero\rangle = \sqrt{p_x} |1\rangle_{out}|\psi_x^1\rangle + \sqrt{1-p_x} |0\rangle_{out} |\psi_x^0\rangle.
-\end{equation}
-where $out$ indicates the designated output qubit, and $|\psi_x^1\rangle$, $|\psi_x^0\rangle$ are $(k-1)$-qubit states; $p_x$ is the probability that the computation accepts, so $p_x \ge 2/3$ if $x \in L_{yes}$ and $p_x \le 1/3$ if $x \in L_{no}$.
-
-We now describe a reduction which creates a related circuit $\tilde{Q}_x$ with a single matrix entry that is proportional to the acceptance probability of $Q_x$.  This new circuit $\tilde{Q}_x$ takes the same number of input qubits as $Q_x$ as well as an additional ancillary qubit.  $\tilde{Q}_x$ runs $Q_x$, then using a single CNOT gate copies the state of the output qubit to the ancillary qubit, flips the ancillary qubit, and finally applies the inverse, $Q_x^{\dagger}$, to the input qubits. It is straightforward to check that
-\begin{equation}
-\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle = p_x.
-\end{equation}
-Therefore knowing the single matrix entry $\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle$ is sufficient to decide if $x \in L_{yes}$. Moreover, $\tilde{Q}_x$ can be computed from $Q_x$ using polynomial time and $\mathcal{O}(k)$ space, and this completes the proof.
+\begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof in Appendix \ref{app:qca} for completeness.
 \end{proof}
-
 \begin{theorem}
 $\matrixinvert{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical reductions computable in polynomial time and $\bigoh (k)$ space.
 \end{theorem}
@@ -824,4 +812,24 @@ Frustration-Free $k$-Local Hamiltonian is $\PSPACE$-complete.
 \begin{proof}
 The containment in $\PSPACE$ follows from the proof of the containment of the usual Local Hamiltonian problem in $\QMA$ \cite{ksv02}, along with Proposition \ref{prop: perfect completeness}. $\PSPACE$-hardness follows from the proof of Theorem \ref{thm: precise local hamiltonian}, by taking $c=1$ in the proof.
 \end{proof}
+<<<<<<< Updated upstream
+=======
+\section{$\qca{k(n)}$ is $\BQSPACE{k(n)}$-hard}\label{app:qca}
+\begin{lemma}
+	$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
+\end{lemma}
+\begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof here for completeness.  Suppose we are given an $x\in \{0,1\}^n$ and would like to determine if $x\in L_{yes}$ for some $L=\{L_{yes},L_{no}\}\in\unitaryBQSPACE{k}$.  There is a quantum circuit on $k(n)$ qubits, $Q_x=U_TU_{T-1}\cdots U_1$ of size $T=2^{\mathcal{O}(k(n))}$ that decides $x$.  That is, 
+\begin{equation}
+Q_x|\zero\rangle = \sqrt{p_x} |1\rangle_{out}|\psi_x^1\rangle + \sqrt{1-p_x} |0\rangle_{out} |\psi_x^0\rangle.
+\end{equation}
+where $out$ indicates the designated output qubit, and $|\psi_x^1\rangle$, $|\psi_x^0\rangle$ are $(k-1)$-qubit states; $p_x$ is the probability that the computation accepts, so $p_x \ge 2/3$ if $x \in L_{yes}$ and $p_x \le 1/3$ if $x \in L_{no}$.
+
+We now describe a reduction which creates a related circuit $\tilde{Q}_x$ with a single matrix entry that is proportional to the acceptance probability of $Q_x$.  This new circuit $\tilde{Q}_x$ takes the same number of input qubits as $Q_x$ as well as an additional ancillary qubit.  $\tilde{Q}_x$ runs $Q_x$, then using a single CNOT gate copies the state of the output qubit to the ancillary qubit, flips the ancillary qubit, and finally applies the inverse, $Q_x^{\dagger}$, to the input qubits. It is straightforward to check that
+\begin{equation}
+\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle = p_x.
+\end{equation}
+Therefore knowing the single matrix entry $\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle$ is sufficient to decide if $x \in L_{yes}$. Moreover, $\tilde{Q}_x$ can be computed from $Q_x$ using polynomial time and $\mathcal{O}(k)$ space, and this completes the proof.
+\end{proof}
+
+>>>>>>> Stashed changes
 \end{document}
