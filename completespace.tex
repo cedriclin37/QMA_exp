@@ -504,9 +504,9 @@ In this section we will establish the following result:
 \bigcup_{c \in (0,1]}\bddQMA{\poly}{\Theta(k)}{\Theta(k)}{c}{c-2^{-\Theta(k)}} \subseteq \unitaryQSPACE{\Theta(k)}{2/3}{1/3}.
 \]
 \end{theorem}
-The results of this section have been independently obtained in \cite{fklmn16} as well using a different method, with stronger results for some of the statements; for example in Lemma \ref{lem: gap amp 2} the completeness and soundness parameters of the right hand side can be replaced by $1-2^{2^{-r}}$ and $2^{2^{-r}}$, at the price of possibly increasing the time bound. Nevertheless that proof (based on the error reduction methods of \cite{kln15} instead of \cite{nwz11}) is somewhat more complicated.
+The results of this section have been independently obtained in \cite{fklmn16} as well using a different method (based on \cite{kln15} instead of \cite{nwz11}), with stronger results for some of the statements; for example in Lemma \ref{lem: gap amp 2} the completeness and soundness parameters of the right hand side can be replaced by $1-2^{2^{-r}}$ and $2^{2^{-r}}$, at the price of possibly increasing the time bound. Nevertheless the proof in \cite{fklmn16} is somewhat more complicated, and therefore we have included our proof in this paper.
 
-The proof will be broken up into two steps: we first show that we can reduce the error of these $\QMA$ protocols to exponentially small in the gap, without substantially increasing the space or witness size. Then we show that guessing a random witness suffices to distinguish the YES and NO cases with sufficient probability.
+The proof will be broken up into two steps: we first show that we can reduce the error of these small-gap $\QMA$ protocols to exponentially small in the witness size, without substantially increasing the space or witness size. Then we show that guessing a random witness suffices to distinguish the YES and NO cases with sufficient probability.
 \subsubsection {In-place gap amplification of $\QMA$ protocols with phase estimation}
 We start out by proving the following lemma, which proves ``in-place'' gap amplification of $\QMA$ using phase estimation.
 This is very similar to Nagaj et. al's in-place gap amplification technique (see Lemma \ref{lem: gap amp 1} in Appendix \ref{app: gap amplification}), except they use less time but more space.
@@ -533,11 +533,10 @@ Now consider the following procedure:
 \item Perform phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with precision $\bigoh (c-s)$ and failure probability $2^{-r}$.
 \item Output YES if the phase is at most $(\phi_{c}+\phi_{s})/2$; otherwise output NO.
 \end{compactenum}
-This time we perform phase estimation once, but to much higher confidence (this would work by performing phase estimation to much higher precision and discarding the higher order bits). 
-Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancilla qubits. This procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
+One way of performing phase estimation to high confidence would be to perform it to much higher precision and discard the higher order bits. Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancilla qubits. This procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
 \end{proof}
 
-In the appendix we will prove the following stronger error reduction lemma that gives the same space bound but uses less space; this better space bound will be required for proving Theorem \ref{thm: specham-hardness}.
+In Appendix \ref{app: gap amplification} we will prove the following stronger error reduction lemma that gives the same space bound but uses less space; this better space bound will be required for proving Theorem \ref{thm: specham-hardness}.
 
 \begin{theorem} \label{thm: gap amp}
 For any functions $t,k,r>0$, 
