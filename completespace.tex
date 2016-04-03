@@ -11,6 +11,8 @@
 \usepackage{verbatim} 
 \usepackage{multicol}
 \usepackage{lmodern}
+
+
 \usepackage{enumerate}
 \usepackage[normalem]{ulem}
 %\usepackage[margin=1in]{geometry}
@@ -24,8 +26,8 @@
 
 %%%%%%%%%%%%%%%%
 %Next two lines change the font!!
-\usepackage{mathptmx}
-\usepackage{newtxmath}
+%\usepackage{mathptmx}
+%\usepackage{newtxmath}
 %%%%%%%%%%%%%%%
 
 \usepackage{mathrsfs}
@@ -228,7 +230,7 @@
 \maketitle
 %\medskip
 \begin{abstract}
-We give two complete characterizations of unitary quantum space-bounded classes.  The first is based on the Matrix Inversion problem for well-conditioned matrices.  We show that given a succinct $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ well-conditioned matrix $A$, approximating a particular entry of $A^{-1}$ is complete for the class of problems solvable by a quantum algorithm that uses $\mathcal{O}(k(n))$ space and performs all quantum measurements at the end of the computation. In particular, the problem of computing entries of $A^{-1}$ for an explicit well-conditioned $n \times n$ matrix $A$ is complete for unitary quantum logspace.
+We give two complete characterizations of unitary quantum space-bounded classes.  The first is based on the Matrix Inversion problem for well-conditioned matrices.  We show that given a succinct $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ well-conditioned matrix $H$, approximating a particular entry of $H^{-1}$ is complete for the class of problems solvable by a quantum algorithm that uses $\mathcal{O}(k(n))$ space and performs all quantum measurements at the end of the computation. In particular, the problem of computing entries of $H^{-1}$ for an explicit well-conditioned $n \times n$ matrix $H$ is complete for unitary quantum logspace.
 
 We then show that the problem of approximating to high precision the least eigenvalue of a succinct positive semidefinite matrix $H$ gives a second characterization of unitary quantum space complexity. In the process we also establish an equivalence between unitary quantum space-bounded classes and certain $\QMA$ proof systems. As a consequence, we establish that $\QMA$ with exponentially small completeness-soundness gap is equal to $\PSPACE$, that determining whether a local Hamiltonian is frustration-free is $\PSPACE$-complete, and give a provable setting in which the ability to prepare $PEPS$ states gives less computational power than the ability to prepare the ground state of a generic local Hamiltonian.
 \end{abstract}
@@ -368,11 +370,11 @@ Finally, we will frequently be assuming the existence of  algorithms that comput
 \section{Characterization 1: Matrix Inversion}
 \subsection{$\matrixinvert{k(n)}$ is in $\unitaryBQSPACE{k(n)}$}
 \begin{theorem} \label{thm: matrix inversion alg}
-Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the encoding of a succinct $2^{k(n)} \times 2^{k(n)}$ PSD matrix $A$ such that $\kappa^{-1} I \preceq A \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the encoding of a succinct $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
 \begin{compactenum}
-\item With at least constant probability, output an approximation of the quantum state $A^{-1}\ket{b} / \|A^{-1}\ket{b}\|$ up to error $\epsilon$.
-\item Estimate $\|A^{-1}\ket{b}\|$ up to precision $\epsilon$.
-\item Estimate  $|\bra{a}A^{-1}\ket{b}|$ up to precision $\epsilon$.
+\item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
+\item Estimate $\|H^{-1}\ket{b}\|$ up to precision $\epsilon$.
+\item Estimate  $|\bra{a}H^{-1}\ket{b}|$ up to precision $\epsilon$.
 \end{compactenum}
 These circuits do not require intermediate measurements.
 \end{theorem}
@@ -381,30 +383,30 @@ Note that if intermediate measurements were allowed instead, then in the case $k
 \begin{corollary}
 $\matrixinvert{k(n)} \in \unitaryBQSPACE{k(n)}$.
 \end{corollary}
-In fact our algorithm is much stronger: to solve $\matrixinvert{k(n)}$ we merely need to approximation $|\bra{s}A^{-1}\ket{t}|$ to constant precision, while Theorem \ref{thm: matrix inversion alg} actually gives an approximation to precision $2^{-\bigoh (k)}$ in $\bigoh (k(n))$ unitary quantum space. Moreover our algorithm does not require $s$ and $t$ to be computational basis states.
+In fact our algorithm is much stronger: to solve $\matrixinvert{k(n)}$ we merely need to approximation $|\bra{s}H^{-1}\ket{t}|$ to constant precision, while Theorem \ref{thm: matrix inversion alg} actually gives an approximation to precision $2^{-\bigoh (k)}$ in $\bigoh (k(n))$ unitary quantum space. Moreover our algorithm does not require $s$ and $t$ to be computational basis states.
 
 We note that we can modify our definition of unitary quantum space-bounded classes to include computing functions, for instance by adding a write-only one-way output tape of qubits to the Turing machine (see the discussion in Section \ref{sec: space bounded computation}), that are all measured at the very end of the computation. We also note that we have an error reduction result (Corollary \ref{obvious2}), so that the total error can be reasonably controlled. Under such a modification we can compute the whole matrix inverse in unitary quantum logspace. We will not pursue this modified model further in this work.
 %\wf{We should also point out that our result scales for non-logarithmic space bounds, where Ta-Shma's does not}
 
 To prove Theorem \ref{thm: matrix inversion alg}, we first start out with the following lemma:
 \begin{lemma}[Ta-Shma \cite{tashma}] \label{lem: matrix inversion lemma}
-There is a $\bigoh (k + \log(\kappa/\epsilon'))$-space uniform quantum unitary transformation $W_A$ over $k+\ell = \bigoh (k+ \log(\kappa/\epsilon'))$ qubits, such that for any $k$-qubit input state $\ket{b}$,
+There is a $\bigoh (k + \log(\kappa/\epsilon'))$-space uniform quantum unitary transformation $W_H$ over $k+\ell = \bigoh (k+ \log(\kappa/\epsilon'))$ qubits, such that for any $k$-qubit input state $\ket{b}$,
 \begin{equation}
-W_A (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b} + \sqrt{1-\alpha^2} \ket{1}_{out} \otimes\ket{\psi'_b},
+W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b} + \sqrt{1-\alpha^2} \ket{1}_{out} \otimes\ket{\psi'_b},
 \end{equation}
-where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{A^{-1}\ket{b}} {\|A^{-1}\ket{b}\|} \| \le \epsilon'$, $\alpha$ is a positive number satisfying $|\alpha - \frac{\|A^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, and ``out'' is a 1-qubit register.
+where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$, $\alpha$ is a positive number satisfying $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, and ``out'' is a 1-qubit register.
 \end{lemma}
-The proof of this lemma is essentially contained in the proof of \cite[Theorem~6.3]{tashma}, or can be obtained by combining \cite[Theorem~4.1]{tashma} with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}. The essential idea of the proof is to use phase estimation on $\exp(iA)$ to compute the eigenvalues $\lambda$ of the matrix $A$ into an auxilliary register; implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$; and finally uncompute the eigenvalues $\lambda$. Ta-Shma showed how to implement $\exp(iA)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general succinct matrices); alternatively the more recent sparse Hamiltonian simulation algorithms by Berry et al. has the same space requirement and is more time efficient (see e.g. \cite{bccks15} for an analysis).
+The proof of this lemma is essentially contained in the proof of \cite[Theorem~6.3]{tashma}, or can be obtained by combining \cite[Theorem~4.1]{tashma} with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}. The essential idea of the proof is to use phase estimation on $\exp(iA)$ to compute the eigenvalues $\lambda$ of the matrix $H$ into an auxilliary register; implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$; and finally uncompute the eigenvalues $\lambda$. Ta-Shma showed how to implement $\exp(iH)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general succinct matrices); alternatively the more recent sparse Hamiltonian simulation algorithms by Berry et al. has the same space requirement and is more time efficient (see e.g. \cite{bccks15} for an analysis).
 
 
 The proof idea for Theorem \ref{thm: matrix inversion alg} is essentially to use amplitude amplification to obtain the state $\ket{0}_{out} \otimes \ket{\psi_b}$, in the process also generating an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$. To be more precise, we consider the two projectors
 \begin{align}
 \Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
-\Pi_1 &= W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_A.
+\Pi_1 &= W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H.
 \end{align}
 $\Pi_0$ projects onto the initial subspace, while $\Pi_1$ projects onto the initial states that would be accepted by the final measurement. By an argument similar to Grover's algorithm, if we implement the rotation $R=-(I-2\Pi_0)(I-2\Pi_1)$ $\bigoh (1/\alpha)$ times we will generate an output state with constant overlap with $\ket{0}_{out} \otimes \ket{\psi_b}$. $\alpha$ can be estimated by performing phase estimation on the operator $R$.
 
-The above argument will show how to do the first and second tasks listed in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can simply choose $\Pi'_1 = W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_A$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will allow us to give an estimate for $|\bra{a}H^{-1}\ket{b}|$. For the full proof, see Appendix \ref{app: matrix inversion alg}.
+The above argument will show how to do the first and second tasks listed in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can simply choose $\Pi'_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will allow us to give an estimate for $|\bra{a}H^{-1}\ket{b}|$. For the full proof, see Appendix \ref{app: matrix inversion alg}.
 
 \subsection{$\matrixinvert{k(n)}$ is hard for $\unitaryBQSPACE{k(n)}$}
 We will start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$:
@@ -428,13 +430,13 @@ Crucially, note that for any $t$ in the range $[T+1,2T]$ and any state $|\psi\ra
 \end{equation}
 Furthermore $U^{3T}=I$, a fact we will soon exploit. We now construct the Hermitian matrix:
 \begin{equation}
-A=\begin{bmatrix}
+H=\begin{bmatrix}
     0 & I-Ue^{-1/T}\\
    I-U^{\dagger}e^{-1/T} &  0
 \end{bmatrix}
 \end{equation}
- $A$ has dimension $N=6Tn$ and condition number $\kappa\leq 2T=2^{\bigoh (k)}$.  Notice that given as input a description of $Q$ we can compute each entry of $A$ to within $2^{-\mathcal{O}(k(n))}$ error in $\mathcal{O}(k(n))$ space, via space efficient algorithms for exponentiation \cite{reif}.
-   Furthermore, $A^{-1}$ is the following matrix:
+ $H$ has dimension $N=6Tn$ and condition number $\kappa\leq 2T=2^{\bigoh (k)}$.  Notice that given as input a description of $Q$ we can compute each entry of $A$ to within $2^{-\mathcal{O}(k(n))}$ error in $\mathcal{O}(k(n))$ space, via space efficient algorithms for exponentiation \cite{reif}.
+   Furthermore, $H^{-1}$ is the following matrix:
 \begin{equation}
 \begin{bmatrix}
     0 & \left(I-U^\dagger e^{-1/T}\right)^{-1}\\
@@ -447,11 +449,11 @@ A=\begin{bmatrix}
 &=\langle\zero|\langle t+1|\left(\sum_{j=0}^\infty U^j e^{-j/T}\right)|1\rangle|\zero\rangle \\
 &= \left( \sum_{x=0}^\infty e^{-3jT/T} \right) \langle\zero|\langle t+1|\left(\sum_{j'=0}^{3T-1} U^{j'} e^{-j'/T}\right)|1\rangle|\zero\rangle
 \end{align}
-which is a particular entry in $A^{-1}$. In the second line we've used $j = 3Tx + j'$ for some integers $x$ and $j' \in [0,3T-1]$, and used that $U^{3T}=I$.  For any $t \in [T+1,2T]$, as a consequence of Equation \ref{eqn:fullclock} the above quantity equals
+which is a particular entry in $H^{-1}$. In the second line we've used $j = 3Tx + j'$ for some integers $x$ and $j' \in [0,3T-1]$, and used that $U^{3T}=I$.  For any $t \in [T+1,2T]$, as a consequence of Equation \ref{eqn:fullclock} the above quantity equals
 \begin{equation}
 \frac{e^{-t/T}}{1-e^{-3}}\langle\zero|Q|\zero\rangle.
 \end{equation}
-In particular, given the ability to calculate this entry of $A^{-1}$ we are able to solve \qca{k(n)}.
+In particular, given the ability to calculate this entry of $H^{-1}$ we are able to solve \qca{k(n)}.
 \end{proof}
 
 %%Bill's Note: End of Matrix Inversion section
@@ -480,16 +482,16 @@ Suppose a matrix $H$ has at most $d$ nonzero entries per row, each of which is n
 \begin{proof}[Proof of Theorem \ref{lem:qma protocol}]
 We are given a succinct encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian PSD $d$-sparse matrix $H$, and it is promised that the smallest eigenvalue $\lambda_{min}$ of $H$ is either  at most $a$ or at least $b$. Merlin would like to convince us that $\lambda_{min} \le a$; he will send us a purported $k$-qubit eigenstate $\ket{\psi}$ of $H$ with eigenvalue $\lambda_{min}$. We will carry out a stripped-down version of phase estimation on $\exp(-iHt)$ acting on $\ket{\psi}$ to decide, with exponentially small completeness-soundness gap, whether Merlin is telling the truth. Let us choose $t = \pi / (d\|H\|_{max}) \le \pi / \|H\|$; then all eigenvalues of $Ht$ lie in the range $[0,\pi]$, and the output of phase estimation will be unambiguous.
 
-To implement phase estimation, we first need to be able to implement $\exp(-iAt)$ efficiently and to high precision. This is what Theorem \ref{thm:ham_sim} gives us: we can implement $\exp(-iAt)$ up to error $\epsilon = 2^{-\Theta(k(n))}$ using only a polynomial number of operations, for any choice of $\epsilon$.
+To implement phase estimation, we first need to be able to implement $\exp(-iHt)$ efficiently and to high precision. This is what Theorem \ref{thm:ham_sim} gives us: we can implement $\exp(-iHt)$ up to error $\epsilon = 2^{-\Theta(k(n))}$ using only a polynomial number of operations, for any choice of $\epsilon$.
 
 Now to use phase estimation to distinguish the phase up to exponential precision, we would normally require exponentially many operations in the usual phase estimation routine. Instead, we will simply do phase estimation with one bit:
 \begin{align} \label{circ: poor man phase estimation}
 &\Qcircuit @C=1em @R=.7em {
 \lstick{\ket{0}}& \gate{H} & \ctrl{1} & \gate{H} & \rstick{\frac{1+e^{-i\lambda t}}{2}\ket{0} +\frac{1-e^{-i\lambda t}}{2}\ket{1} } \qw \\
-\lstick{\ket{\psi}}& \qw & \gate{e^{-iAt}}  & \qw & \rstick{\ket{\psi}} \qw
+\lstick{\ket{\psi}}& \qw & \gate{e^{-iHt}}  & \qw & \rstick{\ket{\psi}} \qw
 }
 \end{align}
-In the above we've assumed $\ket{\psi}$ is an eigenstate of $A$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $(1+\cos(\lambda t))/2$. Therefore if $\psi$ is a eigenstate with eigenvalue at most $a$, we can verify this with probability at least $(1+\cos(at))/2 - \epsilon$, where recall $\epsilon$ is the error in the implementation of $\exp(-iAt)$. Otherwise if $\lambda_{min} \ge b$, no state $\psi$ will be accepted with probability greater than $(1+\cos(bt))/2 + \epsilon$. The separation between the acceptance probabilities between the YES case and the NO case is at least 
+In the above we've assumed $\ket{\psi}$ is an eigenstate of $H$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $(1+\cos(\lambda t))/2$. Therefore if $\psi$ is a eigenstate with eigenvalue at most $a$, we can verify this with probability at least $(1+\cos(at))/2 - \epsilon$, where recall $\epsilon$ is the error in the implementation of $\exp(-iHt)$. Otherwise if $\lambda_{min} \ge b$, no state $\psi$ will be accepted with probability greater than $(1+\cos(bt))/2 + \epsilon$. The separation between the acceptance probabilities between the YES case and the NO case is at least 
 \begin{align}
 (\cos(at)-\cos(bt)) - 2\epsilon &= 2 \sin \left(\frac{(a+b)t}{2}\right) \sin \left(\frac{(b-a)t}{2}\right) - 2\epsilon \\
 &\ge 2^{-\mathcal{O}(k)}
@@ -819,11 +821,11 @@ where the first line follows by taking $r=2$ in Lemma \ref{lem: gap amp 2}, and 
 \begingroup
 \def\thetheorem{\ref{thm: matrix inversion alg}}
 \begin{theorem}
-Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the encoding of a succinct $2^{k(n)} \times 2^{k(n)}$ PSD matrix $A$ such that $\kappa^{-1} I \preceq A \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the encoding of a succinct $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
 \begin{compactenum}
-\item With at least constant probability, output an approximation of the quantum state $A^{-1}\ket{b} / \|A^{-1}\ket{b}\|$ up to error $\epsilon$.
-\item Estimate $\|A^{-1}\ket{b}\|$ up to precision $\epsilon$.
-\item Estimate  $|\bra{a}A^{-1}\ket{b}|$ up to precision $\epsilon$.
+\item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
+\item Estimate $\|H^{-1}\ket{b}\|$ up to precision $\epsilon$.
+\item Estimate  $|\bra{a}H^{-1}\ket{b}|$ up to precision $\epsilon$.
 \end{compactenum}
 These circuits do not require intermediate measurements.
 \end{theorem}
@@ -831,10 +833,10 @@ These circuits do not require intermediate measurements.
 \endgroup
 
 \begin{proof}
-We first show the first item, i.e. generating the state $A^{-1}\ket{b} / \|A^{-1}\ket{b}\|$. Choose $\epsilon' = \mathcal{O}(\epsilon/\kappa)$ in the statement of Lemma \ref{lem: matrix inversion lemma}, keeping in mind for the rest of the proof that $\log(\kappa/\epsilon') = \mathcal{O}(\log(\kappa/\epsilon))$. Note that $\ket{\psi_b}$ can be obtained by computing $W_AU_b\ket{0}_{all} = W_A (\ket{0}_{anc} \otimes \ket{b})$, and then postselecting on the output qubit being in state $\ket{0}$. To obtain $\ket{\psi_b}$ with high probability we can repeat this procedure many times until success. We can then get a good approximation to $\frac{A^{-1}\ket{b}} {\|A^{-1}\ket{b}\|} $ by tracing out the other ancilla qubits. For our setting we would like to get by with a low space requirement and without using intermediate measurements, so instead of repeating until success, we will apply amplitude amplification to the above unitary $W_A$. Define the projectors $\Pi_0$ and $\Pi_1$ by
+We first show the first item, i.e. generating the state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$. Choose $\epsilon' = \mathcal{O}(\epsilon/\kappa)$ in the statement of Lemma \ref{lem: matrix inversion lemma}, keeping in mind for the rest of the proof that $\log(\kappa/\epsilon') = \mathcal{O}(\log(\kappa/\epsilon))$. Note that $\ket{\psi_b}$ can be obtained by computing $W_HU_b\ket{0}_{all} = W_H (\ket{0}_{anc} \otimes \ket{b})$, and then postselecting on the output qubit being in state $\ket{0}$. To obtain $\ket{\psi_b}$ with high probability we can repeat this procedure many times until success. We can then get a good approximation to $\frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} $ by tracing out the other ancilla qubits. For our setting we would like to get by with a low space requirement and without using intermediate measurements, so instead of repeating until success, we will apply amplitude amplification to the above unitary $W_H$. Define the projectors $\Pi_0$ and $\Pi_1$ by
 \begin{align}
 \Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
-\Pi_1 &= W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_A
+\Pi_1 &= W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H
 \end{align}
 Define $\ket{v} = \ket{0}_{anc}\otimes \ket{b}$, and write
 \begin{align}
@@ -848,7 +850,7 @@ where $\ket{v^\perp}$, $\ket{w}$, and $\ket{w^\perp}$ are normalized states such
 \end{align}
 Note that
 \begin{equation} 
-(\bra{0}_{anc} \otimes I) W_A (\ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b}) (\ket{0}_{anc} \otimes \ket{b}) = W_A \Pi_1\Pi_0(\ket{0}_{anc} \otimes \ket{b}) \propto W_A \ket{w},
+(\bra{0}_{anc} \otimes I) W_H (\ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b}) (\ket{0}_{anc} \otimes \ket{b}) = W_H \Pi_1\Pi_0(\ket{0}_{anc} \otimes \ket{b}) \propto W_H \ket{w},
 \end{equation}
 and therefore $W_A\ket{w}$ is the postmeasurement state we desire. The success probability of the postselection step is simply $\bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2 = \sin^2\theta$. 
 
@@ -860,13 +862,13 @@ Therefore if we start from $\ket{v}$ and apply the rotation $R$ a total of
 \begin{equation}
 \frac{\pi}{4\theta} - \frac{1}{2}
 \end{equation}
-times, the resulting quantum state will be close to $\ket{w}$. Here recall $\theta = \sin^{-1}\alpha$. Projecting into the image of $\Pi_1$ and then applying $W_A$ will then give the desired postmeasurement state $W_A\ket{w}$. To do this, however, we need to know what $\theta$ is. Since $R$ is a rotation on the two-dimensional subspace spanned by $\{\ket{v},\ket{w}\}$ with rotation angle $2\theta$, $R$ has eigenvalues $\exp(\pm i2\theta)$ in this subspace. Performing phase estimation on $R$ will therefore give an estimate of $\theta/\pi$. We would like to obtain an estimate $\gamma$ such that 
+times, the resulting quantum state will be close to $\ket{w}$. Here recall $\theta = \sin^{-1}\alpha$. Projecting into the image of $\Pi_1$ and then applying $W_H$ will then give the desired postmeasurement state $W_H\ket{w}$. To do this, however, we need to know what $\theta$ is. Since $R$ is a rotation on the two-dimensional subspace spanned by $\{\ket{v},\ket{w}\}$ with rotation angle $2\theta$, $R$ has eigenvalues $\exp(\pm i2\theta)$ in this subspace. Performing phase estimation on $R$ will therefore give an estimate of $\theta/\pi$. We would like to obtain an estimate $\gamma$ such that 
 \begin{equation} \label{eq: gamma}
 \left|\frac{\gamma\pi}{\theta} - 1\right| \le  \frac{\epsilon'}{2}
 \end{equation}
 holds with probability $1-\poly(\epsilon' / \kappa)2^{-\mathcal{O}(k)}$.
 
-We now look at the space requirements of phase estimation. First of all, note that since both $W_A$ and $U_b$ are circuits on at most $\bigoh (k + \log(\kappa/\epsilon))$ qubits, $R$ also only requires $\bigoh (k + \log(\kappa/\epsilon))$ space. Also, we have that
+We now look at the space requirements of phase estimation. First of all, note that since both $W_H$ and $U_b$ are circuits on at most $\bigoh (k + \log(\kappa/\epsilon))$ qubits, $R$ also only requires $\bigoh (k + \log(\kappa/\epsilon))$ space. Also, we have that
 \begin{align}
 \alpha &\ge \frac{\|A^{-1}\ket{b}\|}{\kappa} - \epsilon' \\
 &\ge \frac{1}{\kappa} - \epsilon'.
@@ -879,18 +881,18 @@ R^{\lfloor1/(4\gamma)\rfloor}\ket{v} = \sin\left[\left(2\left\lfloor\frac{1}{4\g
 \end{equation}
 (\ref{eq: gamma}) implies $|\theta/(\pi\gamma) - 1| \le \epsilon'$ (as long as $\epsilon' \le 1/2$), and a straightforward calculation shows that $|(2\lfloor1/(4\gamma)\rfloor+1) \theta - \pi/2| \le \frac{\pi}{2}+\theta$. Therefore as long as $\theta \le \pi/4$, the resulting state will have constant overlap with $\ket{w}$, and our procedure will succeed with constant probability (which we can verify by applying the projection $\Pi_1$). If instead $\theta > \pi/4$ (as we can determine from our estimate $\gamma$), we can perform the projection $\Pi_1$ to the initial state $\ket{v}$ directly and succeed with constant probability.
 
-Note that in the process we have also calculated an estimate for $\theta = \sin^{-1}\alpha$ up to $\bigoh(\epsilon')$ error, and since $|\alpha - \frac{\|A^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$ we can also output an estimate for $\|A^{-1}\ket{b}\|$ up to precision $\mathcal{O}(\kappa \epsilon') = \mathcal{O}(\epsilon)$.
+Note that in the process we have also calculated an estimate for $\theta = \sin^{-1}\alpha$ up to $\bigoh(\epsilon')$ error, and since $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$ we can also output an estimate for $\|H^{-1}\ket{b}\|$ up to precision $\mathcal{O}(\kappa \epsilon') = \mathcal{O}(\epsilon)$.
 
-Finally, if an estimate for $|\bra{a} A^{-1} \ket{b}|$ is desired, we can consider instead the following modification to $\Pi_0$ and $\Pi_1$:
+Finally, if an estimate for $|\bra{a} H^{-1} \ket{b}|$ is desired, we can consider instead the following modification to $\Pi_0$ and $\Pi_1$:
 \begin{align}
 \Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
-\Pi'_1 &= W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_A
+\Pi'_1 &= W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H
 \end{align}
-Since $(\ket{0}\bra{0}_{out} \otimes I) W_A (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b}$, we see that 
+Since $(\ket{0}\bra{0}_{out} \otimes I) W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b}$, we see that 
 \begin{equation}
 \bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2\left|\left(\bra{0}^{\otimes \ell-1} \otimes \bra{a}\right) \ket{\psi_b}\right|^2.
 \end{equation}
-$\bra{v}\Pi_0\Pi_1\Pi_0\ket{v}$ can be estimated in the same way that $\alpha$ has been estimated. Recalling that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{A^{-1}\ket{b}} {\|A^{-1}\ket{b}\|} \| \le \epsilon'$ and $|\alpha - \frac{\|A^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, this allows us to estimate $|\bra{a} A^{-1} \ket{b}|$ to $\bigoh (\epsilon)$ precision.
+$\bra{v}\Pi_0\Pi_1\Pi_0\ket{v}$ can be estimated in the same way that $\alpha$ has been estimated. Recalling that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$ and $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, this allows us to estimate $|\bra{a} H^{-1} \ket{b}|$ to $\bigoh (\epsilon)$ precision.
 \end{proof}
 
 \end{document}
