@@ -52,21 +52,20 @@
 
 
 \newtheorem{theorem}{Theorem}
-\newtheorem{claim}{Claim}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}{Conjecture}
-\newtheorem{condition}{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{condition}[theorem]{Condition}
 \theoremstyle{definition}
-\newtheorem{alg}{Algorithm}
+\newtheorem{alg}[theorem]{Algorithm}
+\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
 \newtheorem*{pr_sk}{Proof Sketch}
 \newtheorem*{alg_in}{Input}
 \newtheorem*{alg_out}{Output}
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}
 
 
 \usepackage{tikz} 
@@ -812,8 +811,7 @@ Frustration-Free $k$-Local Hamiltonian is $\PSPACE$-complete.
 \begin{proof}
 The containment in $\PSPACE$ follows from the proof of the containment of the usual Local Hamiltonian problem in $\QMA$ \cite{ksv02}, along with Proposition \ref{prop: perfect completeness}. $\PSPACE$-hardness follows from the proof of Theorem \ref{thm: precise local hamiltonian}, by taking $c=1$ in the proof.
 \end{proof}
-<<<<<<< Updated upstream
-=======
+
 \section{$\qca{k(n)}$ is $\BQSPACE{k(n)}$-hard}\label{app:qca}
 \begin{lemma}
 	$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
@@ -831,5 +829,4 @@ We now describe a reduction which creates a related circuit $\tilde{Q}_x$ with a
 Therefore knowing the single matrix entry $\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle$ is sufficient to decide if $x \in L_{yes}$. Moreover, $\tilde{Q}_x$ can be computed from $Q_x$ using polynomial time and $\mathcal{O}(k)$ space, and this completes the proof.
 \end{proof}
 
->>>>>>> Stashed changes
 \end{document}
