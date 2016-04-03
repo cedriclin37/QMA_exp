@@ -20,6 +20,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{fancyhdr}
 \usepackage{authblk}
+\usepackage{paralist}
 
 \usepackage{mathrsfs}
 
@@ -362,11 +363,11 @@ Finally, we will frequently be assuming the existence of  algorithms that comput
 \subsection{$\matrixinvert{k(n)}$ is in $\unitaryBQSPACE{k(n)}$}
 \begin{theorem} \label{thm: matrix inversion alg}
 Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the encoding of a succinct $2^{k(n)} \times 2^{k(n)}$ PSD matrix $A$ such that $\kappa^{-1} I \preceq A \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
-\begin{enumerate}
+\begin{compactenum}
 \item With at least constant probability, output an approximation of the quantum state $A^{-1}\ket{b} / \|A^{-1}\ket{b}\|$ up to error $\epsilon$.
 \item Estimate $\|A^{-1}\ket{b}\|$ up to precision $\epsilon$.
 \item Estimate  $|\bra{a}A^{-1}\ket{b}|$ up to precision $\epsilon$.
-\end{enumerate}
+\end{compactenum}
 These circuits do not require intermediate measurements.
 \end{theorem}
 Note that if intermediate measurements were allowed instead, then in the case $k = \mathcal{O}(\log n)$ this result is already proven by Ta-Shma \cite[Theorem~6.3]{tashma} (and generalizes to other space bounds without much difficulty). We strengthen Ta-Shma's result by showing that intermediate measurements are not necessary. By taking $\kappa = 2^{\bigoh (k)}$ and $\epsilon = 2^{-\bigoh (k)}$ to be constant, we immediately get the following corollary: 
@@ -572,10 +573,10 @@ R_0 = 2\Pi_0 - I, \quad R_1 = 2\Pi_1 - I.
 \end{equation}
 Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
 Now consider the following procedure:
-\begin{enumerate}
+\begin{compactenum}
 \item Perform phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with precision $\bigoh (c-s)$ and failure probability $2^{-r}$.
 \item Output YES if the phase is at most $(\phi_{c}+\phi_{s})/2$; otherwise output NO.
-\end{enumerate}
+\end{compactenum}
 This time we perform phase estimation once, but to much higher confidence (this would work by performing phase estimation to much higher precision and discarding the higher order bits). 
 Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancilla qubits. This procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
 \end{proof}
@@ -707,11 +708,11 @@ We note that this can be seen as restricting $H$ in the $\spechamiltonian{\poly(
 
 \section{Open Problems}
 This work leaves open several questions that may lead to interesting follow-up work:
-\begin{enumerate}
+\begin{compactenum}
 \begin{item} Can we use our $\QMAexp=\PSPACE$ result to prove upper or lower bounds for other complexity classes? \end{item}
 \begin{item} Here we have shown $\QMAexp=\PSPACE$.  Ito, Kobayashi and Watrous  have shown that $\QIP$ with doubly-exponentially small completeness-soundness gap is equal to $\EXP$ \cite{ikw12}.  What can be said about the power of $\QIP$ with exponentially small completeness-soundness gap?\end{item}
 \begin{item}In this paper we studied unitary quantum space complexity classes, and showed that \matrixinvert{k(n)} and \spechamiltonian{k(n)} characterize unitary quantum space complexity.  Can similar hardness results be shown for non-unitary quantum space complexity classes?\end{item}
-\end{enumerate}
+\end{compactenum}
 
 
 \section{Acknowledgements}
@@ -834,10 +835,10 @@ R_0 = 2\Pi_0 - I, \quad R_1 = 2\Pi_1 - I.
 \end{equation}
 Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
 Now consider the following procedure:
-\begin{enumerate}
+\begin{compactenum}
 \item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with  precision $\mathcal{O}(c-s)$ and $1/16$ failure probability. 
 \item If the median of the $r$ results is at most $(\phi_{c}+\phi_{s})/2$, output YES; otherwise output NO.
-\end{enumerate}
+\end{compactenum}
 Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\mathcal{O}(c-s)$, can be implemented by a circuit of size $\mathcal{O}(rt/(c-s))$ using $\mathcal{O}(r\log[1/(c-s)])$ extra ancilla qubits. Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
 \end{proof}
 We can now prove Theorem \ref{thm: gap amp}, which we restate below:
