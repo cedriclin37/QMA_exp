@@ -396,66 +396,16 @@ where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ke
 \end{lemma}
 The proof of this lemma is essentially contained in the proof of \cite[Theorem~6.3]{tashma}, or can be obtained by combining \cite[Theorem~4.1]{tashma} with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}. The essential idea of the proof is to use phase estimation on $\exp(iA)$ to compute the eigenvalues $\lambda$ of the matrix $A$ into an auxilliary register; implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$; and finally uncompute the eigenvalues $\lambda$. Ta-Shma showed how to implement $\exp(iA)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general succinct matrices); alternatively the more recent sparse Hamiltonian simulation algorithms by Berry et al. has the same space requirement and is more time efficient (see e.g. \cite{bccks15} for an analysis).
 
-We can now show Theorem \ref{thm: matrix inversion alg}. We first show the first item, i.e. generating the state $A^{-1}\ket{b} / \|A^{-1}\ket{b}\|$. Choose $\epsilon' = \mathcal{O}(\epsilon/\kappa)$ in the statement of Lemma \ref{lem: matrix inversion lemma}, keeping in mind for the rest of the proof that $\log(\kappa/\epsilon') = \mathcal{O}(\log(\kappa/\epsilon))$. Note that $\ket{\psi_b}$ can be obtained by computing $W_AU_b\ket{0}_{all} = W_A (\ket{0}_{anc} \otimes \ket{b})$, and then postselecting on the output qubit being in state $\ket{0}$. To obtain $\ket{\psi_b}$ with high probability we can repeat this procedure many times until success. We can then get a good approximation to $\frac{A^{-1}\ket{b}} {\|A^{-1}\ket{b}\|} $ by tracing out the other ancilla qubits. For our setting we would like to get by with a low space requirement and without using intermediate measurements, so instead of repeating until success, we will apply amplitude amplification to the above unitary $W_A$. Define the projectors $\Pi_0$ and $\Pi_1$ by
+
+The proof idea for Theorem \ref{thm: matrix inversion alg} is essentially to use amplitude amplification to obtain the state $\ket{0}_{out} \otimes \ket{\psi_b}$, in the process also generating an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$. To be more precise, we consider the two projectors
 \begin{align}
 \Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
-\Pi_1 &= W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_A
+\Pi_1 &= W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_A.
 \end{align}
-Define $\ket{v} = \ket{0}_{anc}\otimes \ket{b}$, and write
-\begin{align}
-\ket{v} &= \sin \theta \ket{w} +\cos \theta\ket{w^\perp}, \\
-\ket{w} &= \sin \theta \ket{v} + \cos \theta\ket{v^\perp}
-\end{align}
-where $\ket{v^\perp}$, $\ket{w}$, and $\ket{w^\perp}$ are normalized states such that 
-\begin{align}
-\Pi_0\ket{v} = \ket{v},&\quad \Pi_0\ket{v^\perp} = 0 \\
-\Pi_1\ket{w} = \ket{w},&\quad \Pi_1\ket{w^\perp} = 0.
-\end{align}
-Note that
-\begin{equation} 
-(\bra{0}_{anc} \otimes I) W_A (\ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b}) (\ket{0}_{anc} \otimes \ket{b}) = W_A \Pi_1\Pi_0(\ket{0}_{anc} \otimes \ket{b}) \propto W_A \ket{w},
-\end{equation}
-and therefore $W_A\ket{w}$ is the postmeasurement state we desire. The success probability of the postselection step is simply $\bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2 = \sin^2\theta$. 
+$\Pi_0$ projects onto the initial subspace, while $\Pi_1$ projects onto the initial states that would be accepted by the final measurement. By an argument similar to Grover's algorithm, if we implement the rotation $R=-(I-2\Pi_0)(I-2\Pi_1)$ $\bigoh (1/\alpha)$ times we will generate an output state with constant overlap with $\ket{0}_{out} \otimes \ket{\psi_b}$. $\alpha$ can be estimated by performing phase estimation on the operator $R$.
 
-Consider now the rotation operator $R=-(I-2\Pi_0)(I-2\Pi_1)$; it is straightforward to verify that for any $\phi$,
-\begin{equation}
-R[\sin(\phi) \ket{w} + \cos(\phi) \ket{w^\perp}] = \sin(\phi + 2\theta) \ket{w} + \cos(\phi + 2\theta) \ket{w^\perp}.
-\end{equation}
-Therefore if we start from $\ket{v}$ and apply the rotation $R$ a total of
-\begin{equation}
-\frac{\pi}{4\theta} - \frac{1}{2}
-\end{equation}
-times, the resulting quantum state will be close to $\ket{w}$. Here recall $\theta = \sin^{-1}\alpha$. Projecting into the image of $\Pi_1$ and then applying $W_A$ will then give the desired postmeasurement state $W_A\ket{w}$. To do this, however, we need to know what $\theta$ is. Since $R$ is a rotation on the two-dimensional subspace spanned by $\{\ket{v},\ket{w}\}$ with rotation angle $2\theta$, $R$ has eigenvalues $\exp(\pm i2\theta)$ in this subspace. Performing phase estimation on $R$ will therefore give an estimate of $\theta/\pi$. We would like to obtain an estimate $\gamma$ such that 
-\begin{equation} \label{eq: gamma}
-\left|\frac{\gamma\pi}{\theta} - 1\right| \le  \frac{\epsilon'}{2}
-\end{equation}
-holds with probability $1-\poly(\epsilon' / \kappa)2^{-\mathcal{O}(k)}$.
+The above argument will show how to do the first and second tasks listed in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can simply choose $\Pi'_1 = W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_A$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will allow us to give an estimate for $|\bra{a}H^{-1}\ket{b}|$. For the full proof, see Appendix \ref{app: matrix inversion alg}.
 
-We now look at the space requirements of phase estimation. First of all, note that since both $W_A$ and $U_b$ are circuits on at most $\bigoh (k + \log(\kappa/\epsilon))$ qubits, $R$ also only requires $\bigoh (k + \log(\kappa/\epsilon))$ space. Also, we have that
-\begin{align}
-\alpha &\ge \frac{\|A^{-1}\ket{b}\|}{\kappa} - \epsilon' \\
-&\ge \frac{1}{\kappa} - \epsilon'.
-\end{align}
-Since we can always take $\epsilon' \le 1/(2\kappa)$ (this doesn't change the space guarantee of $\bigoh (k+\log(\kappa/\epsilon))$ in Theorem 1), phase estimation of $R$ to precision $\poly(\epsilon/\kappa)$ suffices to output an $\gamma$ such that (\ref{eq: gamma}) holds. To do so with failure probability $\poly(\epsilon \kappa^{-1}2^{-\mathcal{O}(k)})$ requires at most $\bigoh(k+\log(\kappa/\epsilon))$ extra ancilla qubits.
-
-Finally, we apply the rotation $R$ to $\ket{v} = \sin \theta \ket{w} +\cos \theta\ket{w^\perp}$ a total of $\lfloor1/(4\gamma)\rfloor$ times. The resulting state is
-\begin{equation}
-R^{\lfloor1/(4\gamma)\rfloor}\ket{v} = \sin\left[\left(2\left\lfloor\frac{1}{4\gamma}\right\rfloor+1\right)\theta\right] \ket{w} + \cos\left[\left(2\left\lfloor\frac{1}{4\gamma}\right\rfloor+1\right)\theta\right] \ket{w^\perp}
-\end{equation}
-(\ref{eq: gamma}) implies $|\theta/(\pi\gamma) - 1| \le \epsilon'$ (as long as $\epsilon' \le 1/2$), and a straightforward calculation shows that $|(2\lfloor1/(4\gamma)\rfloor+1) \theta - \pi/2| \le \frac{\pi}{2}+\theta$. Therefore as long as $\theta \le \pi/4$, the resulting state will have constant overlap with $\ket{w}$, and our procedure will succeed with constant probability (which we can verify by applying the projection $\Pi_1$). If instead $\theta > \pi/4$ (as we can determine from our estimate $\gamma$), we can perform the projection $\Pi_1$ to the initial state $\ket{v}$ directly and succeed with constant probability.
-
-Note that in the process we have also calculated an estimate for $\theta = \sin^{-1}\alpha$ up to $\bigoh(\epsilon')$ error, and since $|\alpha - \frac{\|A^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$ we can also output an estimate for $\|A^{-1}\ket{b}\|$ up to precision $\mathcal{O}(\kappa \epsilon') = \mathcal{O}(\epsilon)$.
-
-Finally, if an estimate for $|\bra{a} A^{-1} \ket{b}|$ is desired, we can consider instead the following modification to $\Pi_0$ and $\Pi_1$:
-\begin{align}
-\Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
-\Pi'_1 &= W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_A
-\end{align}
-Since $(\ket{0}\bra{0}_{out} \otimes I) W_A (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b}$, we see that 
-\begin{equation}
-\bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2\left|\left(\bra{0}^{\otimes \ell-1} \otimes \bra{a}\right) \ket{\psi_b}\right|^2.
-\end{equation}
-$\bra{v}\Pi_0\Pi_1\Pi_0\ket{v}$ can be estimated in the same way that $\alpha$ has been estimated. Recalling that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{A^{-1}\ket{b}} {\|A^{-1}\ket{b}\|} \| \le \epsilon'$ and $|\alpha - \frac{\|A^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, this allows us to estimate $|\bra{a} A^{-1} \ket{b}|$ to $\bigoh (\epsilon)$ precision.
 \subsection{$\matrixinvert{k(n)}$ is hard for $\unitaryBQSPACE{k(n)}$}
 We will start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$:
 \begin{definition}[\qca{k(n)}]
@@ -654,9 +604,7 @@ Therefore our problem reduces to determining whether the trace of $Q_x$ is at le
 \tr(Q_x 2^{-m}I_m) = 2^{-m} \tr(Q_x)
 \end{equation}
 which is at least $2^{-m} \cdot 3/4$ if $x\in L_{yes}$, and at most $2^{-m} \cdot 1/4$ if $x\in L_{no}$. Thus we have reduced our original problem $L$ to determining whether a quantum computation with \emph{no} witness, acting on $k+m$ qubits, accepts with probability at least $3/4 \cdot 2^{-m}$ or at most $s'=1/4 \cdot 2^{-m}$.
-
 \end{proof}
-
 We can finally finish the proof of Theorem \ref{thm: pspace upper bound}.
 \begin{proof}[Proof of Theorem \ref{thm: pspace upper bound}]
 This follows from Corollary \ref{obvious1}, Theorem \ref{thm:pqpspace simulation}, and Corollary \ref{obvious2}.
@@ -865,6 +813,85 @@ For any functions $t,k,r>0$,
 &\subseteq \bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}} \nonumber
 \end{align}
 where the first line follows by taking $r=2$ in Lemma \ref{lem: gap amp 2}, and the second line follows from Lemma~\ref{lem: gap amp 1}.
+\end{proof}
+
+\section{Proof that \matrixinvert{\bigoh(k(n)} $\in \unitaryBQSPACE{k(n)}$}\label{app: matrix inversion alg}
+
+\begingroup
+\def\thetheorem{\ref{thm: matrix inversion alg}}
+\begin{theorem}
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the encoding of a succinct $2^{k(n)} \times 2^{k(n)}$ PSD matrix $A$ such that $\kappa^{-1} I \preceq A \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+\begin{compactenum}
+\item With at least constant probability, output an approximation of the quantum state $A^{-1}\ket{b} / \|A^{-1}\ket{b}\|$ up to error $\epsilon$.
+\item Estimate $\|A^{-1}\ket{b}\|$ up to precision $\epsilon$.
+\item Estimate  $|\bra{a}A^{-1}\ket{b}|$ up to precision $\epsilon$.
+\end{compactenum}
+These circuits do not require intermediate measurements.
+\end{theorem}
+\addtocounter{theorem}{-1}
+\endgroup
+
+\begin{proof}
+We first show the first item, i.e. generating the state $A^{-1}\ket{b} / \|A^{-1}\ket{b}\|$. Choose $\epsilon' = \mathcal{O}(\epsilon/\kappa)$ in the statement of Lemma \ref{lem: matrix inversion lemma}, keeping in mind for the rest of the proof that $\log(\kappa/\epsilon') = \mathcal{O}(\log(\kappa/\epsilon))$. Note that $\ket{\psi_b}$ can be obtained by computing $W_AU_b\ket{0}_{all} = W_A (\ket{0}_{anc} \otimes \ket{b})$, and then postselecting on the output qubit being in state $\ket{0}$. To obtain $\ket{\psi_b}$ with high probability we can repeat this procedure many times until success. We can then get a good approximation to $\frac{A^{-1}\ket{b}} {\|A^{-1}\ket{b}\|} $ by tracing out the other ancilla qubits. For our setting we would like to get by with a low space requirement and without using intermediate measurements, so instead of repeating until success, we will apply amplitude amplification to the above unitary $W_A$. Define the projectors $\Pi_0$ and $\Pi_1$ by
+\begin{align}
+\Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
+\Pi_1 &= W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_A
+\end{align}
+Define $\ket{v} = \ket{0}_{anc}\otimes \ket{b}$, and write
+\begin{align}
+\ket{v} &= \sin \theta \ket{w} +\cos \theta\ket{w^\perp}, \\
+\ket{w} &= \sin \theta \ket{v} + \cos \theta\ket{v^\perp}
+\end{align}
+where $\ket{v^\perp}$, $\ket{w}$, and $\ket{w^\perp}$ are normalized states such that 
+\begin{align}
+\Pi_0\ket{v} = \ket{v},&\quad \Pi_0\ket{v^\perp} = 0 \\
+\Pi_1\ket{w} = \ket{w},&\quad \Pi_1\ket{w^\perp} = 0.
+\end{align}
+Note that
+\begin{equation} 
+(\bra{0}_{anc} \otimes I) W_A (\ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b}) (\ket{0}_{anc} \otimes \ket{b}) = W_A \Pi_1\Pi_0(\ket{0}_{anc} \otimes \ket{b}) \propto W_A \ket{w},
+\end{equation}
+and therefore $W_A\ket{w}$ is the postmeasurement state we desire. The success probability of the postselection step is simply $\bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2 = \sin^2\theta$. 
+
+Consider now the rotation operator $R=-(I-2\Pi_0)(I-2\Pi_1)$; it is straightforward to verify that for any $\phi$,
+\begin{equation}
+R[\sin(\phi) \ket{w} + \cos(\phi) \ket{w^\perp}] = \sin(\phi + 2\theta) \ket{w} + \cos(\phi + 2\theta) \ket{w^\perp}.
+\end{equation}
+Therefore if we start from $\ket{v}$ and apply the rotation $R$ a total of
+\begin{equation}
+\frac{\pi}{4\theta} - \frac{1}{2}
+\end{equation}
+times, the resulting quantum state will be close to $\ket{w}$. Here recall $\theta = \sin^{-1}\alpha$. Projecting into the image of $\Pi_1$ and then applying $W_A$ will then give the desired postmeasurement state $W_A\ket{w}$. To do this, however, we need to know what $\theta$ is. Since $R$ is a rotation on the two-dimensional subspace spanned by $\{\ket{v},\ket{w}\}$ with rotation angle $2\theta$, $R$ has eigenvalues $\exp(\pm i2\theta)$ in this subspace. Performing phase estimation on $R$ will therefore give an estimate of $\theta/\pi$. We would like to obtain an estimate $\gamma$ such that 
+\begin{equation} \label{eq: gamma}
+\left|\frac{\gamma\pi}{\theta} - 1\right| \le  \frac{\epsilon'}{2}
+\end{equation}
+holds with probability $1-\poly(\epsilon' / \kappa)2^{-\mathcal{O}(k)}$.
+
+We now look at the space requirements of phase estimation. First of all, note that since both $W_A$ and $U_b$ are circuits on at most $\bigoh (k + \log(\kappa/\epsilon))$ qubits, $R$ also only requires $\bigoh (k + \log(\kappa/\epsilon))$ space. Also, we have that
+\begin{align}
+\alpha &\ge \frac{\|A^{-1}\ket{b}\|}{\kappa} - \epsilon' \\
+&\ge \frac{1}{\kappa} - \epsilon'.
+\end{align}
+Since we can always take $\epsilon' \le 1/(2\kappa)$ (this doesn't change the space guarantee of $\bigoh (k+\log(\kappa/\epsilon))$ in Theorem 1), phase estimation of $R$ to precision $\poly(\epsilon/\kappa)$ suffices to output an $\gamma$ such that (\ref{eq: gamma}) holds. To do so with failure probability $\poly(\epsilon \kappa^{-1}2^{-\mathcal{O}(k)})$ requires at most $\bigoh(k+\log(\kappa/\epsilon))$ extra ancilla qubits.
+
+Finally, we apply the rotation $R$ to $\ket{v} = \sin \theta \ket{w} +\cos \theta\ket{w^\perp}$ a total of $\lfloor1/(4\gamma)\rfloor$ times. The resulting state is
+\begin{equation}
+R^{\lfloor1/(4\gamma)\rfloor}\ket{v} = \sin\left[\left(2\left\lfloor\frac{1}{4\gamma}\right\rfloor+1\right)\theta\right] \ket{w} + \cos\left[\left(2\left\lfloor\frac{1}{4\gamma}\right\rfloor+1\right)\theta\right] \ket{w^\perp}
+\end{equation}
+(\ref{eq: gamma}) implies $|\theta/(\pi\gamma) - 1| \le \epsilon'$ (as long as $\epsilon' \le 1/2$), and a straightforward calculation shows that $|(2\lfloor1/(4\gamma)\rfloor+1) \theta - \pi/2| \le \frac{\pi}{2}+\theta$. Therefore as long as $\theta \le \pi/4$, the resulting state will have constant overlap with $\ket{w}$, and our procedure will succeed with constant probability (which we can verify by applying the projection $\Pi_1$). If instead $\theta > \pi/4$ (as we can determine from our estimate $\gamma$), we can perform the projection $\Pi_1$ to the initial state $\ket{v}$ directly and succeed with constant probability.
+
+Note that in the process we have also calculated an estimate for $\theta = \sin^{-1}\alpha$ up to $\bigoh(\epsilon')$ error, and since $|\alpha - \frac{\|A^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$ we can also output an estimate for $\|A^{-1}\ket{b}\|$ up to precision $\mathcal{O}(\kappa \epsilon') = \mathcal{O}(\epsilon)$.
+
+Finally, if an estimate for $|\bra{a} A^{-1} \ket{b}|$ is desired, we can consider instead the following modification to $\Pi_0$ and $\Pi_1$:
+\begin{align}
+\Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
+\Pi'_1 &= W_A^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_A
+\end{align}
+Since $(\ket{0}\bra{0}_{out} \otimes I) W_A (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b}$, we see that 
+\begin{equation}
+\bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2\left|\left(\bra{0}^{\otimes \ell-1} \otimes \bra{a}\right) \ket{\psi_b}\right|^2.
+\end{equation}
+$\bra{v}\Pi_0\Pi_1\Pi_0\ket{v}$ can be estimated in the same way that $\alpha$ has been estimated. Recalling that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{A^{-1}\ket{b}} {\|A^{-1}\ket{b}\|} \| \le \epsilon'$ and $|\alpha - \frac{\|A^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, this allows us to estimate $|\bra{a} A^{-1} \ket{b}|$ to $\bigoh (\epsilon)$ precision.
 \end{proof}
 
 \end{document}
