@@ -552,7 +552,7 @@ The results of this section have been independently obtained in \cite{fklmn16} a
 The proof will be broken up into two steps: we first show that we can reduce the error of these $\QMA$ protocols to exponentially small in the gap, without substantially increasing the space or witness size. Then we show that guessing a random witness suffices to distinguish the YES and NO cases with sufficient probability.
 \subsubsection {In-place gap amplification of $\QMA$ protocols with phase estimation}
 We start out by proving the following lemma, which proves ``in-place'' gap amplification of $\QMA$ using phase estimation.
-This is very similar to Nagaj et. al's in-place gap amplification technique (see Lemma \ref{lem: gap amp 1} in Appendix [TODO]), except they use less time but more space.
+This is very similar to Nagaj et. al's in-place gap amplification technique (see Lemma \ref{lem: gap amp 1} in Appendix \ref{app: gap amplification}), except they use less time but more space.
 \begin{lemma} \label{lem: gap amp 2}
 For any functions $t,k,r>0$, 
 \[
@@ -567,10 +567,9 @@ Define the projectors:
 \Pi_1 &= V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
 \end{align}
 and the corresponding reflections:
-\begin{align}
-R_0 &= 2\Pi_0 - I \\
-R_1 &= 2\Pi_1 - I.
-\end{align}
+\begin{equation}
+R_0 = 2\Pi_0 - I, \quad R_1 = 2\Pi_1 - I.
+\end{equation}
 Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
 Now consider the following procedure:
 \begin{enumerate}
@@ -792,7 +791,7 @@ Frustration-Free $k$-Local Hamiltonian is $\PSPACE$-complete.
 The containment in $\PSPACE$ follows from the proof of the containment of the usual Local Hamiltonian problem in $\QMA$ \cite{ksv02}, along with Proposition \ref{prop: perfect completeness}. $\PSPACE$-hardness follows from the proof of Theorem \ref{thm: precise local hamiltonian}, by taking $c=1$ in the proof.
 \end{proof}
 
-\section{$\qca{k(n)}$ is $\BQSPACE{k(n)}$-hard}\label{app:qca}
+\section{$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard}\label{app:qca}
 \begingroup
 \def\thelemma{\ref{lem: quantum circuit acceptance}}
 \begin{lemma}
@@ -830,10 +829,9 @@ Define the projectors:
 \Pi_1 &= V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
 \end{align}
 and the corresponding reflections:
-\begin{align}
-R_0 &= 2\Pi_0 - I \\
-R_1 &= 2\Pi_1 - I.
-\end{align}
+\begin{equation}
+R_0 = 2\Pi_0 - I, \quad R_1 = 2\Pi_1 - I.
+\end{equation}
 Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
 Now consider the following procedure:
 \begin{enumerate}
