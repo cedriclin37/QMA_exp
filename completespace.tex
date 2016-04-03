@@ -53,8 +53,8 @@
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{claim}{Claim}
-\newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{conjecture}{Conjecture}
@@ -65,6 +65,8 @@
 \newtheorem*{pr_sk}{Proof Sketch}
 \newtheorem*{alg_in}{Input}
 \newtheorem*{alg_out}{Output}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
 
 
 \usepackage{tikz} 
@@ -705,6 +707,17 @@ Note that $H$ is a sparse matrix - in fact, there are only a constant number of 
 Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref{thm:pqpspace}), we can use Theorem \ref{thm: pspace upper bound} to give us that $\QMAexp\subseteq\PSPACE$ while Theorem \ref{lem:qma protocol} together with Theorem \ref{thm: specham-hardness} give us the lower bound $\PSPACE\subseteq\QMAexp$.  Therefore, we have:
 \begin{corollary} $\QMAexp=\PSPACE$. \end{corollary}
 
+Finally, we end with two results particular to the polynomial space case. First of all, in the equality $\QMAexp=\PSPACE$, we can actually achieve perfect completeness ($c=1$) for the $\QMA$ proof protocol. Moreover in the perfect completeness case there is no requirement that $c-s = 2^{-\poly}$:
+\begin{proposition} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
+\[
+\PSPACE = \QMA(1,1-2^{-\poly}) = \bigcup_{s \in [0,1)}\QMA(1,s).
+\]
+\end{proposition}
+The containment $\QMA(1,s) \subseteq \PSPACE$ is known \cite{ikw12}. We prove this proposition in Appendix~\ref{app:perfectcompleteness}.
+
+Our second result concerns the $\QMA$-complete Local Hamiltonian problem. We will show that if the promise gap is only exponentially small instead of polynomially small, the problem becomes $\PSPACE$-complete:
+
+We note that this can be seen as restricting $H$ in the $\spechamiltonian{\poly(n)}$ problem to be a local Hamiltonian; our result is that this problem remains $\PSPACE$-hard. For a proof, see Appendix \ref{app:localhamiltonian}.
 
 \section{Conclusion and Open Problems}
 \wf{TODO: fill this in!}
@@ -719,13 +732,46 @@ We are grateful to Andrew Childs, Sevag Gharibian, Aram Harrow, Hirotada Kobayas
 
 \section{Proof sketch of $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$} \label{app:peps}
 Since $\PP \subseteq \BQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ \cite{swv07}, we only need to show that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PP$. In \cite{swv07} it was noted that all PEPS can be seen as the output of a quantum circuit followed by a postselected measurement. Therefore $\PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ corresponds to the problems that can be decided by a quantum circuit, followed by a postselected measurement (since the queries to $O_{PEPS}$ are classical and nonadaptive, we can compose them into one single postselection), followed by a measurement. In the YES case the measurement outputs 1 with probability at least $c$, whereas in the NO case the measurement outputs 1 with probability at most $s$, with $c > s$. The standard counting argument placing $\BQP$ inside $\PP$ then applies to this case as well; see for instance \cite[Propositions~2~and~3]{aaronson05}.
-\section{Achieving Perfect Completeness}\label{app:perfectcompleteness}
+\section{Achieving Perfect Completeness for $\QMAexp$}\label{app:perfectcompleteness}
 %\begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\revPSPACE$ (reversible polynomial space) if it can be decided by a polynomial space reversible Turing machine, i.e., a machine in which every configuration has at most one immediate predecessor.  	
 %\end{definition}
 %
 %\begin{theorem}[Bennett\cite{bennett89}]\label{thm:revpspace}$\revPSPACE=\PSPACE$.
 %\end{theorem}
-\wf{TODO: fill this in!}
+We now consider the problem of achieving prefect completeness for $\QMAexp$. Specifically, we will show the following:
+\begin{proposition} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
+\[
+\PSPACE = \QMA(1,1-2^{-\poly}) = \bigcup_{s \in [0,1)}\QMA(1,s).
+\]
+\end{proposition}
+Since $\PSPACE = \QMAexp$, this proposition shows that any $\QMAexp$ protocol can be reduced to a different $\QMAexp$ protocol with perfect completeness, i.e. in the YES case Arthur accepts Merlin's witness with probability 1. The reduction is rather roundabout, however, and it would be interesting to see if a more direct reduction can be found.
+
+The second equality follows from the first equality and the result by \cite{ikw12} that $\QMA(1,s) \subseteq \PSPACE$. We will therefore only prove the first equality.
+
+Looking back at Circuit \ref{circ: poor man phase estimation}, we see that we \emph{almost} have perfect completeness in our protocol already - if the Hamiltonian simulation of $e^{-iHt}$ could be done without error, then indeed the protocol has perfect completeness. Our strategy will be perform a different unitary that can be performed exactly, but, like $e^{-iHt}$, also allows us to use phase estimation to distinguish the eigenvalues of $H$.
+
+Given a sparse Hamiltonian $H$ (with at most $d$ nonzero entries per row) and a number $X \ge \max_{j,\ell}|H_{j\ell}|$ that upper bounds the absolute value of entries of $H$, Andrew Childs defined an efficiently implementable quantum walk \cite{berry14,childs10}. Each step of the quantum walk is a unitary $U$ with eigenvalues $e^{i\tilde{\lambda}}$, where 
+\begin{equation}
+\tilde{\lambda} = \arcsin \frac{\lambda}{Xd}
+\end{equation}
+with $\lambda$ representing eigenvalues of $H$. Note that the YES case $\lambda = 0$ corresponds to $\tilde{\lambda}=0$, and the NO case $\lambda \ge 2^{-g(n)}$ corresponds to $\tilde{\lambda} \ge 2^{-g(n)}/(Xd)$ since $\arcsin x \ge x$ for $|x| \le 1$. In the latter case the $\tilde{\lambda}$ can be at most exponentially small, and therefore the stripped down version of phase estimation still suffices to tell the two cases apart with exponentially small probability.
+
+We now note that the Hamiltonian $H$ we obtain from the hardness reduction from $\PSPACE$ (Theorem \ref{thm: specham-hardness}) is of a very special form. Specifically, since $\unitaryBQSPACE{\poly}=\PSPACE$, we can assume the verifier circuit $V_x$ is deterministic, so it has completeness 1 and soundness 0. Moreover, all of its gates are classical, and hence all entries of the Kitaev clock Hamiltonian $H$ are $0$, $\pm 1/2$, or $1$.
+
+For the matrix $H$ satisfying the above, $U$ can be implemented exactly with a standard gateset; perfect completeness of the protocol will then follow. If $A$ is a $N \times N$ matrix (where $N=2^n$), $U$ is (see presentation in \cite[Section~3.1~and~Lemma~10]{berry15}) a unitary defined on the enlarged Hilbert space $\mathbb{C}^{2N} \otimes \mathbb{C}^{2N} = (\mathbb{C}^{N} \otimes \mathbb{C}^2) \otimes  (\mathbb{C}^{N} \otimes \mathbb{C}^2)$, as follows:
+\begin{equation}
+U = ST(I_{2N} \otimes (I_{2N} - 2\ket{0}\bra{0}_{2N})) T^\dagger
+\end{equation}
+where the $2N$ subscript indicates a register of dimension $2N$, the unitary $S$ swaps the two registers, and the unitary $T$ is defined by
+\begin{equation}
+T = \sum_{j=0}^{N-1}\sum_{b \in \{0,1\}} (\ket{j}\bra{j} \otimes \ket{b}\bra{b}) \otimes \ket{\varphi_{jb}}\bra{0}_{2N}
+\end{equation}
+with $\ket{\varphi_{j1}} = \ket{0}_N\ket{1}$ and
+\begin{equation}
+\ket{\varphi_{jb}} = \frac{1}{\sqrt{d}} \sum_{\ell \in F_j} \ket{\ell}\left(\sqrt{\frac{H^*_{j\ell}}{X}}\ket{0} + \sqrt{1-\frac{|H^*_{j\ell}|}{X}}\ket{1}\right),
+\end{equation}
+where $F_j$ index the nonzero entries in the $j$-th row. Recall that for any $j,\ell$, $H_{j\ell}=0$, $\pm 1/2$, or $1$, and hence we can take $X=1$. If we furthermore assume $d$ is a power of 2 (which we can always do by adding indices of zero entries to $F_j$), it is straightforward to see that both $S$ and $T$ can be implemented using just Hadamard gates and classical gates (Pauli-$X$, controlled-$X$, and Toffoli gates). Therefore $U$ can be exactly implemented in any gateset that allows Hadamard gates and classical gates to be implemented exactly.
+
 \section{Precise Local Hamiltonian Problem}\label{app:localhamiltonian}
 \wf{TODO: fill this in!}
 
