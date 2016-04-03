@@ -454,7 +454,7 @@ We will start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$
 \begin{definition}[\qca{k(n)}]
 	Given as input is an efficiently encoded quantum circuit $Q$ acting on $k(n)$ qubits with $T = 2^{\mathcal{O}(k(n))}$ 1- or 2-qubit gates.  It is promised that either the matrix entry $|\langle {\zero}|Q|{\zero}\rangle| \geq 2/3$ or $|\langle {\zero}|Q|{\zero}\rangle| \leq 1/3$; determine which is the case.
 \end{definition}
-\begin{lemma}
+\begin{lemma} \label{lem: quantum circuit acceptance}
 	$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
 \end{lemma}
 \begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof in Appendix \ref{app:qca} for completeness.
@@ -551,11 +551,12 @@ The results of this section have been independently obtained in \cite{fklmn16} a
 
 The proof will be broken up into two steps: we first show that we can reduce the error of these $\QMA$ protocols to exponentially small in the gap, without substantially increasing the space or witness size. Then we show that guessing a random witness suffices to distinguish the YES and NO cases with sufficient probability.
 \subsubsection {In-place gap amplification of $\QMA$ protocols with phase estimation}
-We start out by recalling the following lemma, which proves ``in-place'' gap amplification of $\QMA$ using phase estimation.
-\begin{lemma}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] \label{lem: gap amp 1}
+We start out by proving the following lemma, which proves ``in-place'' gap amplification of $\QMA$ using phase estimation.
+This is very similar to Nagaj et. al's in-place gap amplification technique (see Lemma \ref{lem: gap amp 1} in Appendix [TODO]), except they use less time but more space.
+\begin{lemma} \label{lem: gap amp 2}
 For any functions $t,k,r>0$, 
 \[
-\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{t2^r}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
 \]
 \end{lemma}
 \begin{proof}
@@ -573,21 +574,6 @@ R_1 &= 2\Pi_1 - I.
 Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
 Now consider the following procedure:
 \begin{enumerate}
-\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with  precision $\mathcal{O}(c-s)$ and $1/16$ failure probability. 
-\item If the median of the $r$ results is at most $(\phi_{c}+\phi_{s})/2$, output YES; otherwise output NO.
-\end{enumerate}
-Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\mathcal{O}(c-s)$, can be implemented by a circuit of size $\mathcal{O}(rt/(c-s))$ using $\mathcal{O}(r\log[1/(c-s)])$ extra ancilla qubits. Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
-\end{proof}
-Nagaj et. al's in-place gap amplification uses too much space for our purposes, so we will prove the following variant:
-\begin{lemma} \label{lem: gap amp 2}
-For any functions $t,k,r>0$, 
-\[
-\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{t2^r}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
-\]
-\end{lemma}
-\begin{proof}
-Define $R_1$, $R_0$, $\phi_c$, $\phi_s$ as in the previous theorem, but this time consider the following procedure instead:
-\begin{enumerate}
 \item Perform phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with precision $\bigoh (c-s)$ and failure probability $2^{-r}$.
 \item Output YES if the phase is at most $(\phi_{c}+\phi_{s})/2$; otherwise output NO.
 \end{enumerate}
@@ -595,7 +581,7 @@ This time we perform phase estimation once, but to much higher confidence (this 
 Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancilla qubits. This procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
 \end{proof}
 
-Finally, we can combine the two lemmas to get a gap amplification procedure that keeps the time bound of Lemma \ref{lem: gap amp 1} but uses only the space of Lemma \ref{lem: gap amp 2}:
+In the appendix we will prove the following stronger error reduction lemma that gives the same space bound but uses less space; this better space bound will be required for proving Theorem \ref{thm: specham-hardness}.
 
 \begin{theorem} \label{thm: gap amp}
 For any functions $t,k,r>0$, 
@@ -603,13 +589,7 @@ For any functions $t,k,r>0$,
 \bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
 \]
 \end{theorem}
-\begin{proof}
-\begin{align}
-\bddQMA{t}{k}{m}{c}{s} &\subseteq \bddQMA{\mathcal{O}\left(\frac{t}{c-s}\right)}{\mathcal{O}\left(k+\log\left(\frac{1}{c-s}\right)\right)}{m}{3/4}{1/4}  \nonumber \\
-&\subseteq \bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}} \nonumber
-\end{align}
-where the first line follows by taking $r=2$ in Lemma \ref{lem: gap amp 2}, and the second line follows from Lemma~\ref{lem: gap amp 1}.
-\end{proof}
+
 
 Thus, we get the following corollaries:
 \begin{corollary}\label{obvious1}
@@ -813,9 +793,14 @@ The containment in $\PSPACE$ follows from the proof of the containment of the us
 \end{proof}
 
 \section{$\qca{k(n)}$ is $\BQSPACE{k(n)}$-hard}\label{app:qca}
+\begingroup
+\def\thelemma{\ref{lem: quantum circuit acceptance}}
 \begin{lemma}
-	$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
+$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
 \end{lemma}
+\addtocounter{theorem}{-1}
+\endgroup
+
 \begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof here for completeness.  Suppose we are given an $x\in \{0,1\}^n$ and would like to determine if $x\in L_{yes}$ for some $L=\{L_{yes},L_{no}\}\in\unitaryBQSPACE{k}$.  There is a quantum circuit on $k(n)$ qubits, $Q_x=U_TU_{T-1}\cdots U_1$ of size $T=2^{\mathcal{O}(k(n))}$ that decides $x$.  That is, 
 \begin{equation}
 Q_x|\zero\rangle = \sqrt{p_x} |1\rangle_{out}|\psi_x^1\rangle + \sqrt{1-p_x} |0\rangle_{out} |\psi_x^0\rangle.
@@ -827,6 +812,54 @@ We now describe a reduction which creates a related circuit $\tilde{Q}_x$ with a
 \langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle = p_x.
 \end{equation}
 Therefore knowing the single matrix entry $\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle$ is sufficient to decide if $x \in L_{yes}$. Moreover, $\tilde{Q}_x$ can be computed from $Q_x$ using polynomial time and $\mathcal{O}(k)$ space, and this completes the proof.
+\end{proof}
+
+\section{In-place gap amplification} \label{app: gap amplification}
+In this appendix we will prove Theorem \ref{thm: gap amp}. To do so we first start out with the following weaker result:
+\begin{lemma}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] \label{lem: gap amp 1}
+For any functions $t,k,r>0$, 
+\[
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
+\]
+\end{lemma}
+\begin{proof}
+	Let $L=(L_{yes}, L_{no})$ be a promise problem in $\QMA(c,s)$ and $\{V_x\}_{x\in\{0,1\}^*}$ the corresponding uniform family of verification circuits.
+Define the projectors:
+\begin{align}
+\Pi_0 &= I_m \otimes \ket{0^k}\bra{0^k} \\
+\Pi_1 &= V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
+\end{align}
+and the corresponding reflections:
+\begin{align}
+R_0 &= 2\Pi_0 - I \\
+R_1 &= 2\Pi_1 - I.
+\end{align}
+Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
+Now consider the following procedure:
+\begin{enumerate}
+\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with  precision $\mathcal{O}(c-s)$ and $1/16$ failure probability. 
+\item If the median of the $r$ results is at most $(\phi_{c}+\phi_{s})/2$, output YES; otherwise output NO.
+\end{enumerate}
+Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\mathcal{O}(c-s)$, can be implemented by a circuit of size $\mathcal{O}(rt/(c-s))$ using $\mathcal{O}(r\log[1/(c-s)])$ extra ancilla qubits. Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
+\end{proof}
+We can now prove Theorem \ref{thm: gap amp}, which we restate below:
+\begingroup
+\def\thetheorem{\ref{thm: gap amp}}
+\begin{theorem}
+For any functions $t,k,r>0$, 
+\[
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
+\]
+\end{theorem}
+\addtocounter{theorem}{-1}
+\endgroup
+
+\begin{proof}
+\begin{align}
+\bddQMA{t}{k}{m}{c}{s} &\subseteq \bddQMA{\mathcal{O}\left(\frac{t}{c-s}\right)}{\mathcal{O}\left(k+\log\left(\frac{1}{c-s}\right)\right)}{m}{3/4}{1/4}  \nonumber \\
+&\subseteq \bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}} \nonumber
+\end{align}
+where the first line follows by taking $r=2$ in Lemma \ref{lem: gap amp 2}, and the second line follows from Lemma~\ref{lem: gap amp 1}.
 \end{proof}
 
 \end{document}
