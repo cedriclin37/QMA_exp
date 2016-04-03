@@ -107,7 +107,7 @@
 \newcommand\gappedsucc{\textit{Gapped Succinct Matrix Singularity}}
 \newcommand\preciselh{\textit{Precise Local Hamiltonian}}
 \newcommand\preciseklh{\textit{Precise }$k$\textit{-Local Hamiltonian}}
-\newcommand\preciseilh{\textit{Precise Local Hamiltonian}}
+\newcommand\preciseilh[1]{\textit{Precise }\ensuremath{#1}\textit{-Local Hamiltonian}}
 \newcommand\matrixinvert[1]{{\ensuremath{#1}}\textit{-Well-conditioned Matrix Inversion}}
 \newcommand\spechamiltonian[1]{#1\textit{-Succinct Hamiltonian}}
 \newcommand\qca[1]{#1\textit{-Quantum Circuit Acceptance}}
@@ -715,8 +715,14 @@ Finally, we end with two results particular to the polynomial space case. First 
 \end{proposition}
 The containment $\QMA(1,s) \subseteq \PSPACE$ is known \cite{ikw12}. We prove this proposition in Appendix~\ref{app:perfectcompleteness}.
 
-Our second result concerns the $\QMA$-complete Local Hamiltonian problem. We will show that if the promise gap is only exponentially small instead of polynomially small, the problem becomes $\PSPACE$-complete:
-
+Our second result concerns the $\QMA$-complete Local Hamiltonian problem. We consider the following variant of the local Hamiltonian problem, where the promise gap is only exponentially small: 
+\begin{definition}[\preciseklh]
+Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_j\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
+\end{definition}
+Our result is that this problem is $\PSPACE$-complete:
+\begin{theorem}
+For any $3 \le k \le \mathcal{O}(\log(n))$, \preciseklh \ is $\QMAexp$-complete, and hence $\PSPACE$-complete.
+\end{theorem}
 We note that this can be seen as restricting $H$ in the $\spechamiltonian{\poly(n)}$ problem to be a local Hamiltonian; our result is that this problem remains $\PSPACE$-hard. For a proof, see Appendix \ref{app:localhamiltonian}.
 
 \section{Conclusion and Open Problems}
@@ -773,6 +779,32 @@ with $\ket{\varphi_{j1}} = \ket{0}_N\ket{1}$ and
 where $F_j$ index the nonzero entries in the $j$-th row. Recall that for any $j,\ell$, $H_{j\ell}=0$, $\pm 1/2$, or $1$, and hence we can take $X=1$. If we furthermore assume $d$ is a power of 2 (which we can always do by adding indices of zero entries to $F_j$), it is straightforward to see that both $S$ and $T$ can be implemented using just Hadamard gates and classical gates (Pauli-$X$, controlled-$X$, and Toffoli gates). Therefore $U$ can be exactly implemented in any gateset that allows Hadamard gates and classical gates to be implemented exactly.
 
 \section{Precise Local Hamiltonian Problem}\label{app:localhamiltonian}
-\wf{TODO: fill this in!}
+Recall the following definition:
+\begin{definition}[\preciseklh]
+Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_j\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
+\end{definition}
+In this section we will prove the following:
+\begin{theorem}
+For any $3 \le k \le \mathcal{O}(\log(n))$, \preciseklh \ is $\QMAexp$-complete, and hence $\PSPACE$-complete.
+\end{theorem}
+\begin{proof}
+This proof follows straightforwardly by adapting the proof of \cite{ksv02} and \cite{kr03}. The proof of containment in $\QMAexp$ is identical to the containment of the usual Local Hamiltonian problem in $\QMA$; see \cite{ksv02} for details.
+
+To show $\QMAexp$-hardness, we note that for a $\QMA$-verification procedure with $T$ gates, completeness $c$ and soundness $s$, \cite{kr03} reduces this to a 3-local Hamiltonian with lowest eigenvalue no more than $(1-c) / (T+1)$ in the YES case, or no less than $(1-s) / T^3$ in the NO case. For this to specify a valid \preciselh \ problem we need that
+\begin{equation} \label{eq:preciselh_condition}
+\frac{1-s}{T^3} - \frac{1-c}{T+1} > 2^{-\poly(n)}.
+\end{equation}
+Recalling that we showed that perfect completeness can be assumed for $\QMAexp$-hard problems, we can take $c=1$, $s = 1-2^{-\poly(n)}$ and the above inequality trivially holds.
+%Fortunately, there are indeed values of $c$ and $s$ that satisfy the above inequality and can still specify $\QMAexp$-hard problems. To see this, we recall the proof of Lemma \ref{lem:qmaexp protocol}: there it was shown that any problem in $\PSPACE$ can be reduced to a $\QMAexp$ problem with soundness and completeness
+%\begin{equation}
+%1-c = \epsilon,\quad 1 - s = -\epsilon + 2^{-g'(n)}
+%\end{equation}
+%for some polynomial $g'(n)$ depending on the problem, and any $\epsilon = 2^{-\poly(n)}$ of our choice. The number of operations for that protocol is upper bounded by $T \le h(n,\log (1/\epsilon))$ for some polynomial $h(x,y)$. Now we can pick $\epsilon$ to be a small enough inverse exponential function such that
+%\begin{equation}
+%\epsilon (T^2+1) \le \epsilon [h^2(n,\log(1/\epsilon)) +1] < 2^{-g'(n)} 
+%\end{equation}
+%holds; this then implies the inequality \ref{eq:preciselh_condition}. 
+Hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
+\end{proof}
 
 \end{document}
