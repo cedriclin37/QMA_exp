@@ -722,7 +722,7 @@ Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref
 \begin{corollary} $\QMAexp=\PSPACE$. \end{corollary}
 
 Finally, we end with two results particular to the polynomial space case. First of all, in the equality $\QMAexp=\PSPACE$, we can actually achieve perfect completeness ($c=1$) for the $\QMA$ proof protocol. Moreover in the perfect completeness case there is no requirement that $c-s = 2^{-\poly}$:
-\begin{proposition} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
+\begin{proposition} \label{prop: perfect completeness} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
 \[
 \PSPACE = \QMA(1,1-2^{-\poly}) = \bigcup_{s \in [0,1)}\QMA(1,s).
 \]
@@ -734,7 +734,7 @@ Our second result concerns the $\QMA$-complete Local Hamiltonian problem. We con
 Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_j\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
 \end{definition}
 Our result is that this problem is $\PSPACE$-complete:
-\begin{theorem}
+\begin{theorem} \label{thm: precise local hamiltonian}
 For any $3 \le k \le \mathcal{O}(\log(n))$, \preciseklh \ is $\QMAexp$-complete, and hence $\PSPACE$-complete.
 \end{theorem}
 We note that this can be seen as restricting $H$ in the $\spechamiltonian{\poly(n)}$ problem to be a local Hamiltonian; our result is that this problem remains $\PSPACE$-hard. For a proof, see Appendix \ref{app:localhamiltonian}.
@@ -814,17 +814,14 @@ To show $\QMAexp$-hardness, we note that for a $\QMA$-verification procedure wit
 \begin{equation} \label{eq:preciselh_condition}
 \frac{1-s}{T^3} - \frac{1-c}{T+1} > 2^{-\poly(n)}.
 \end{equation}
-Recalling that we showed that perfect completeness can be assumed for $\QMAexp$-hard problems, we can take $c=1$, $s = 1-2^{-\poly(n)}$ and the above inequality trivially holds.
-%Fortunately, there are indeed values of $c$ and $s$ that satisfy the above inequality and can still specify $\QMAexp$-hard problems. To see this, we recall the proof of Lemma \ref{lem:qmaexp protocol}: there it was shown that any problem in $\PSPACE$ can be reduced to a $\QMAexp$ problem with soundness and completeness
-%\begin{equation}
-%1-c = \epsilon,\quad 1 - s = -\epsilon + 2^{-g'(n)}
-%\end{equation}
-%for some polynomial $g'(n)$ depending on the problem, and any $\epsilon = 2^{-\poly(n)}$ of our choice. The number of operations for that protocol is upper bounded by $T \le h(n,\log (1/\epsilon))$ for some polynomial $h(x,y)$. Now we can pick $\epsilon$ to be a small enough inverse exponential function such that
-%\begin{equation}
-%\epsilon (T^2+1) \le \epsilon [h^2(n,\log(1/\epsilon)) +1] < 2^{-g'(n)} 
-%\end{equation}
-%holds; this then implies the inequality \ref{eq:preciselh_condition}. 
-Hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
+Recalling that we showed that perfect completeness can be assumed for $\QMAexp$-hard problems, we can take $c=1$, $s = 1-2^{-\poly(n)}$ and the above inequality trivially holds. Hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
 \end{proof}
-
+In fact, even just testing whether a $k$-Local Hamiltonian is frustration-free is $\PSPACE$-complete: \begin{definition} [\emph{Frustration-Free $k$-Local Hamiltonian}] Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$, each term $H_j$ is positive semidefinite, and $\|H_j\| \le \poly(n)$. Output 1 if the smallest eigenvalue of $H$ is zero, and output 0 otherwise.
+\end{definition}
+\begin{theorem}
+Frustration-Free $k$-Local Hamiltonian is $\PSPACE$-complete.
+\end{theorem}
+\begin{proof}
+The containment in $\PSPACE$ follows from the proof of the containment of the usual Local Hamiltonian problem in $\QMA$ \cite{ksv02}, along with Proposition \ref{prop: perfect completeness}. $\PSPACE$-hardness follows from the proof of Theorem \ref{thm: precise local hamiltonian}, by taking $c=1$ in the proof.
+\end{proof}
 \end{document}
