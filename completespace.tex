@@ -268,7 +268,7 @@ This result improves upon Ta-Shma's result \cite{tashma} in two ways. First, unl
 
 In addition, we show that the problem of inverting well-conditioned matrices is hard for unitary quantum logspace under $\Logspace$-reductions. In other words, one cannot show that well-conditioned matrices are invertible in $\Logspace$ unless one also shows that $\Logspace=\unitaryBQL$, which seems quite unlikely.
 
-Further, since it is straightforward to see that Well-conditioned Matrix Inversion reduces to Integer Matrix Inversion, we can use our result to obtain a direct proof that $\unitaryBQL\subseteq\DET$, which was previously known indirectly via the containments $\unitaryBQL\subseteq\PLclass\subseteq\DET$ \cite{Watrous03,Borodin84}.
+Furthermore, since it is straightforward to see that Well-conditioned Matrix Inversion reduces to Integer Matrix Inversion, we can use our result to obtain a direct proof that $\unitaryBQL\subseteq\DET$, which was previously known indirectly via the containments $\unitaryBQL\subseteq\PLclass\subseteq\DET$ \cite{Watrous03,Borodin84}.
 
 %\cl{Maybe add a discussion on matchgates and determinants.}
 %When $k(n)=\bigoh(\log{n})$ this result has an interesting interpretation: one cannot show that well-conditioned matrices are invertible in solvable in classical $\Logspace$ unless one also shows that classical $\Logspace$ equals unitary quantum $\Logspace$, which seems quite unlikely.
@@ -353,7 +353,7 @@ Here $c$ and $s$ are computable in classical $\bigoh(t(n))$-time and $\bigoh(k(n
 \end{definition}
 
 \subsection{Other stuff}
-We will frequently use the following definition of \emph{efficient encodings} of matrices:
+We use the following definition of \emph{efficient encodings} of matrices:
 \begin{definition}\label{def: efficient encoding}Let $M$ be a $2^{k} \times 2^{k}$ matrix, and $\mathcal{A}$ be a classical algorithm (e.g. a Turing machine) specified using $n$ bits. We say that $\mathcal{A}$ is an \emph{efficient encoding} of $M$ if on input $i\in\{0,1\}^k$, $\mathcal{C}$ outputs the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k)$ workspace (here as usual the size of the output is not counted in the workspace). Note that as a consequence $M$ has at most $\poly(n)$ nonzero entries in each row.
 \end{definition}
 Frequently in this paper we will specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
@@ -395,13 +395,12 @@ The proof of this lemma is essentially contained in the proof of \cite[Theorem~6
 
 
 The proof idea for Theorem \ref{thm: matrix inversion alg} is to use amplitude amplification to obtain the state $\ket{0}_{out} \otimes \ket{\psi_b}$, and also generating an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$. (This idea is already present in the work of Nagaj et al. for QMA gap amplification \cite{nwz11}, or the Oblivious Amplitude Amplification technique in \cite{berry14,bccks15,berry15}.) Specifically, consider the two projectors:
-\begin{align}
-\Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
-\Pi_1 &= W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H.
-\end{align}
+\begin{equation}
+\Pi_0 = \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b}, \quad \Pi_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H.
+\end{equation}
 $\Pi_0$ projects onto the initial subspace, while $\Pi_1$ projects onto the initial states that would be accepted by the final measurement. By an argument similar to Grover's algorithm, if we implement the rotation $R=-(I-2\Pi_0)(I-2\Pi_1)$ $\bigoh (1/\alpha)$ times we will generate an output state with constant overlap with $\ket{0}_{out} \otimes \ket{\psi_b}$. $\alpha$ can be estimated by performing phase estimation on the operator $R$.
 
-The above argument will show how to do the first and second tasks listed in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can simply choose $\Pi'_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will allow us to give an estimate for $|\bra{a}H^{-1}\ket{b}|$. For the full proof, see Appendix \ref{app: matrix inversion alg}.
+The above argument will show how to do the first and second tasks listed in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can choose $\Pi'_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will give an estimate for $|\bra{a}H^{-1}\ket{b}|$. For the full proof, see Appendix \ref{app: matrix inversion alg}.
 
 \subsection{$\matrixinvert{k(n)}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: matrix inversion hard}
 We will start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$:
@@ -417,7 +416,7 @@ We will start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$
 $\matrixinvert{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical reductions computable in polynomial time and $\bigoh (k)$ space.
 \end{theorem}
 \begin{proof}
-Our proof proceeds as in \cite{HHL}.  We will show that $\matrixinvert{k(n)}$ is as hard as $\qca{k(n)}$.  Given an instance of $\qca{k(n)}$, i.e., a circuit acting on $k(n)$ qubits, $Q=U_TU_{T-1}\cdots U_1$ with $T = 2^{\mathcal{O}(k(n))}$, define the following unitary of dimension $3T2^k$:
+Our proof proceeds as in \cite{HHL}.  We will show that $\matrixinvert{k(n)}$ is as hard as $\qca{k(n)}$.  Given an instance of the latter, i.e., a circuit on $k(n)$ qubits, $Q=U_TU_{T-1}\cdots U_1$ with $T = 2^{\mathcal{O}(k(n))}$, define the following unitary of dimension $3T2^k$:
 \[U=\sum_{t=1}^{T}|t+1\rangle\langle t|\otimes U_t+|t+T+1\rangle\langle t+T|\otimes I+|t+2T+1\bmod{3T}\rangle\langle t+2T|\otimes U_{3T+1-t}^{\dagger}\]	
 Crucially, note that for any $t$ in the range $[T+1,2T]$ and any state $|\psi\rangle$ on $k(n)$ qubits: 
 \begin{equation}\label{eqn:fullclock}
@@ -438,11 +437,12 @@ H=\begin{bmatrix}
    \left(I-Ue^{-1/T}\right)^{-1} &  0
 \end{bmatrix}
 \end{equation}
-$\left(I-Ue^{-1/T}\right)^{-1}$ is just the power series $\sum_{j=0}^\infty U^j e^{-j/T}$. Therefore for any fixed $t \in [0,3T-1]$,
+$\left(I-Ue^{-1/T}\right)^{-1}$ is just the power series $\sum_{j=0}^\infty U^j e^{-j/T}=\frac{1}{1-e^{-3}}\sum_{j=0}^{3T-1} U^{j} e^{-j/T}$, where we've used $U^{3T}=1$. Therefore for any fixed $t \in [0,3T-1]$,
  \begin{align}
 \langle\zero|\langle t+1|\left(I-Ue^{-1/T}\right)^{-1}|1\rangle|\zero\rangle
-&=\langle\zero|\langle t+1|\left(\sum_{j=0}^\infty U^j e^{-j/T}\right)|1\rangle|\zero\rangle \\
-&= \left( \sum_{x=0}^\infty e^{-3jT/T} \right) \langle\zero|\langle t+1|\left(\sum_{j'=0}^{3T-1} U^{j'} e^{-j'/T}\right)|1\rangle|\zero\rangle
+%&=\langle\zero|\langle t+1|\left(\sum_{j=0}^\infty U^j e^{-j/T}\right)|1\rangle|\zero\rangle \\
+%&= \left( \sum_{x=0}^\infty e^{-3jT/T} \right) 
+&= \frac{1}{1-e^{-3}}\langle\zero|\langle t+1|\left(\sum_{j'=0}^{3T-1} U^{j'} e^{-j'/T}\right)|1\rangle|\zero\rangle
 \end{align}
 which is a particular entry in $H^{-1}$. In the second line we've used $j = 3Tx + j'$ for some integers $x$ and $j' \in [0,3T-1]$, and used that $U^{3T}=I$.  For any $t \in [T+1,2T]$, as a consequence of Equation \ref{eqn:fullclock} the above quantity equals
 \begin{equation}
@@ -457,7 +457,7 @@ In particular, an estimation of this entry of $H^{-1}$ will solve \qca{k(n)}.
 %\begin{definition}[$\spechamiltonian{k(n)}$ problem]
 %Given as input is the size-$n$ efficient encoding of a $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 %\end{definition}
-We will now prove Theorem \ref{thm: spechamiltonian}; this gives an alternate characterization of unitary quantum space via the complete problem $\spechamiltonian{k(n)}$ (see Definition \ref{def: spechamiltonian}). In the process we will show an equivalence with a QMA complete class.
+We will now prove Theorem \ref{thm: spechamiltonian}; this gives an alternate characterization of unitary quantum space via the complete problem $\spechamiltonian{k(n)}$ (see Definition \ref{def: spechamiltonian}). In the process we will show an equivalence with a suitably defined $\QMA$ protocol.
 %\subsection{$\spechamiltonian{k(n)}$ is in $\unitaryBQSPACE{k(n)}$}
 %We show the main result of this section by proving first, in Section \ref{subsec:specham-in-bddqma}, that $\spechamiltonian{k(n)}$ is in $k(n)$-Space-bounded $\QMAexp$ and then in Section \ref{subsec:bddqma-in-bqspace} that $k(n)$-Space-bounded $\QMAexp$ is in $\unitaryBQSPACE{k(n)}$.
 \subsection{$\spechamiltonian{k(n)}$ is in $k(n)$-Space-bounded $\QMAexp$}\label{subsec:specham-in-bddqma}
@@ -469,16 +469,17 @@ Our strategy is to simulate the operator $e^{-iHt}$, and then use a stripped-dow
 \begin{theorem}[\cite{berry14,bccks15,berry15}] \label{thm:ham_sim}
 Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
 \end{theorem}
-While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Note that we have an upper bound for the maximum eigenvalue of $H$, $\|H\|$:
-\begin{remark}
-Suppose a matrix $H$ has at most $n$ nonzero entries per row, each of which is no more than $\|H\|_{max}$ in absolute value. Then $\| H \| \le n\|H\|_{max}$.
-\end{remark}
+While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Also note that the maximum eigenvalue of $H$, $\|H\|$, satisfies $\|H\| \le \poly(n) \|H\|_{max}$.
+%\begin{remark}
+%Suppose a matrix $H$ has at most $n$ nonzero entries per row, each of which is no more than $\|H\|_{max}$ in absolute value. Then $\| H \| \le n\|H\|_{max}$.
+%\end{remark}
 \begin{proof}[Proof of Theorem \ref{lem:qma protocol}]
-We are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, and it is promised that the smallest eigenvalue $\lambda_{min}$ of $H$ is either  at most $a$ or at least $b$. Merlin would like to convince us that $\lambda_{min} \le a$; he will send us a purported $k$-qubit eigenstate $\ket{\psi}$ of $H$ with eigenvalue $\lambda_{min}$. We will carry out a stripped-down version of phase estimation on $\exp(-iHt)$ acting on $\ket{\psi}$ to decide, with exponentially small completeness-soundness gap, whether Merlin is telling the truth. Let us choose $t = \pi / (n\|H\|_{max}) \le \pi / \|H\|$; then all eigenvalues of $Ht$ lie in the range $[0,\pi]$, and the output of phase estimation will be unambiguous.
+We are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, and it is promised that the smallest eigenvalue $\lambda_{min}$ of $H$ is either  at most $a$ or at least $b$. Merlin would like to convince us that $\lambda_{min} \le a$; he will send us a purported $k$-qubit eigenstate $\ket{\psi}$ of $H$ with eigenvalue $\lambda_{min}$. We will carry out a stripped-down version of phase estimation on $\exp(-iHt)$ acting on $\ket{\psi}$ to decide, with exponentially small completeness-soundness gap, whether Merlin is telling the truth. Let us choose $t = \pi / (\poly(n)\|H\|_{max}) \le \pi / \|H\|$; then all eigenvalues of $Ht$ lie in the range $[0,\pi]$, and the output of phase estimation will be unambiguous.
 
 To implement phase estimation, we first need to be able to implement $\exp(-iHt)$ efficiently and to high precision. This is what Theorem \ref{thm:ham_sim} gives us: we can implement $\exp(-iHt)$ up to error $\epsilon = 2^{-\Theta(k(n))}$ using only a polynomial number of operations, for any choice of $\epsilon$.
 
-Now to use phase estimation to distinguish the phase up to exponential precision, we would normally require exponentially many operations in the usual phase estimation routine. Instead, we will simply do phase estimation with one bit:
+Now %to use phase estimation to distinguish the phase up to exponential precision, we would normally require exponentially many operations in the usual phase estimation routine. Instead, 
+we will simply perform phase estimation with one bit of precision:
 \begin{align} \label{circ: poor man phase estimation}
 &\Qcircuit @C=1em @R=.7em {
 \lstick{\ket{0}}& \gate{H} & \ctrl{1} & \gate{H} & \rstick{\frac{1+e^{-i\lambda t}}{2}\ket{0} +\frac{1-e^{-i\lambda t}}{2}\ket{1} } \qw \\
@@ -515,10 +516,10 @@ Define the projectors:
 \begin{equation}
 \Pi_0 = I_m \otimes \ket{0^k}\bra{0^k}, \quad \Pi_1 = V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
 \end{equation}
-and the corresponding reflections:
-\begin{equation}
-R_0 = 2\Pi_0 - I, \quad R_1 = 2\Pi_1 - I.
-\end{equation}
+and the corresponding reflections
+%\begin{equation}
+$R_0 = 2\Pi_0 - I, R_1 = 2\Pi_1 - I$.
+%\end{equation}
 Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
 Now consider the following procedure:
 \begin{compactenum}
