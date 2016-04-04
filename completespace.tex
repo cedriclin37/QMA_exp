@@ -325,7 +325,7 @@ Furthermore, we require $c$ and $s$ to be computable in classical $\bigoh(k(n))$
 %For the purposes of this work, we will demand that the space bound $k(n)$ is at least $\bigoh(\log{n})$ and no more than $2^{\poly(n)}$.  
 \end{definition}
 
-The bound $T=2^{\mathcal{O}(k)}$ on the circuit size comes about because any classical Turing machine generating $Q_x$ using space $\bigoh(k(|x|))$ has at most $2^{\mathcal{O}(k)}$ configurations. We note that $2^{\mathcal{O}(k)}$ gates suffice to approximate any gate on $\bigoh(k)$ qubits to high accuracy (see e.g. the universality construction in \cite{nc00}). The $\poly(|x|)$ time bound on the classical control can be assumed without loss of generality; see Appendix \ref{app: space bounded} for a fuller discussion.
+The bound $T=2^{\mathcal{O}(k)}$ on the circuit size comes from that any classical Turing machine generating $Q_x$ using space $\bigoh(k(|x|))$ has at most $2^{\mathcal{O}(k)}$ configurations. We note that $2^{\mathcal{O}(k)}$ gates suffice to approximate any gate on $\bigoh(k)$ qubits to high accuracy (see e.g. \cite[Chapter~4]{nc00}). The $\poly(|x|)$ time bound on the classical control can be assumed WLOG; see Appendix \ref{app: space bounded} for details.
 
 \begin{definition} $\BQSPACE[k]=\QSPACE[k](2/3,1/3)$.\end{definition}
 %\begin{definition}$\PQSPACE[k]=\QSPACE[k](1/2,1/2)$.\end{definition}
@@ -358,7 +358,7 @@ We will frequently use the following definition of \emph{efficient encodings} of
 \end{definition}
 Frequently in this paper we will specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
 
-Finally, we will frequently be assuming the existence of  algorithms that compute some common functions on $n$-bit numbers, as such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}. We will use these algorithms implicitly for the rest of the paper\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we only use the $\bigoh (\log{n})$ upper bound.}.
+Finally, we will frequently be assuming the existence of  algorithms that compute some common functions on $n$-bit numbers, such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}. We will use these algorithms implicitly for the rest of the paper\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we only use the $\bigoh (\log{n})$ upper bound.}.
 
 %%Bill's note: End of preliminary section
 \section{Characterization 1: Matrix Inversion}
@@ -377,7 +377,7 @@ Note that if intermediate measurements were allowed instead, then in the case $k
 \begin{corollary}
 $\matrixinvert{k(n)} \in \unitaryBQSPACE{k(n)}$.
 \end{corollary}
-In fact our algorithm is much stronger: to solve $\matrixinvert{k(n)}$ we merely need to approximation $|\bra{s}H^{-1}\ket{t}|$ to constant precision, while Theorem \ref{thm: matrix inversion alg} actually gives an approximation to precision $2^{-\bigoh (k)}$ in $\bigoh (k(n))$ unitary quantum space. Moreover our algorithm does not require $s$ and $t$ to be computational basis states.
+In fact our algorithm is much stronger: to solve $\matrixinvert{k(n)}$ we merely need to approximate $|\bra{s}H^{-1}\ket{t}|$ to constant precision, while Theorem \ref{thm: matrix inversion alg} actually gives an approximation to precision $2^{-\bigoh (k)}$ in $\bigoh (k(n))$ unitary quantum space. Moreover our algorithm does not require $s$ and $t$ to be computational basis states.
 
 We note that we can modify our definition of unitary quantum space-bounded classes to include computing functions, for instance by adding a write-only one-way output tape of qubits to the Turing machine (see the discussion in Appendix \ref{app: space bounded}), that are all measured at the very end of the computation. The error reduction result (Corollary \ref{obvious2}) later in our work allows the total error can be reasonably controlled. With such a modification we can compute the whole matrix inverse in unitary quantum logspace. We will not pursue this modified model further in this work.
 %\wf{We should also point out that our result scales for non-logarithmic space bounds, where Ta-Shma's does not}
@@ -467,7 +467,7 @@ $\spechamiltonian{k(n)}$ is contained in $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k(
 \end{theorem}
 Our strategy will essentially be to simulate the time evolution of the Hamiltonian $e^{-iHt}$ using known simulation methods, and then use a stripped-down version of phase estimation to estimate an eigenvalue of $H$. We first note the following result for sparse matrix simulation:
 \begin{theorem}[\cite{berry14,bccks15,berry15}] \label{thm:ham_sim}
-Given as input is the size-$n$ succinct encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
+Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
 \end{theorem}
 While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Also note that we can upper bound the maximum eigenvalue of $H$, $\|H\|$, by its max with the following observation:
 \begin{remark}
