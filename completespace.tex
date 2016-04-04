@@ -243,7 +243,7 @@ In this work we will study unitary quantum space-bounded classes - those problem
 
 In the following discussion, $\unitaryBQSPACE{k(n)}$ refers to the class of problems solvable with bounded error by a quantum algorithm running in $\mathcal{O}(k(n))$; the subscript $\Unitary$ indicates that the algorithm is unitary, i.e. employs no intermediate measurements.
 \subsection{Inverting well-conditioned matrices}
-Matrix Inversion is one of the most important and ubiquitous computational problems.  The problem of inverting integer matrices is complete for $\DET$, the class of functions reducible in $\Logspace$ (i.e., in deterministic space $\bigoh(\log{n})$) to computing the determinant of an integer matrix, which can be computed in deterministic $\bigoh(\log^2{n})$ space \cite{berkowitz, cook}.  It has long been a major question in computational complexity to understand if Integer Matrix Inversion can be solved in $\Logspace$, which would imply that $\Logspace=\DET$.
+Matrix Inversion is one of the most important and ubiquitous computational problems.  The problem of inverting integer matrices is complete for $\DET$, the class of functions reducible in $\Logspace$ (i.e., in deterministic space $\bigoh(\log{n})$) to computing the determinant of an integer matrix, which is contained in deterministic $\bigoh(\log^2{n})$ space \cite{berkowitz, cook}.  It has long been a major question in computational complexity to understand if Integer Matrix Inversion is in $\Logspace$, which would imply that $\Logspace=\sf{NL}=\DET$.
 
 Recently, Ta-Shma, building on work of Harrow, Hassidim, and Lloyd, showed that inverting a well-conditioned $n \times n$ matrix can be approximated by a quantum algorithm using $O(\log n)$ space, but with intermediate measurements \cite{tashma,HHL}. This gives a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.
 
@@ -252,8 +252,6 @@ Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}
  or $|H^{-1}(s,t)|\leq a$ for some constants $0 \le a < b \le 1$; determine which is the case.
  \end{definition}
 For a definition of efficient encoding, see Definition \ref{def: efficient encoding}. As a consequence of our definition, the matrix will have at most $\poly(n)$ nonzero entries in each row.
-
-
 %Here by a size-$n$ efficient encoding, we mean a classical procedure (e.g. Turing machine) specified using $n$ bits, that on input $i \in \{0,1\}^{k(n)}$ outputs the locations and contents of the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k(n))$ workspace. As a consequence there are at most $\poly(n)$ nonzero entries in each row.
 %\footnote{We note that for any explicit $m \times m$ matrix it is not difficult to construct a circuit encoding of size $n = \poly(m)$ that runs in $\bigoh(k(n)) = \bigoh(\log(n))$ space. Hence the requirement that there exists a circuit encoding is vacuous for $k(n) = \bigoh(\log(n))$.} 
 We show the following:
@@ -261,7 +259,7 @@ We show the following:
 \matrixinvert{\mathcal{O}(k(n))} is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
 \end{theorem}
 
-Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. We also note that our algorithm (Theorem \ref{thm: matrix inversion alg}) actually approximates the matrix entry $|H^{-1}(s,t)|$ to precision $2^{-\mathcal{O}(k)}$. In particular, if we take $k = \log n$ we get the following:
+Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. We also note that our algorithm (Theorem \ref{thm: matrix inversion alg}) actually approximates the matrix entry $|H^{-1}(s,t)|$ to precision $2^{-\mathcal{O}(k)}$. In particular, if we take $k = \bigoh(\log n)$ we get the following:
 \begin{corollary}
 The problem of approximating, to $1/\poly(n)$ precision, an entry of the inverse of a PSD $n \times n$ matrix with condition number at most $\poly(n)$ is $\unitaryBQL$-complete under $\Logspace$-reductions.
 \end{corollary}
@@ -297,7 +295,7 @@ We also show that the \emph{local} Hamiltonian problem is $\PSPACE$-complete whe
 
 Another consequence concerns Projected Entangled Pair States, or PEPS, a natural extension of matrix product states to two and higher dimensions, which can be described as the ground state of certain frustration-free local Hamiltonians \cite{vc04}. A characterization of the computational power of PEPS was given in \cite{swv07}, and can be summarized as follows: let $O_{PEPS}$ be a quantum oracle that, given the description of a PEPS, outputs the PEPS (so the output is quantum). Then $\BQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PostBQP = \PP$, where (following Aaronson \cite{aaronson05}) the subscript  denotes that only classical nonadaptive queries to the oracle are allowed. Moreover, let $\PQP$ stand for the set of problems solvable by a quantum computer with \emph{unbounded error}; then it can be straightforwardly shown that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$ as well (see Appendix \ref{app:peps}).
 
-On the other hand, suppose we have an oracle $O_{LH}$ that given the description of a local Hamiltonian, outputs a ground state of the Hamiltonian. Then our results show that $\QMAexp = \PSPACE \subseteq \PQP^{O_{LH}}_{\parallel,\text{classical}}$. This shows that, at least in the setting of unbounded-error quantum computation, PEPS do not capture the full computational complexity of general local Hamiltonian ground states unless $\PP=\PSPACE$. We leave open the problem of determining the complexity of $\BQP^{O_{LH}}_{\parallel,\text{classical}}$.
+On the other hand, suppose we have an oracle $O_{LH}$ that given the description of a local Hamiltonian, outputs a ground state of the Hamiltonian. Then our results show that $\QMAexp = \PSPACE \subseteq \PQP^{O_{LH}}_{\parallel,\text{classical}}$. This shows that in the setting of unbounded-error quantum computation, PEPS do not capture the full computational complexity of general local Hamiltonian ground states unless $\PP=\PSPACE$. We leave open the problem of determining the complexity of $\BQP^{O_{LH}}_{\parallel,\text{classical}}$.
 
 Lastly, we are able to strengthen our characterization to show that $\QMAexp$ contains $\PSPACE$ (see Appendix \ref{app:perfectcompleteness}), even when restricted to having perfect completeness.  This allows us to prove that testing if a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem.  
  \section{Preliminaries}
@@ -345,8 +343,8 @@ Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
 \begin{equation}
 \left(\bra{\psi}\otimes \bra{0^k}\right) V^\dagger_x \ket{1}\bra{1}_{out} V_x \left(\ket{\psi}\otimes \ket{0^k}\right) \le s.
 \end{equation}
-As before, $out$ denotes a single qubit we measure at the end of the computation; no intermediate measurements are allowed.  
-Here $c$ and $s$ are computable in $\bigoh(t(n))$-time and $\bigoh(k(n)+m(n))$-space.
+$out$ denotes a single qubit measured at the end of the computation; no intermediate measurements are allowed.  
+Here $c$ and $s$ are computable in classical $\bigoh(t(n))$-time and $\bigoh(k(n)+m(n))$-space.
   \end{definition}
 
 \begin{definition} $\QMA=\bddQMA{\poly}{\poly}{\poly}{2/3}{1/3}$.
@@ -360,7 +358,7 @@ We will frequently use the following definition of \emph{efficient encodings} of
 \end{definition}
 Frequently in this paper we will specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
 
-Finally, we will frequently be assuming the existence of  algorithms that compute some common functions on $n$-bit numbers, as such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}. We will use these algorithms implicitly for the rest of the paper\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we will only use the $\bigoh (\log{n})$ upper bound.}.
+Finally, we will frequently be assuming the existence of  algorithms that compute some common functions on $n$-bit numbers, as such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}. We will use these algorithms implicitly for the rest of the paper\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we only use the $\bigoh (\log{n})$ upper bound.}.
 
 %%Bill's note: End of preliminary section
 \section{Characterization 1: Matrix Inversion}
@@ -381,7 +379,7 @@ $\matrixinvert{k(n)} \in \unitaryBQSPACE{k(n)}$.
 \end{corollary}
 In fact our algorithm is much stronger: to solve $\matrixinvert{k(n)}$ we merely need to approximation $|\bra{s}H^{-1}\ket{t}|$ to constant precision, while Theorem \ref{thm: matrix inversion alg} actually gives an approximation to precision $2^{-\bigoh (k)}$ in $\bigoh (k(n))$ unitary quantum space. Moreover our algorithm does not require $s$ and $t$ to be computational basis states.
 
-We note that we can modify our definition of unitary quantum space-bounded classes to include computing functions, for instance by adding a write-only one-way output tape of qubits to the Turing machine (see the discussion in Section \ref{sec: space bounded computation}), that are all measured at the very end of the computation. We also note that we have an error reduction result (Corollary \ref{obvious2}), so that the total error can be reasonably controlled. Under such a modification we can compute the whole matrix inverse in unitary quantum logspace. We will not pursue this modified model further in this work.
+We note that we can modify our definition of unitary quantum space-bounded classes to include computing functions, for instance by adding a write-only one-way output tape of qubits to the Turing machine (see the discussion in Appendix \ref{app: space bounded}), that are all measured at the very end of the computation. The error reduction result (Corollary \ref{obvious2}) later in our work allows the total error can be reasonably controlled. With such a modification we can compute the whole matrix inverse in unitary quantum logspace. We will not pursue this modified model further in this work.
 %\wf{We should also point out that our result scales for non-logarithmic space bounds, where Ta-Shma's does not}
 
 To prove Theorem \ref{thm: matrix inversion alg}, we first start out with the following lemma:
@@ -395,7 +393,7 @@ where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ke
 The proof of this lemma is essentially contained in the proof of \cite[Theorem~6.3]{tashma}, or can be obtained by combining \cite[Theorem~4.1]{tashma} with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}. The essential idea of the proof is to use phase estimation on $\exp(iA)$ to compute the eigenvalues $\lambda$ of the matrix $H$ into an auxilliary register; implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$; and finally uncompute the eigenvalues $\lambda$. Ta-Shma showed how to implement $\exp(iH)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general matrices with efficient encodings); alternatively the more recent sparse Hamiltonian simulation algorithms by Berry et al. has the same space requirement and is more time efficient (see e.g. \cite{bccks15}).
 
 
-The proof idea for Theorem \ref{thm: matrix inversion alg} is essentially to use amplitude amplification to obtain the state $\ket{0}_{out} \otimes \ket{\psi_b}$, in the process also generating an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$. To be more precise, we consider the two projectors:
+The proof idea for Theorem \ref{thm: matrix inversion alg} is to use amplitude amplification to obtain the state $\ket{0}_{out} \otimes \ket{\psi_b}$, and also generating an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$. (This idea is already present in the work of Nagaj et al. for QMA gap amplification \cite{nwz11}, or the Oblivious Amplitude Amplification technique in \cite{berry14,bccks15,berry15}.) Specifically, consider the two projectors:
 \begin{align}
 \Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
 \Pi_1 &= W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H.
@@ -412,7 +410,7 @@ We will start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$
 \begin{lemma} \label{lem: quantum circuit acceptance}
 	$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
 \end{lemma}
-\begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof in Appendix \ref{app:qca} for completeness.
+\begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We give a proof in Appendix \ref{app:qca} for completeness.
 \end{proof}
 \begin{theorem}
 $\matrixinvert{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical reductions computable in polynomial time and $\bigoh (k)$ space.
@@ -449,7 +447,7 @@ which is a particular entry in $H^{-1}$. In the second line we've used $j = 3Tx 
 \begin{equation}
 \frac{e^{-t/T}}{1-e^{-3}}\langle\zero|Q|\zero\rangle.
 \end{equation}
-In particular, given the ability to calculate this entry of $H^{-1}$ we are able to solve \qca{k(n)}.
+In particular, an estimation this entry of $H^{-1}$ gives a solution to \qca{k(n)}.
 \end{proof}
 
 %%Bill's Note: End of Matrix Inversion section
@@ -507,7 +505,7 @@ The results of this section have been independently obtained in \cite{fklmn16} a
 The proof will be broken up into two steps: we first show that we can reduce the error of these small-gap $\QMA$ protocols to exponentially small in the witness size, without substantially increasing the space or witness size. Then we show that guessing a random witness suffices to distinguish the YES and NO cases with sufficient probability.
 \subsubsection {In-place gap amplification of $\QMA$ protocols with phase estimation}
 We start out by proving the following lemma, which proves ``in-place'' gap amplification of $\QMA$ using phase estimation.
-This is very similar to Nagaj et. al's in-place gap amplification technique (see Lemma \ref{lem: gap amp 1} in Appendix \ref{app: gap amplification}), except they use less time but more space.
+This is very similar to Nagaj et. al's in-place gap amplification technique \cite{nwz11} (see Lemma \ref{lem: gap amp 1} in Appendix \ref{app: gap amplification}), except they use less time but more space.
 \begin{lemma} \label{lem: gap amp 2}
 For any functions $t,k,r>0$, 
 \[
