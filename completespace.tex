@@ -275,7 +275,7 @@ Further, since it is straightforward to see that Well-conditioned Matrix Inversi
 %\cl{Maybe add a discussion on matchgates and determinants.}
 %When $k(n)=\bigoh(\log{n})$ this result has an interesting interpretation: one cannot show that well-conditioned matrices are invertible in solvable in classical $\Logspace$ unless one also shows that classical $\Logspace$ equals unitary quantum $\Logspace$, which seems quite unlikely.
 \subsection{Matrix Eigenvalue problem}
-Our second result concerns a complete characterization of quantum space complexity via the following problem:
+Our second result completely characterizes quantum space complexity via the following problem:
 \begin{definition}[$\spechamiltonian{k(n)}$ problem]
 Given as input is the size-$n$ efficient encoding of a positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 \end{definition}
@@ -308,7 +308,6 @@ A \emph{quantum circuit} consists of a series of quantum gates each of which com
  For functions $f,g:\mathbb{N}\rightarrow\mathbb{N}$, we say a family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$ is \emph{$f$-time $g$-space uniformly generated} if there exists a deterministic classical Turing machine that on input $x\in\{0,1\}^n$ and $i>0$ outputs the $i$-th gate of $Q_x$ within time $f(n)$ and space $g(n)$ \cite{nc00}.  
  
 Our restriction to a specific gateset is without loss of generality, even for logarithmic space algorithms:  there exists a deterministic algorithm that given any unitary quantum gate $U$ and a parameter $\epsilon$, outputs a sequence of at most $\polylog({1/\epsilon})$ gates from any universal quantum gateset that approximates $U$ to precision $\epsilon$ in space $\bigoh({\log({1/\epsilon})})$ and time $\polylog({1/\epsilon})$ \cite{mw12}.  This improves the Solovay-Kitaev theorem, which guarantees a space bound of $\polylog(n)$; see e.g., \cite{nc00}.
- 
  %\begin{theorem}[\cite{mw12}]  For every universal set $S$ of unitary gates that is closed under adjoint, every language solvable by a bounded-error quantum %
 \subsection{Space-bounded computation} \label{sec: space bounded computation}
 For our model of unitary quantum space-bounded computation, we will consider a quantum system with purely classical control, because there are no intermediate quantum measurements to condition future operations on. Specifically, we use the following definition (see Appendix \ref{app: space bounded} for more details):
@@ -597,10 +596,10 @@ x\in L_{no} \Rightarrow \tr[Q_x]\le 2^m \cdot 2^{-(m+2)} = 1/4
 since the trace is the sum of the $2^m$ eigenvalues, each of which is at most $2^{-(m+2)}$. 
 
 Therefore our problem reduces to determining whether the trace of $Q_x$ is at least $3/4$ or at most $1/4$.  Now we will show that using the totally mixed state $2^{-m}I_m$ (alternatively, a random computational basis state) as the witness of the verification procedure encoded by $Q_x$, succeeds with the desired completeness and soundness bounds.  The acceptance probability is given by
-\begin{equation}
-\tr(Q_x 2^{-m}I_m) = 2^{-m} \tr(Q_x)
-\end{equation}
-which is at least $2^{-m} \cdot 3/4$ if $x\in L_{yes}$, and at most $2^{-m} \cdot 1/4$ if $x\in L_{no}$. Thus we have reduced our original problem $L$ to determining whether a quantum computation with \emph{no} witness, acting on $k+m$ qubits, accepts with probability at least $3/4 \cdot 2^{-m}$ or at most $s'=1/4 \cdot 2^{-m}$.
+%\begin{equation}
+$\tr(Q_x 2^{-m}I_m) = 2^{-m} \tr(Q_x)$,
+%\end{equation}
+which is at least $2^{-m} \cdot 3/4$ if $x\in L_{yes}$, and at most $2^{-m} \cdot 1/4$ if $x\in L_{no}$. Thus we have reduced the problem $L$ to determining if a quantum computation with \emph{no} witness, acting on $k+m$ qubits, accepts with probability at least $3/4 \cdot 2^{-m}$ or at most $s'=1/4 \cdot 2^{-m}$.
 \end{proof}
 We can finally finish the proof of Theorem \ref{thm: pspace upper bound}.
 \begin{proof}[Proof of Theorem \ref{thm: pspace upper bound}]
@@ -635,7 +634,6 @@ H_{prop} = \sum_{j=1}^T \frac{1}{2} \left[ - V_j \otimes \ket{j}\bra{j-1} - V_j^
 \end{equation}
 $H$ is a sparse matrix - in fact, there are only a constant number of nonzero terms in each row. Since each gate $V_{x,j}$ can be computed in classical polynomial time and $k(n)$ space, it follows that so can the nonzero entries of $H$. Moreover, let $\lambda_{min}$ be the minimum eigenvalue of $H$; then it was shown by Kitaev \cite{ksv02} that if $x \in L_{yes}$ then $\lambda_{min} \le a = (1-c)/(T+1)$, while if $x \in L_{no}$ then $\lambda_{min} \ge b = (1-s)/T^3$. Since $c = 1-1/T^3$ and $s = 1/T^3$ we see that $0 < b-a < 2^{-\mathcal{O}(k)}$. 
 \end{proof}
-
 Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref{thm:pqpspace}), we can use Theorem \ref{thm: pspace upper bound} to give us that $\QMAexp\subseteq\PSPACE$ while Theorem \ref{lem:qma protocol} together with Theorem \ref{thm: specham-hardness} give us the lower bound $\PSPACE\subseteq\QMAexp$.  Therefore, we have:
 \begin{corollary} $\QMAexp=\PSPACE$. \end{corollary}
 
