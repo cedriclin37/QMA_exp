@@ -283,7 +283,7 @@ For $\Omega(\log(n)) \le k(n) \le 2^{\poly(n)}$, $\spechamiltonian{\mathcal{O}(k
 \end{theorem}
 
 In the process, we also show the following equivalence between unitary quantum space-bounded computation and $\QMA$-proof systems:
-\begin{theorem}
+\begin{theorem} \label{thm: equivalence}
 $\unitaryBQSPACE{\mathcal{O}(k(n))}$ is equivalent to the class of problems characterized by having quantum Merlin Arthur proof systems running in polynomial time, $\mathcal{O}(k(n))$ witness size and space, and $2^{-\mathcal{O}(k(n))}$ completeness-soundness gap.
 \end{theorem}
 
@@ -311,7 +311,8 @@ Our restriction to a specific gateset is without loss of generality, even for lo
 For our model of unitary quantum space-bounded computation, we will consider a quantum system with purely classical control, because there are no intermediate quantum measurements to condition future operations on. Specifically, we use the following definition (see Appendix \ref{app: space bounded} for more details):
 
 \begin{definition} \label{def: qspace}
-A promise problem $L=(L_{YES},L_{NO})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
+Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le 2^{
+\poly(n)}$. A promise problem $L=(L_{YES},L_{NO})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
  If $x \in L_{yes}$:
 \begin{equation}
 \bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \ge c.
@@ -324,6 +325,9 @@ Here $out$ denotes a single qubit we measure at the end of the computation; no i
 Furthermore, we require $c$ and $s$ to be computable in classical $\bigoh(k(n))$-space.
 %For the purposes of this work, we will demand that the space bound $k(n)$ is at least $\bigoh(\log{n})$ and no more than $2^{\poly(n)}$.  
 \end{definition}
+
+For the rest of the paper we will always assume that $\Omega(\log(n)) \le k(n) \le 2^{
+\poly(n)}$.
 
 The bound $T=2^{\mathcal{O}(k)}$ on the circuit size comes from that any classical Turing machine generating $Q_x$ using space $\bigoh(k(|x|))$ has at most $2^{\mathcal{O}(k)}$ configurations. We note that $2^{\mathcal{O}(k)}$ gates suffice to approximate any gate on $\bigoh(k)$ qubits to high accuracy (see e.g. \cite[Chapter~4]{nc00}). The $\poly(|x|)$ time bound on the classical control can be assumed WLOG; see Appendix \ref{app: space bounded} for details.
 
@@ -627,7 +631,8 @@ H_{prop} = \sum_{j=1}^T \frac{1}{2} \left[ - V_j \otimes \ket{j}\bra{j-1} - V_j^
 \end{equation}
 $H$ is a sparse matrix - in fact, there are only a constant number of nonzero terms in each row. Since each gate $V_{x,j}$ can be computed in classical polynomial time and $k(n)$ space, it follows that so can the nonzero entries of $H$. Moreover, let $\lambda_{min}$ be the minimum eigenvalue of $H$; then it was shown by Kitaev \cite{ksv02} that if $x \in L_{yes}$ then $\lambda_{min} \le a = (1-c)/(T+1)$, while if $x \in L_{no}$ then $\lambda_{min} \ge b = (1-s)/T^3$. Since $c = 1-1/T^3$ and $s = 1/T^3$ we see that $0 < b-a < 2^{-\mathcal{O}(k)}$. 
 \end{proof}
-Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref{thm:pqpspace}), we can use Theorem \ref{thm: pspace upper bound} to give us that $\QMAexp\subseteq\PSPACE$ while Theorem \ref{lem:qma protocol} together with Theorem \ref{thm: specham-hardness} give us the lower bound $\PSPACE\subseteq\QMAexp$.  Therefore, we have:
+Notice that Theorems \ref{thm: spechamiltonian} and \ref{thm: equivalence} follow from Theorems \ref{lem:qma protocol}, \ref{thm: pspace upper bound}, and Theorem \ref{thm: specham-hardness}. In particular, considering the polynomial space case in Theorem \ref{thm: equivalence} gives the following corollary:
+%Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref{thm:pqpspace}), we can use Theorem \ref{thm: pspace upper bound} to give us that $\QMAexp\subseteq\PSPACE$ while Theorem \ref{lem:qma protocol} together with Theorem \ref{thm: specham-hardness} give us the lower bound $\PSPACE\subseteq\QMAexp$.  Therefore, we have:
 \begin{corollary} $\QMAexp=\PSPACE$. \end{corollary}
 
 Finally, we end with two results particular to the polynomial space case. First of all, in the equality $\QMAexp=\PSPACE$, we can actually achieve perfect completeness ($c=1$) for the $\QMA$ proof protocol. Moreover for perfect completeness we do not require that $c-s = 2^{-\poly}$:
@@ -639,7 +644,7 @@ Finally, we end with two results particular to the polynomial space case. First 
 The containment $\QMA(1,s) \subseteq \PSPACE$ is known \cite{ikw12}. We prove this proposition in Appendix~\ref{app:perfectcompleteness}.
 
 Our second result concerns the $\QMA$-complete Local Hamiltonian problem. We consider the variant of the local Hamiltonian problem where the promise gap is only exponentially small: 
-\begin{definition}[\preciseklh]
+\begin{definition}[\preciseklh]\label{def: precise local hamiltonian}
 Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_j\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
 \end{definition}
 Our result is that this problem is $\PSPACE$-complete:
@@ -677,7 +682,8 @@ Moreover, the $\mathcal{O}(k)$-space bounded classical Turing machine can be rep
 \begingroup
 \def\thedefinition{\ref{def: qspace}}
 \begin{definition}
-We say a promise problem $L=(L_{YES},L_{NO})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
+Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le 2^{
+\poly(n)}$. A promise problem $L=(L_{YES},L_{NO})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
  If $x \in L_{yes}$:
 \begin{equation}
 \bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \ge c.
@@ -693,8 +699,6 @@ Furthermore, we require $c$ and $s$ to be computable in classical $\bigoh(k(n))$
 \addtocounter{theorem}{-1}
 \endgroup
 
-\section{Proof sketch of $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$} \label{app:peps}
-Since $\PP \subseteq \BQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ \cite{swv07}, we only need to show that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PP$. In \cite{swv07} it was noted that all PEPS can be seen as the output of a quantum circuit followed by a postselected measurement. Therefore $\PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ corresponds to the problems that can be decided by a quantum circuit, followed by a postselected measurement (since the queries to $O_{PEPS}$ are classical and nonadaptive, we can compose them into one single postselection), followed by a measurement. In the YES case the measurement outputs 1 with probability at least $c$, whereas in the NO case the measurement outputs 1 with probability at most $s$, with $c > s$. The standard counting argument placing $\BQP$ inside $\PP$ then applies to this case as well; see for instance \cite[Propositions~2~and~3]{aaronson05}.
 \section{Achieving Perfect Completeness for $\QMAexp$}\label{app:perfectcompleteness}
 %\begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\revPSPACE$ (reversible polynomial space) if it can be decided by a polynomial space reversible Turing machine, i.e., a machine in which every configuration has at most one immediate predecessor.  	
 %\end{definition}
@@ -702,11 +706,17 @@ Since $\PP \subseteq \BQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PQP
 %\begin{theorem}[Bennett\cite{bennett89}]\label{thm:revpspace}$\revPSPACE=\PSPACE$.
 %\end{theorem}
 We now consider the problem of achieving prefect completeness for $\QMAexp$. Specifically, we will show the following:
+\begingroup
+\def\theproposition{\ref{prop: perfect completeness}}
 \begin{proposition} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
 \[
 \PSPACE = \QMA(1,1-2^{-\poly}) = \bigcup_{s \in [0,1)}\QMA(1,s).
 \]
 \end{proposition}
+\addtocounter{theorem}{-1}
+\endgroup
+
+
 Since $\PSPACE = \QMAexp$, this proposition shows that any $\QMAexp$ protocol can be reduced to a different $\QMAexp$ protocol with perfect completeness, i.e. in the YES case Arthur accepts Merlin's witness with probability 1. The reduction is rather roundabout, however, and it would be interesting to see if a more direct reduction can be found.
 
 The second equality follows from the first equality and the result by \cite{ikw12} that $\QMA(1,s) \subseteq \PSPACE$. We will therefore only prove the first equality.
@@ -737,13 +747,19 @@ where $F_j$ index the nonzero entries in the $j$-th row. Recall that for any $j,
 
 \section{Precise Local Hamiltonian Problem}\label{app:localhamiltonian}
 Recall the following definition:
+\begingroup
+\def\thedefinition{\ref{def: precise local hamiltonian}}
 \begin{definition}[\preciseklh]
 Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_j\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
 \end{definition}
+\endgroup
 In this section we will prove the following:
+\begingroup
+\def\thetheorem{\ref{thm: precise local hamiltonian}}
 \begin{theorem}
 For any $3 \le k \le \mathcal{O}(\log(n))$, \preciseklh \ is $\QMAexp$-complete, and hence $\PSPACE$-complete.
 \end{theorem}
+\endgroup
 \begin{proof}
 This proof follows straightforwardly by adapting the proof of \cite{ksv02} and \cite{kr03}. The proof of containment in $\QMAexp$ is identical to the containment of the usual Local Hamiltonian problem in $\QMA$; see \cite{ksv02} for details.
 
@@ -761,76 +777,6 @@ Frustration-Free $k$-Local Hamiltonian is $\PSPACE$-complete.
 \begin{proof}
 The containment in $\PSPACE$ follows from the proof of the containment of the usual Local Hamiltonian problem in $\QMA$ \cite{ksv02}, along with Proposition \ref{prop: perfect completeness}. $\PSPACE$-hardness follows from the proof of Theorem \ref{thm: precise local hamiltonian}, by taking $c=1$ in the proof.
 \end{proof}
-
-\section{$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard}\label{app:qca}
-\begingroup
-\def\thelemma{\ref{lem: quantum circuit acceptance}}
-\begin{lemma}
-$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
-\end{lemma}
-\addtocounter{theorem}{-1}
-\endgroup
-
-\begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof here for completeness.  Suppose we are given an $x\in \{0,1\}^n$ and would like to determine if $x\in L_{yes}$ for some $L=\{L_{yes},L_{no}\}\in\unitaryBQSPACE{k}$.  There is a quantum circuit on $k(n)$ qubits, $Q_x=U_TU_{T-1}\cdots U_1$ of size $T=2^{\mathcal{O}(k(n))}$ that decides $x$.  That is, 
-\begin{equation}
-Q_x|\zero\rangle = \sqrt{p_x} |1\rangle_{out}|\psi_x^1\rangle + \sqrt{1-p_x} |0\rangle_{out} |\psi_x^0\rangle.
-\end{equation}
-where $out$ indicates the designated output qubit, and $|\psi_x^1\rangle$, $|\psi_x^0\rangle$ are $(k-1)$-qubit states; $p_x$ is the probability that the computation accepts, so $p_x \ge 2/3$ if $x \in L_{yes}$ and $p_x \le 1/3$ if $x \in L_{no}$.
-
-We now describe a reduction which creates a related circuit $\tilde{Q}_x$ with a single matrix entry that is proportional to the acceptance probability of $Q_x$.  This new circuit $\tilde{Q}_x$ takes the same number of input qubits as $Q_x$ as well as an additional ancillary qubit.  $\tilde{Q}_x$ runs $Q_x$, then using a single CNOT gate copies the state of the output qubit to the ancillary qubit, flips the ancillary qubit, and finally applies the inverse, $Q_x^{\dagger}$, to the input qubits. It is straightforward to check that
-\begin{equation}
-\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle = p_x.
-\end{equation}
-Therefore knowing the single matrix entry $\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle$ is sufficient to decide if $x \in L_{yes}$. Moreover, $\tilde{Q}_x$ can be computed from $Q_x$ using polynomial time and $\mathcal{O}(k)$ space, and this completes the proof.
-\end{proof}
-
-\section{In-place gap amplification} \label{app: gap amplification}
-In this appendix we will prove Theorem \ref{thm: gap amp}. To do so we first start out with the following weaker result:
-\begin{lemma}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] \label{lem: gap amp 1}
-For any functions $t,k,r>0$, 
-\[
-\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
-\]
-\end{lemma}
-\begin{proof}
-	Let $L=(L_{yes}, L_{no})$ be a promise problem in $\QMA(c,s)$ and $\{V_x\}_{x\in\{0,1\}^*}$ the corresponding uniform family of verification circuits.
-Define the projectors:
-\begin{align}
-\Pi_0 &= I_m \otimes \ket{0^k}\bra{0^k} \\
-\Pi_1 &= V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
-\end{align}
-and the corresponding reflections:
-\begin{equation}
-R_0 = 2\Pi_0 - I, \quad R_1 = 2\Pi_1 - I.
-\end{equation}
-Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
-Now consider the following procedure:
-\begin{compactenum}
-\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with  precision $\mathcal{O}(c-s)$ and $1/16$ failure probability. 
-\item If the median of the $r$ results is at most $(\phi_{c}+\phi_{s})/2$, output YES; otherwise output NO.
-\end{compactenum}
-Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\mathcal{O}(c-s)$, can be implemented by a circuit of size $\mathcal{O}(rt/(c-s))$ using $\mathcal{O}(r\log[1/(c-s)])$ extra ancilla qubits. Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
-\end{proof}
-We can now prove Theorem \ref{thm: gap amp}, which we restate below:
-\begingroup
-\def\thetheorem{\ref{thm: gap amp}}
-\begin{theorem}
-For any functions $t,k,r>0$, 
-\[
-\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
-\]
-\end{theorem}
-\addtocounter{theorem}{-1}
-\endgroup
-
-\begin{proof}
-\begin{align}
-\bddQMA{t}{k}{m}{c}{s} &\subseteq \bddQMA{\mathcal{O}\left(\frac{t}{c-s}\right)}{\mathcal{O}\left(k+\log\left(\frac{1}{c-s}\right)\right)}{m}{3/4}{1/4}  \nonumber \\
-&\subseteq \bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}} \nonumber
-\end{align}
-where the first line follows by taking $r=2$ in Lemma \ref{lem: gap amp 2}, and the second line follows from Lemma~\ref{lem: gap amp 1}.
-\end{proof}
-
 \section{Proof that \matrixinvert{\bigoh(k(n)} $\in \unitaryBQSPACE{k(n)}$}\label{app: matrix inversion alg}
 
 \begingroup
@@ -909,5 +855,78 @@ Since $(\ket{0}\bra{0}_{out} \otimes I) W_H (\ket{0}^{\otimes \ell} \otimes \ket
 \end{equation}
 $\bra{v}\Pi_0\Pi_1\Pi_0\ket{v}$ can be estimated in the same way that $\alpha$ has been estimated. Recalling that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$ and $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, this allows us to estimate $|\bra{a} H^{-1} \ket{b}|$ to $\bigoh (\epsilon)$ precision.
 \end{proof}
+\section{In-place gap amplification} \label{app: gap amplification}
+In this appendix we will prove Theorem \ref{thm: gap amp}. To do so we first start out with the following weaker result:
+\begin{lemma}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] \label{lem: gap amp 1}
+For any functions $t,k,r>0$, 
+\[
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
+\]
+\end{lemma}
+\begin{proof}
+	Let $L=(L_{yes}, L_{no})$ be a promise problem in $\QMA(c,s)$ and $\{V_x\}_{x\in\{0,1\}^*}$ the corresponding uniform family of verification circuits.
+Define the projectors:
+\begin{align}
+\Pi_0 &= I_m \otimes \ket{0^k}\bra{0^k} \\
+\Pi_1 &= V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
+\end{align}
+and the corresponding reflections:
+\begin{equation}
+R_0 = 2\Pi_0 - I, \quad R_1 = 2\Pi_1 - I.
+\end{equation}
+Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
+Now consider the following procedure:
+\begin{compactenum}
+\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with  precision $\mathcal{O}(c-s)$ and $1/16$ failure probability. 
+\item If the median of the $r$ results is at most $(\phi_{c}+\phi_{s})/2$, output YES; otherwise output NO.
+\end{compactenum}
+Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\mathcal{O}(c-s)$, can be implemented by a circuit of size $\mathcal{O}(rt/(c-s))$ using $\mathcal{O}(r\log[1/(c-s)])$ extra ancilla qubits. Using the standard analysis of in-place $\QMA$ error amplification \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
+\end{proof}
+We can now prove Theorem \ref{thm: gap amp}, which we restate below:
+\begingroup
+\def\thetheorem{\ref{thm: gap amp}}
+\begin{theorem}
+For any functions $t,k,r>0$, 
+\[
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
+\]
+\end{theorem}
+\addtocounter{theorem}{-1}
+\endgroup
+
+\begin{proof}
+\begin{align}
+\bddQMA{t}{k}{m}{c}{s} &\subseteq \bddQMA{\mathcal{O}\left(\frac{t}{c-s}\right)}{\mathcal{O}\left(k+\log\left(\frac{1}{c-s}\right)\right)}{m}{3/4}{1/4}  \nonumber \\
+&\subseteq \bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}} \nonumber
+\end{align}
+where the first line follows by taking $r=2$ in Lemma \ref{lem: gap amp 2}, and the second line follows from Lemma~\ref{lem: gap amp 1}.
+\end{proof}
+
+\section{Proof sketch of $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$} \label{app:peps}
+Since $\PP \subseteq \BQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ \cite{swv07}, we only need to show that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PP$. In \cite{swv07} it was noted that all PEPS can be seen as the output of a quantum circuit followed by a postselected measurement. Therefore $\PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ corresponds to the problems that can be decided by a quantum circuit, followed by a postselected measurement (since the queries to $O_{PEPS}$ are classical and nonadaptive, we can compose them into one single postselection), followed by a measurement. In the YES case the measurement outputs 1 with probability at least $c$, whereas in the NO case the measurement outputs 1 with probability at most $s$, with $c > s$. The standard counting argument placing $\BQP$ inside $\PP$ then applies to this case as well; see for instance \cite[Propositions~2~and~3]{aaronson05}.
+
+
+\section{$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard}\label{app:qca}
+\begingroup
+\def\thelemma{\ref{lem: quantum circuit acceptance}}
+\begin{lemma}
+$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
+\end{lemma}
+\addtocounter{theorem}{-1}
+\endgroup
+
+\begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof here for completeness.  Suppose we are given an $x\in \{0,1\}^n$ and would like to determine if $x\in L_{yes}$ for some $L=\{L_{yes},L_{no}\}\in\unitaryBQSPACE{k}$.  There is a quantum circuit on $k(n)$ qubits, $Q_x=U_TU_{T-1}\cdots U_1$ of size $T=2^{\mathcal{O}(k(n))}$ that decides $x$.  That is, 
+\begin{equation}
+Q_x|\zero\rangle = \sqrt{p_x} |1\rangle_{out}|\psi_x^1\rangle + \sqrt{1-p_x} |0\rangle_{out} |\psi_x^0\rangle.
+\end{equation}
+where $out$ indicates the designated output qubit, and $|\psi_x^1\rangle$, $|\psi_x^0\rangle$ are $(k-1)$-qubit states; $p_x$ is the probability that the computation accepts, so $p_x \ge 2/3$ if $x \in L_{yes}$ and $p_x \le 1/3$ if $x \in L_{no}$.
+
+We now describe a reduction which creates a related circuit $\tilde{Q}_x$ with a single matrix entry that is proportional to the acceptance probability of $Q_x$.  This new circuit $\tilde{Q}_x$ takes the same number of input qubits as $Q_x$ as well as an additional ancillary qubit.  $\tilde{Q}_x$ runs $Q_x$, then using a single CNOT gate copies the state of the output qubit to the ancillary qubit, flips the ancillary qubit, and finally applies the inverse, $Q_x^{\dagger}$, to the input qubits. It is straightforward to check that
+\begin{equation}
+\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle = p_x.
+\end{equation}
+Therefore knowing the single matrix entry $\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle$ is sufficient to decide if $x \in L_{yes}$. Moreover, $\tilde{Q}_x$ can be computed from $Q_x$ using polynomial time and $\mathcal{O}(k)$ space, and this completes the proof.
+\end{proof}
+
 
 \end{document}
