@@ -347,7 +347,7 @@ Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
 \left(\bra{\psi}\otimes \bra{0^k}\right) V^\dagger_x \ket{1}\bra{1}_{out} V_x \left(\ket{\psi}\otimes \ket{0^k}\right) \le s.
 \end{equation}
 As before, $out$ denotes a single qubit we measure at the end of the computation; no intermediate measurements are allowed.  
-We require $c$ and $s$ to be computable in classical $\bigoh(t(n))$-time and $\bigoh(k(n)+m(n))$-space.
+Here $c$ and $s$ are computable in $\bigoh(t(n))$-time and $\bigoh(k(n)+m(n))$-space.
   \end{definition}
 
 \begin{definition} $\QMA=\bddQMA{\poly}{\poly}{\poly}{2/3}{1/3}$.
@@ -375,7 +375,7 @@ Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the s
 \end{compactenum}
 These circuits do not require intermediate measurements.
 \end{theorem}
-Note that if intermediate measurements were allowed instead, then in the case $k = \mathcal{O}(\log n)$ this result is already proven by Ta-Shma \cite[Theorem~6.3]{tashma} (and generalizes to other space bounds without much difficulty). We strengthen Ta-Shma's result by showing that intermediate measurements are not necessary. By taking $\kappa = 2^{\bigoh (k)}$ and $\epsilon = 2^{-\bigoh (k)}$ to be constant, we immediately get the following corollary: 
+Note that if intermediate measurements were allowed instead, then in the case $k = \mathcal{O}(\log n)$ this result is already proven by Ta-Shma \cite[Theorem~6.3]{tashma} (and generalizes to other space bounds without much difficulty). We strengthen Ta-Shma's result by showing that intermediate measurements are not necessary. By taking $\kappa = 2^{\bigoh (k)}$ and $\epsilon = 2^{-\bigoh (k)}$ to be constant, we get: 
 
 \begin{corollary}
 $\matrixinvert{k(n)} \in \unitaryBQSPACE{k(n)}$.
@@ -393,10 +393,10 @@ W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket
 \end{equation}
 where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$, $\alpha$ is a positive number satisfying $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, and ``out'' is a 1-qubit register.
 \end{lemma}
-The proof of this lemma is essentially contained in the proof of \cite[Theorem~6.3]{tashma}, or can be obtained by combining \cite[Theorem~4.1]{tashma} with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}. The essential idea of the proof is to use phase estimation on $\exp(iA)$ to compute the eigenvalues $\lambda$ of the matrix $H$ into an auxilliary register; implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$; and finally uncompute the eigenvalues $\lambda$. Ta-Shma showed how to implement $\exp(iH)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general matrices with efficient encodings); alternatively the more recent sparse Hamiltonian simulation algorithms by Berry et al. has the same space requirement and is more time efficient (see e.g. \cite{bccks15} for an analysis).
+The proof of this lemma is essentially contained in the proof of \cite[Theorem~6.3]{tashma}, or can be obtained by combining \cite[Theorem~4.1]{tashma} with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}. The essential idea of the proof is to use phase estimation on $\exp(iA)$ to compute the eigenvalues $\lambda$ of the matrix $H$ into an auxilliary register; implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$; and finally uncompute the eigenvalues $\lambda$. Ta-Shma showed how to implement $\exp(iH)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general matrices with efficient encodings); alternatively the more recent sparse Hamiltonian simulation algorithms by Berry et al. has the same space requirement and is more time efficient (see e.g. \cite{bccks15}).
 
 
-The proof idea for Theorem \ref{thm: matrix inversion alg} is essentially to use amplitude amplification to obtain the state $\ket{0}_{out} \otimes \ket{\psi_b}$, in the process also generating an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$. To be more precise, we consider the two projectors
+The proof idea for Theorem \ref{thm: matrix inversion alg} is essentially to use amplitude amplification to obtain the state $\ket{0}_{out} \otimes \ket{\psi_b}$, in the process also generating an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$. To be more precise, we consider the two projectors:
 \begin{align}
 \Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
 \Pi_1 &= W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H.
@@ -470,7 +470,7 @@ $\spechamiltonian{k(n)}$ is contained in $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k(
 \end{theorem}
 Our strategy will essentially be to simulate the time evolution of the Hamiltonian $e^{-iHt}$ using known simulation methods, and then use a stripped-down version of phase estimation to estimate an eigenvalue of $H$. We first note the following result for sparse matrix simulation:
 \begin{theorem}[\cite{berry14,bccks15,berry15}] \label{thm:ham_sim}
-Given as input is the size-$n$ circuit encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
+Given as input is the size-$n$ succinct encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
 \end{theorem}
 While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Also note that we can upper bound the maximum eigenvalue of $H$, $\|H\|$, by its max with the following observation:
 \begin{remark}
@@ -639,7 +639,7 @@ $H$ is a sparse matrix - in fact, there are only a constant number of nonzero te
 Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref{thm:pqpspace}), we can use Theorem \ref{thm: pspace upper bound} to give us that $\QMAexp\subseteq\PSPACE$ while Theorem \ref{lem:qma protocol} together with Theorem \ref{thm: specham-hardness} give us the lower bound $\PSPACE\subseteq\QMAexp$.  Therefore, we have:
 \begin{corollary} $\QMAexp=\PSPACE$. \end{corollary}
 
-Finally, we end with two results particular to the polynomial space case. First of all, in the equality $\QMAexp=\PSPACE$, we can actually achieve perfect completeness ($c=1$) for the $\QMA$ proof protocol. Moreover in the perfect completeness case there is no requirement that $c-s = 2^{-\poly}$:
+Finally, we end with two results particular to the polynomial space case. First of all, in the equality $\QMAexp=\PSPACE$, we can actually achieve perfect completeness ($c=1$) for the $\QMA$ proof protocol. Moreover for perfect completeness we don't require that $c-s = 2^{-\poly}$:
 \begin{proposition} \label{prop: perfect completeness} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
 \[
 \PSPACE = \QMA(1,1-2^{-\poly}) = \bigcup_{s \in [0,1)}\QMA(1,s).
