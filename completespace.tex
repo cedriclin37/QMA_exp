@@ -26,8 +26,8 @@
 
 %%%%%%%%%%%%%%%%
 %Next two lines change the font!!
-\usepackage{mathptmx}
-\usepackage{newtxmath}
+%\usepackage{mathptmx}
+%\usepackage{newtxmath}
 %%%%%%%%%%%%%%%
 
 \usepackage{mathrsfs}
@@ -261,7 +261,7 @@ For $\Omega(\log(n)) \le k(n) \le 2^{\poly(n)}$, \matrixinvert{\mathcal{O}(k(n))
 
 Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. We also note that our algorithm (Theorem \ref{thm: matrix inversion alg}) actually approximates the matrix entry $|H^{-1}(s,t)|$ to precision $2^{-\mathcal{O}(k)}$. In particular, if we take $k = \bigoh(\log n)$ we get the following:
 \begin{corollary}
-The problem of approximating, to $1/\poly(n)$ precision, an entry of the inverse of a PSD $n \times n$ matrix with condition number at most $\poly(n)$ is $\unitaryBQL$-complete under $\Logspace$-reductions.
+The problem of approximating, to $1/\poly(n)$ precision, an entry of the inverse of an $n \times n$ PSD matrix with condition number at most $\poly(n)$ is $\unitaryBQL$-complete under $\Logspace$-reductions.
 \end{corollary}
 
 This result improves upon Ta-Shma's result \cite{tashma} in two ways. First, unlike Ta-Shma's algorithm, our algorithm does not use intermediate measurements.  Although the ``safe storage'' principle of quantum time-bounded computation tells us that quantum measurements can be deferred, an equivalent principle is not known for space complexity.  The standard procedure for deferring measurements in time-bounded computation may incur an exponential blow-up in space.  
@@ -275,7 +275,8 @@ Furthermore, since it is straightforward to see that Well-conditioned Matrix Inv
 \subsection{Matrix Eigenvalue problem} 
 Our second result completely characterizes quantum space complexity via the following problem:
 \begin{definition}[$\spechamiltonian{k(n)}$ problem] \label{def: spechamiltonian}
-Given as input is the size-$n$ efficient encoding of a positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
+Given as input is the size-$n$ efficient encoding of a positive semidefinite matrix $H$, such that% the maximum entry in absolute value 
+$\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 \end{definition}
 
 \begin{theorem} \label{thm: spechamiltonian}
@@ -289,21 +290,21 @@ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ is equivalent to the class of problems char
 
 This second characterization has several interesting consequences.  In particular, if we take $k = \poly(n)$ we see that $\QMAexp$, the variant of $\QMA$ with exponentially small completeness-soundness gap, is exactly equal to $\BQPSPACE=\PSPACE$.  
 
-The closest classical counterpart of $\QMAexp$ is $\NP^{\PP}$: given a classical witness, the verifier runs a classical computation that in the YES case accepts with probability at least $c$, or in the NO case accepts with probability at most $s$, where $c>s$. Note that in the classical case $c - s > \exp(\poly)$ is automatically satisfied. Since $\NP^{\PP}$ is in the counting hierarchy, the entirety of which is contained in $\PSPACE$ (see e.g., \cite{allenderwagner}), we see that the quantum proof protocol is strictly stronger than the classical one, unless the counting hierarchy collapses to the second level.
+The closest classical counterpart of $\QMAexp$ is $\NP^{\PP}$: given a classical witness, the verifier runs a classical computation that in the YES case accepts with probability at least $c$, or in the NO case accepts with probability at most $s$, where $c>s$. Note that in the classical case $c - s > \exp(-\poly)$ is automatically satisfied. Since $\NP^{\PP}$ is in the counting hierarchy, the entirety of which is contained in $\PSPACE$ (see e.g., \cite{allenderwagner}), we see that the quantum proof protocol is strictly stronger than the classical one, unless the counting hierarchy collapses to the second level.
 
-We also show that the \emph{local} Hamiltonian problem is $\PSPACE$-complete when the promise gap is only exponentially small (for details see Appendix \ref{app:localhamiltonian}). This is in contrast to the usual case when the gap is polynomially small, where the problem is $\QMA$-complete. Perhaps more surprisingly, $\QMAexp = \PSPACE$ is more powerful than $\PostBQP=\PP$, the class of problems solvable with postselected quantum computation \cite{aaronson05}.
+We also show that the \emph{local} Hamiltonian problem is $\PSPACE$-complete when the promise gap is exponentially small (for details see Appendix \ref{app:localhamiltonian}). This is in contrast to the usual case when the gap is polynomially small, where the problem is $\QMA$-complete. Perhaps more surprisingly, $\QMAexp = \PSPACE$ is more powerful than $\PostBQP=\PP$, the class of problems solvable with postselected quantum computation \cite{aaronson05}.
 
-Another consequence concerns Projected Entangled Pair States, or PEPS, a natural extension of matrix product states to two and higher dimensions, which can be described as the ground state of certain frustration-free local Hamiltonians \cite{vc04}. A characterization of the computational power of PEPS was given in \cite{swv07}, and can be summarized as follows: let $O_{PEPS}$ be a quantum oracle that, given the description of a PEPS, outputs the PEPS (so the output is quantum). Then $\BQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PostBQP = \PP$, where (following Aaronson \cite{aaronson05}) the subscript  denotes that only classical nonadaptive queries to the oracle are allowed. Moreover, let $\PQP$ stand for the set of problems solvable by a quantum computer with \emph{unbounded error}; then it can be straightforwardly shown that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$ as well (see Appendix \ref{app:peps}).
+Another consequence concerns Projected Entangled Pair States, or PEPS, a natural extension of matrix product states to two and higher spatial dimensions, which can be described as the ground state of certain frustration-free local Hamiltonians \cite{vc04}. A characterization of the computational power of PEPS was given in \cite{swv07}, and can be summarized as follows: let $O_{PEPS}$ be a quantum oracle that, given the description of a PEPS, outputs the PEPS (so the output is quantum). Then $\BQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PostBQP = \PP$, where (following Aaronson \cite{aaronson05}) the subscript  denotes that only classical nonadaptive queries to the oracle are allowed. Moreover, let $\PQP$ stand for the set of problems solvable by a quantum computer with \emph{unbounded error}; then it can be straightforwardly shown that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$ as well (see Appendix \ref{app:peps}).
 
 On the other hand, suppose we have an oracle $O_{LH}$ that given the description of a local Hamiltonian, outputs a ground state of the Hamiltonian. Then our results show that $\QMAexp = \PSPACE \subseteq \PQP^{O_{LH}}_{\parallel,\text{classical}}$. This shows that in the setting of unbounded-error quantum computation, PEPS do not capture the full computational complexity of general local Hamiltonian ground states unless $\PP=\PSPACE$. We leave open the problem of determining the complexity of $\BQP^{O_{LH}}_{\parallel,\text{classical}}$.
 
-Lastly, we are able to strengthen our characterization to show that $\QMAexp$ contains $\PSPACE$ (see Appendix \ref{app:perfectcompleteness}), even when restricted to having perfect completeness.  This allows us to prove that testing if a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem.  
+Lastly, we are able to strengthen our characterization to show that $\QMAexp$ contains $\PSPACE$ (see Appendix \ref{app:perfectcompleteness}), even when restricted to having perfect completeness.  This allows us to prove that testing if a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem (Appendix \ref{app:localhamiltonian}).
  \section{Preliminaries}
 \subsection{Quantum circuits}
 We will assume a working knowledge of quantum information. For an introduction, see \cite{nc00}.
 
-A \emph{quantum circuit} consists of a series of quantum gates each of which come from some universal gateset, such as the gateset consisting of Hadamard and Toffoli gates \cite{shi}.  A \emph{description} of the quantum circuit is a string consisting of the gates in the circuit, together with the qubits that each gate acts on.
- For functions $f,g:\mathbb{N}\rightarrow\mathbb{N}$, we say a family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$ is \emph{$f$-time $g$-space uniformly generated} if there exists a deterministic classical Turing machine that on input $x\in\{0,1\}^n$ and $i>0$ outputs the $i$-th gate of $Q_x$ within time $f(n)$ and space $g(n)$ \cite{nc00}.  
+A \emph{quantum circuit} consists of a series of quantum gates each of which come from some universal gateset, such as the gateset consisting of Hadamard and Toffoli gates \cite{shi}. % A \emph{description} of the quantum circuit is a string consisting of the gates in the circuit, together with the qubits that each gate acts on.
+ For functions $f,g:\mathbb{N}\rightarrow\mathbb{N}$, we say a family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$ is \emph{$f$-time $g$-space uniformly generated} if there exists a deterministic classical Turing machine that on input $x\in\{0,1\}^n$ and $i>0$ outputs the $i$-th gate of $Q_x$ within time $f(n)$ and workspace $g(n)$ \cite{nc00}.  
  
 Our restriction to a specific gateset is without loss of generality, even for logarithmic space algorithms:  there exists a deterministic algorithm that given any unitary quantum gate $U$ and a parameter $\epsilon$, outputs a sequence of at most $\polylog({1/\epsilon})$ gates from any universal quantum gateset that approximates $U$ to precision $\epsilon$ in space $\bigoh({\log({1/\epsilon})})$ and time $\polylog({1/\epsilon})$ \cite{mw12}.  This improves the Solovay-Kitaev theorem, which guarantees a space bound of $\polylog(n)$; see e.g., \cite{nc00}.
  %\begin{theorem}[\cite{mw12}]  For every universal set $S$ of unitary gates that is closed under adjoint, every language solvable by a bounded-error quantum %
@@ -312,7 +313,7 @@ For our model of unitary quantum space-bounded computation, we will consider a q
 
 \begin{definition} \label{def: qspace}
 Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le 2^{
-\poly(n)}$. A promise problem $L=(L_{YES},L_{NO})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
+\poly(n)}$. A promise problem $L=(L_{yes},L_{no})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
  If $x \in L_{yes}$:
 \begin{equation}
 \bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \ge c.
@@ -360,7 +361,7 @@ Here $c$ and $s$ are computable in classical $\bigoh(t(n))$-time and $\bigoh(k(n
 We use the following definition of \emph{efficient encodings} of matrices:
 \begin{definition}\label{def: efficient encoding}Let $M$ be a $2^{k} \times 2^{k}$ matrix, and $\mathcal{A}$ be a classical algorithm (e.g. a Turing machine) specified using $n$ bits. We say that $\mathcal{A}$ is an \emph{efficient encoding} of $M$ if on input $i\in\{0,1\}^k$, $\mathcal{A}$ outputs the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k)$ workspace (not including the output size). Note that as a consequence $M$ has at most $\poly(n)$ nonzero entries in each row.
 \end{definition}
-Frequently in this paper we will specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
+We will often specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
 
 Finally, we will frequently be assuming the existence of  algorithms that compute some common functions on $n$-bit numbers, such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}. We will use these algorithms implicitly for the rest of the paper\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we only use the $\bigoh (\log{n})$ upper bound.}.
 
@@ -629,7 +630,7 @@ H_{out} = (\ket{1}\bra{1}_{out} \otimes I_{k-1}) \otimes \ket{T}\bra{T}
 \begin{equation}
 H_{prop} = \sum_{j=1}^T \frac{1}{2} \left[ - V_j \otimes \ket{j}\bra{j-1} - V_j^\dagger \otimes \ket{j-1}\bra{j} + I \otimes (\ket{j}\bra{j} + \ket{j-1}\bra{j-1}) \right].
 \end{equation}
-$H$ is a sparse matrix - in fact, there are only a constant number of nonzero terms in each row. Since each gate $V_{x,j}$ can be computed in classical polynomial time and $k(n)$ space, it follows that so can the nonzero entries of $H$. Moreover, let $\lambda_{min}$ be the minimum eigenvalue of $H$; then it was shown by Kitaev \cite{ksv02} that if $x \in L_{yes}$ then $\lambda_{min} \le a = (1-c)/(T+1)$, while if $x \in L_{no}$ then $\lambda_{min} \ge b = (1-s)/T^3$. Since $c = 1-1/T^3$ and $s = 1/T^3$ we see that $0 < b-a < 2^{-\mathcal{O}(k)}$. 
+$H$ is a sparse matrix - in fact, there are only a constant number of nonzero terms in each row. Since each gate $V_{x,j}$ can be computed in classical polynomial time and $k(n)$ space, it follows that so can the nonzero entries of $H$. Moreover, let $\lambda_{min}$ be the minimum eigenvalue of $H$; then it was shown by Kitaev \cite{ksv02} that if $x \in L_{yes}$ then $\lambda_{min} \le a = (1-c)/(T+1)$, while if $x \in L_{no}$ then $\lambda_{min} \ge b = (1-s)/T^3$. Since $c \ge 1-1/T^3$ and $s \le 1/T^3$ we see that $0 < b-a < 2^{-\mathcal{O}(k)}$. 
 \end{proof}
 Notice that Theorems \ref{thm: spechamiltonian} and \ref{thm: equivalence} follow from Theorems \ref{lem:qma protocol}, \ref{thm: pspace upper bound}, and Theorem \ref{thm: specham-hardness}. In particular, considering the polynomial space case in Theorem \ref{thm: equivalence} gives the following corollary:
 %Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref{thm:pqpspace}), we can use Theorem \ref{thm: pspace upper bound} to give us that $\QMAexp\subseteq\PSPACE$ while Theorem \ref{lem:qma protocol} together with Theorem \ref{thm: specham-hardness} give us the lower bound $\PSPACE\subseteq\QMAexp$.  Therefore, we have:
@@ -651,7 +652,8 @@ Our result is that this problem is $\PSPACE$-complete:
 \begin{theorem} \label{thm: precise local hamiltonian}
 For any $3 \le k \le \mathcal{O}(\log(n))$, \preciseklh \ is $\QMAexp$-complete, and hence $\PSPACE$-complete.
 \end{theorem}
-We note that this can be seen as restricting $H$ in the $\spechamiltonian{\poly(n)}$ problem to be a local Hamiltonian; our result is that this problem remains $\PSPACE$-hard. For a proof, see Appendix \ref{app:localhamiltonian}.
+%We note that this can be seen as restricting $H$ in the $\spechamiltonian{\poly(n)}$ problem to be a local Hamiltonian; our result is that this problem remains $\PSPACE$-hard. For a proof, see Appendix \ref{app:localhamiltonian}.
+See Appendix \ref{app:localhamiltonian} for a proof. Combined with the perfect completeness results of Appendix \ref{app:perfectcompleteness}, this will also give a proof that determining whether a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem (Theorem \ref{thm: frustration free} in Appendix \ref{app:localhamiltonian}).
 
 \section{Open Problems}
 This work leaves open several questions that may lead to interesting follow-up work:
@@ -668,6 +670,8 @@ We are grateful to Andrew Childs, Sevag Gharibian, Aram Harrow, Hirotada Kobayas
 \appendix
 
 \section{More details on space-bounded computation}\label{app: space bounded}
+For this section, it would be helpful to keep in mind that we always assume the space bound $k(n)$ always satisfies $\Omega(\log(n)) \le k(n) \le 2^{\poly(n)}$.
+
 We start with the definitions of classical bounded space computation. In discussion of space-bounded classes, we usually consider Turing machines with two tapes, a read-only input tape and a work tape; only the space used on the work tape is counted. For $k:\mathbb{N}\rightarrow\mathbb{N}$, a function $f:\{0,1\}^{*}\rightarrow\{0,1\}^*$ is said to be computable in $k(n)$ space if any bit of $f(x)$ can be computed by a deterministic Turing machine using space $\bigoh(k(|x|))$ on the work tape.  For example, $\Logspace$ is the class of functions that can be computed in $\bigoh(\log{n})$ space.
 
 We now discuss quantum space-bounded complexity classes; for a fuller discussion see \cite{Watrous09}. A straightforward way to define quantum space-bounded classes is to consider a Turing machine with three tapes: a read-only classical input tape, a classical work tape, and a quantum work tape (with two heads) consisting of qubits. This is the model considered in \cite{tashma} and \cite{Watrous03}, except that they allow intermediate measurements (and \cite{Watrous03} allows even more general quantum operations). In this work we consider only computations with no intermediate measurements: we can therefore impose that there are no measurements on the quantum work tape until the register reaches a specified end state, following which a single measurement is performed on the quantum tape and the algorithm accepts or rejects according to the measurement. Therefore the operations performed by the algorithm will not depend on the quantum tape, since there is no way to read information out of it until the end of the algorithm.
@@ -680,7 +684,7 @@ Moreover, the $\mathcal{O}(k)$-space bounded classical Turing machine can be rep
 \def\thedefinition{\ref{def: qspace}}
 \begin{definition}
 Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le 2^{
-\poly(n)}$. A promise problem $L=(L_{YES},L_{NO})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
+\poly(n)}$. A promise problem $L=(L_{yes},L_{no})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
  If $x \in L_{yes}$:
 \begin{equation}
 \bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \ge c.
@@ -768,7 +772,7 @@ Recalling that we showed that perfect completeness can be assumed for $\QMAexp$-
 \end{proof}
 In fact, even just testing whether a $k$-Local Hamiltonian is frustration-free is $\PSPACE$-complete: \begin{definition} [\emph{Frustration-Free $k$-Local Hamiltonian}] Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$, each term $H_j$ is positive semidefinite, and $\|H_j\| \le \poly(n)$. Output 1 if the smallest eigenvalue of $H$ is zero, and output 0 otherwise.
 \end{definition}
-\begin{theorem}
+\begin{theorem} \label{thm: frustration free}
 Frustration-Free $k$-Local Hamiltonian is $\PSPACE$-complete.
 \end{theorem}
 \begin{proof}
