@@ -26,8 +26,8 @@
 
 %%%%%%%%%%%%%%%%
 %Next two lines change the font!!
-%\usepackage{mathptmx}
-%\usepackage{newtxmath}
+\usepackage{mathptmx}
+\usepackage{newtxmath}
 %%%%%%%%%%%%%%%
 
 \usepackage{mathrsfs}
@@ -256,7 +256,7 @@ For a definition of efficient encoding, see Definition \ref{def: efficient encod
 %\footnote{We note that for any explicit $m \times m$ matrix it is not difficult to construct a circuit encoding of size $n = \poly(m)$ that runs in $\bigoh(k(n)) = \bigoh(\log(n))$ space. Hence the requirement that there exists a circuit encoding is vacuous for $k(n) = \bigoh(\log(n))$.} 
 We show the following:
 \begin{theorem} \label{thm: matrix invert}
-\matrixinvert{\mathcal{O}(k(n))} is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+For $\Omega(\log(n)) \le k(n) \le 2^{\poly(n)}$, \matrixinvert{\mathcal{O}(k(n))} is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
 \end{theorem}
 
 Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. We also note that our algorithm (Theorem \ref{thm: matrix inversion alg}) actually approximates the matrix entry $|H^{-1}(s,t)|$ to precision $2^{-\mathcal{O}(k)}$. In particular, if we take $k = \bigoh(\log n)$ we get the following:
@@ -279,7 +279,7 @@ Given as input is the size-$n$ efficient encoding of a positive semidefinite mat
 \end{definition}
 
 \begin{theorem} \label{thm: spechamiltonian}
-$\spechamiltonian{\mathcal{O}(k(n))}$ is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+For $\Omega(\log(n)) \le k(n) \le 2^{\poly(n)}$, $\spechamiltonian{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
 \end{theorem}
 
 In the process, we also show the following equivalence between unitary quantum space-bounded computation and $\QMA$-proof systems:
@@ -352,7 +352,7 @@ Here $c$ and $s$ are computable in classical $\bigoh(t(n))$-time and $\bigoh(k(n
 \begin{definition} $\QMAexp=\bigcup_{c \in (0,1]}\bddQMA{\poly}{\poly}{\poly}{c}{c-2^{-\poly}}$.
 \end{definition}
 
-\subsection{Other stuff}
+\subsection{Other definitions and results}
 We use the following definition of \emph{efficient encodings} of matrices:
 \begin{definition}\label{def: efficient encoding}Let $M$ be a $2^{k} \times 2^{k}$ matrix, and $\mathcal{A}$ be a classical algorithm (e.g. a Turing machine) specified using $n$ bits. We say that $\mathcal{A}$ is an \emph{efficient encoding} of $M$ if on input $i\in\{0,1\}^k$, $\mathcal{A}$ outputs the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k)$ workspace (not including the output size). Note that as a consequence $M$ has at most $\poly(n)$ nonzero entries in each row.
 \end{definition}
@@ -460,7 +460,7 @@ In particular, an estimation of this entry of $H^{-1}$ will solve \qca{k(n)}.
 We will now prove Theorem \ref{thm: spechamiltonian}; this gives an alternate characterization of unitary quantum space via the complete problem $\spechamiltonian{k(n)}$ (see Definition \ref{def: spechamiltonian}). In the process we will show an equivalence with a suitably defined $\QMA$ protocol.
 %\subsection{$\spechamiltonian{k(n)}$ is in $\unitaryBQSPACE{k(n)}$}
 %We show the main result of this section by proving first, in Section \ref{subsec:specham-in-bddqma}, that $\spechamiltonian{k(n)}$ is in $k(n)$-Space-bounded $\QMAexp$ and then in Section \ref{subsec:bddqma-in-bqspace} that $k(n)$-Space-bounded $\QMAexp$ is in $\unitaryBQSPACE{k(n)}$.
-\subsection{$\spechamiltonian{k(n)}$ is in $k(n)$-Space-bounded $\QMAexp$}\label{subsec:specham-in-bddqma}
+\subsection{A $\QMA$ proof system for $\spechamiltonian{k(n)}$}\label{subsec:specham-in-bddqma}
 This section will be devoted to showing the following result:
 \begin{theorem} \label{lem:qma protocol}
 $\spechamiltonian{k(n)}$ is contained in $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k(n))}{c}{s}$ for some $c,s$ such that $c - s > 2^{-\mathcal{O}(k(n))}$.
@@ -489,7 +489,7 @@ In Circuit (\ref{circ: poor man phase estimation}) we've assumed $\ket{\psi}$ is
 \end{align}
 since $\sin x = \Omega(x)$ for $x \in [0,1]$, $(a+b)t \ge (b-a)t = 2^{-\mathcal{O}(k(n))}$, as long as we choose $\epsilon = 2^{-\Theta(k(n))}$ to be sufficiently small enough. This therefore gives a $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k)}{c}{s}$ protocol for $c - s = 2^{-\mathcal{O}(k(n))}$, as desired.
 \end{proof}
-\subsection{$k(n)$-Space-bounded $\QMAexp$ is in $\unitaryBQSPACE{k(n)}$} \label{subsec:bddqma-in-bqspace}
+\subsection{$\bigcup_{c \in (0,1]}\bddQMA{\poly}{\Theta(k)}{\Theta(k)}{c}{c-2^{-\Theta(k)}}$ is in $\unitaryBQSPACE{k(n)}$} \label{subsec:bddqma-in-bqspace}
 %%HERE
 In this section we will establish the following result:
 \begin{theorem} \label{thm: pspace upper bound}$
@@ -555,7 +555,7 @@ This follows from Theorem \ref{thm: gap amp} by taking $m=0$, $s = c-2^{-\Theta(
 \begin{proof}
 This follows from Theorem \ref{thm: gap amp} by taking $s = c-2^{-\Theta(k)}$ and $r = m+2$.
 \end{proof}
-\subsubsection{$\PSPACE$ simulation}
+\subsubsection{Removing the witness}
 \begin{theorem} \label{thm:pqpspace simulation} For any function $t=2^{\bigoh(k+m)}$,
 \[
 \bddQMA{t}{k}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\subseteq
