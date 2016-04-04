@@ -354,7 +354,7 @@ Here $c$ and $s$ are computable in classical $\bigoh(t(n))$-time and $\bigoh(k(n
 
 \subsection{Other stuff}
 We use the following definition of \emph{efficient encodings} of matrices:
-\begin{definition}\label{def: efficient encoding}Let $M$ be a $2^{k} \times 2^{k}$ matrix, and $\mathcal{A}$ be a classical algorithm (e.g. a Turing machine) specified using $n$ bits. We say that $\mathcal{A}$ is an \emph{efficient encoding} of $M$ if on input $i\in\{0,1\}^k$, $\mathcal{C}$ outputs the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k)$ workspace (not including the output size). Note that as a consequence $M$ has at most $\poly(n)$ nonzero entries in each row.
+\begin{definition}\label{def: efficient encoding}Let $M$ be a $2^{k} \times 2^{k}$ matrix, and $\mathcal{A}$ be a classical algorithm (e.g. a Turing machine) specified using $n$ bits. We say that $\mathcal{A}$ is an \emph{efficient encoding} of $M$ if on input $i\in\{0,1\}^k$, $\mathcal{A}$ outputs the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k)$ workspace (not including the output size). Note that as a consequence $M$ has at most $\poly(n)$ nonzero entries in each row.
 \end{definition}
 Frequently in this paper we will specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
 
@@ -481,7 +481,7 @@ We are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD
 \lstick{\ket{\psi}}& \qw & \gate{e^{-iHt}}  & \qw & \rstick{\ket{\psi}} \qw
 }
 \end{align}
-Note that Theorem \ref{thm:ham_sim} allows us to implement $\exp(-iHt)$ up to error $\epsilon = 2^{-\Theta(k(n))}$ using $\poly(n)$ operations and $\bigoh(k(n))$ space.
+Theorem \ref{thm:ham_sim} gives an implementation of $\exp(-iHt)$ up to error $\epsilon = 2^{-\Theta(k(n))}$ using $\poly(n)$ operations and $\bigoh(k(n))$ space.
 
 In Circuit (\ref{circ: poor man phase estimation}) we've assumed $\ket{\psi}$ is an eigenstate of $H$ with eigenvalue $\lambda$. If we measure the control qubit at the end, the probability we obtain 0 is $(1+\cos(\lambda t))/2$. Therefore if $\psi$ is a eigenstate with eigenvalue at most $a$, we can verify this with probability at least $c=(1+\cos(at))/2 - \epsilon$, where $\epsilon$ is the error in the implementation of $\exp(-iHt)$. Otherwise if $\lambda_{min} \ge b$, no state $\psi$ will be accepted with probability more than $s=(1+\cos(bt))/2 + \epsilon$. The separation between $c$ and $s$ is at least 
 \begin{align}
@@ -556,7 +556,7 @@ This follows from Theorem \ref{thm: gap amp} by taking $m=0$, $s = c-2^{-\Theta(
 This follows from Theorem \ref{thm: gap amp} by taking $s = c-2^{-\Theta(k)}$ and $r = m+2$.
 \end{proof}
 \subsubsection{$\PSPACE$ simulation}
-\begin{theorem} \label{thm:pqpspace simulation} For any function $t$,
+\begin{theorem} \label{thm:pqpspace simulation} For any function $t=2^{\bigoh(k+m)}$,
 \[
 \bddQMA{t}{k}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\subseteq
 \unitaryQSPACE{k+m}{3/4\cdot 2^{-m}}{1/4 \cdot 2^{-m}}.
