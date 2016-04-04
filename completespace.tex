@@ -251,8 +251,10 @@ We first consider a generalization of Ta-Shma's well-conditioned matrix inversio
 Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
  or $|H^{-1}(s,t)|\leq a$ for some constants $0 \le a < b \le 1$; determine which is the case.
  \end{definition}
+For a definition of efficient encoding, see Definition \ref{def: efficient encoding}. As a consequence of our definition, the matrix will have at most $\poly(n)$ nonzero entries in each row.
 
-Here by a size-$n$ efficient encoding, we mean a classical procedure (e.g. Turing machine) specified using $n$ bits, that on input $i \in \{0,1\}^{k(n)}$ outputs the locations and contents of the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k(n))$ workspace. As a consequence there are at most $\poly(n)$ nonzero entries in each row.
+
+%Here by a size-$n$ efficient encoding, we mean a classical procedure (e.g. Turing machine) specified using $n$ bits, that on input $i \in \{0,1\}^{k(n)}$ outputs the locations and contents of the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k(n))$ workspace. As a consequence there are at most $\poly(n)$ nonzero entries in each row.
 %\footnote{We note that for any explicit $m \times m$ matrix it is not difficult to construct a circuit encoding of size $n = \poly(m)$ that runs in $\bigoh(k(n)) = \bigoh(\log(n))$ space. Hence the requirement that there exists a circuit encoding is vacuous for $k(n) = \bigoh(\log(n))$.} 
 We show the following:
 \begin{theorem}
@@ -270,9 +272,8 @@ In addition, we show that the problem of inverting well-conditioned matrices is 
 
 Further, since it is straightforward to see that Well-conditioned Matrix Inversion reduces to Integer Matrix Inversion, we can use our result to obtain a direct proof that $\unitaryBQL\subseteq\DET$, which was previously known indirectly via the containments $\unitaryBQL\subseteq\PLclass\subseteq\DET$ \cite{Watrous03,Borodin84}.
 
-\cl{Maybe add a discussion on matchgates and determinants.}
+%\cl{Maybe add a discussion on matchgates and determinants.}
 %When $k(n)=\bigoh(\log{n})$ this result has an interesting interpretation: one cannot show that well-conditioned matrices are invertible in solvable in classical $\Logspace$ unless one also shows that classical $\Logspace$ equals unitary quantum $\Logspace$, which seems quite unlikely.
-
 \subsection{Matrix Eigenvalue problem}
 Our second result concerns a complete characterization of quantum space complexity via the following problem:
 \begin{definition}[$\spechamiltonian{k(n)}$ problem]
@@ -355,9 +356,8 @@ We require $c$ and $s$ to be computable in classical $\bigoh(t(n))$-time and $\b
 \end{definition}
 
 \subsection{Other stuff}
-We will frequently use the following definition of \emph{efficient encodings} of matrices.
-\begin{definition}
-Let $M$ be a $2^{k} \times 2^{k}$ matrix, and $\mathcal{A}$ be a classical algorithm (e.g. a Turing machine) specified using $n$ bits. We say that $\mathcal{A}$ is an \emph{efficient encoding} of $M$ if on input $i\in\{0,1\}^k$, $\mathcal{C}$ outputs the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k)$ workspace (here as usual the size of the output is not counted in the workspace). Note that as a consequence $M$ has at most $\poly(n)$ nonzero entries in each row.
+We will frequently use the following definition of \emph{efficient encodings} of matrices:
+\begin{definition}\label{def: efficient encoding}Let $M$ be a $2^{k} \times 2^{k}$ matrix, and $\mathcal{A}$ be a classical algorithm (e.g. a Turing machine) specified using $n$ bits. We say that $\mathcal{A}$ is an \emph{efficient encoding} of $M$ if on input $i\in\{0,1\}^k$, $\mathcal{C}$ outputs the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k)$ workspace (here as usual the size of the output is not counted in the workspace). Note that as a consequence $M$ has at most $\poly(n)$ nonzero entries in each row.
 \end{definition}
 Frequently in this paper we will specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
 
@@ -730,7 +730,7 @@ with $\lambda$ representing eigenvalues of $H$. Note that the YES case $\lambda 
 
 We now note that the Hamiltonian $H$ we obtain from the hardness reduction from $\PSPACE$ (Theorem \ref{thm: specham-hardness}) is of a very special form. Specifically, since $\unitaryBQSPACE{\poly}=\PSPACE$, we can assume the verifier circuit $V_x$ is deterministic, so it has completeness 1 and soundness 0. Moreover, all of its gates are classical, and hence all entries of the Kitaev clock Hamiltonian $H$ are $0$, $\pm 1/2$, or $1$.
 
-For the matrix $H$ satisfying the above, $U$ can be implemented exactly with a standard gateset; perfect completeness of the protocol will then follow. If $A$ is a $N \times N$ matrix (where $N=2^n$), $U$ is (see presentation in \cite[Section~3.1~and~Lemma~10]{berry15}) a unitary defined on the enlarged Hilbert space $\mathbb{C}^{2N} \otimes \mathbb{C}^{2N} = (\mathbb{C}^{N} \otimes \mathbb{C}^2) \otimes  (\mathbb{C}^{N} \otimes \mathbb{C}^2)$, as follows:
+For the matrix $H$ satisfying the above, $U$ can be implemented exactly with a standard gateset; perfect completeness of the protocol will then follow. If $H$ is a $N \times N$ matrix (where $N=2^n$), $U$ is (see presentation in \cite[Section~3.1~and~Lemma~10]{berry15}) a unitary defined on the enlarged Hilbert space $\mathbb{C}^{2N} \otimes \mathbb{C}^{2N} = (\mathbb{C}^{N} \otimes \mathbb{C}^2) \otimes  (\mathbb{C}^{N} \otimes \mathbb{C}^2)$, as follows:
 \begin{equation}
 U = ST(I_{2N} \otimes (I_{2N} - 2\ket{0}\bra{0}_{2N})) T^\dagger
 \end{equation}
