@@ -404,7 +404,7 @@ The proof idea for Theorem \ref{thm: matrix inversion alg} is to use amplitude a
 \end{equation}
 $\Pi_0$ projects onto the initial subspace, while $\Pi_1$ projects onto the initial states that would be accepted by the final measurement. By an argument similar to Grover's algorithm, if we implement the rotation $R=-(I-2\Pi_0)(I-2\Pi_1)$ $\bigoh (1/\alpha)$ times we will generate an output state with constant overlap with $\ket{0}_{out} \otimes \ket{\psi_b}$. $\alpha$ can be estimated by performing phase estimation on the operator $R$.
 
-The above argument shows how to do the first and second tasks listed in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can choose $\Pi'_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will give an estimate for $|\bra{a}H^{-1}\ket{b}|$. For the full proof, see Appendix \ref{app: matrix inversion alg}.
+We have addressed the first two tasks in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can choose $\Pi'_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will give an estimate for $|\bra{a}H^{-1}\ket{b}|$. See Appendix \ref{app: matrix inversion alg} for the full proof.
 
 \subsection{$\matrixinvert{k(n)}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: matrix inversion hard}
 We start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$:
@@ -531,7 +531,7 @@ Now consider the following procedure:
 Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancilla qubits. This procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
 \end{proof}
 
-In Appendix \ref{app: gap amplification} we will prove the following stronger error reduction lemma that gives the same space bound but uses less space; this better space bound will be required for proving Theorem \ref{thm: specham-hardness}.
+In Appendix \ref{app: gap amplification} we will prove the following stronger error reduction lemma that gives the same space bound but uses less time; this better time bound will be required for proving Theorem \ref{thm: specham-hardness}.
 
 \begin{theorem} \label{thm: gap amp}
 For any functions $t,k,r>0$, 
@@ -664,9 +664,6 @@ This work leaves open several questions that may lead to interesting follow-up w
 
 \section{Acknowledgements}
 We are grateful to Andrew Childs, Sevag Gharibian, Aram Harrow, Hirotada Kobayashi, Tomoyuki Morimae, Harumichi Nishimura, Martin Schwarz, John Watrous, and Xiaodi Wu for helpful conversations, and to John Watrous for comments on a preliminary draft. This work was supported by the Department of Defense.
-
- \bibliography{completespace}
-\bibliographystyle{plain}
 
 \appendix
 
@@ -928,5 +925,7 @@ We now describe a reduction which creates a related circuit $\tilde{Q}_x$ with a
 Therefore knowing the single matrix entry $\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle$ is sufficient to decide if $x \in L_{yes}$. Moreover, $\tilde{Q}_x$ can be computed from $Q_x$ using polynomial time and $\mathcal{O}(k)$ space, and this completes the proof.
 \end{proof}
 
+ \bibliography{completespace}
+\bibliographystyle{plain}
 
 \end{document}
