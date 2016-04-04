@@ -230,7 +230,7 @@
 \maketitle
 %\medskip
 \begin{abstract}
-We give two complete characterizations of unitary quantum space-bounded classes.  The first is based on the Matrix Inversion problem for well-conditioned matrices.  We show that given the size-$n$ circuit encoding of a $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ well-conditioned matrix $H$, approximating a particular entry of $H^{-1}$ is complete for the class of problems solvable by a quantum algorithm that uses $\mathcal{O}(k(n))$ space and performs all quantum measurements at the end of the computation. In particular, the problem of computing entries of $H^{-1}$ for an explicit well-conditioned $n \times n$ matrix $H$ is complete for unitary quantum logspace.
+We give two complete characterizations of unitary quantum space-bounded classes.  The first is based on the Matrix Inversion problem for well-conditioned matrices.  We show that given the size-$n$ efficient encoding of a $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ well-conditioned matrix $H$, approximating a particular entry of $H^{-1}$ is complete for the class of problems solvable by a quantum algorithm that uses $\mathcal{O}(k(n))$ space and performs all quantum measurements at the end of the computation. In particular, the problem of computing entries of $H^{-1}$ for an explicit well-conditioned $n \times n$ matrix $H$ is complete for unitary quantum logspace.
 
 We then show that the problem of approximating to high precision the least eigenvalue of a positive semidefinite matrix $H$, encoded as a circuit, gives a second characterization of unitary quantum space complexity. In the process we also establish an equivalence between unitary quantum space-bounded classes and certain $\QMA$ proof systems. As a consequence, we establish that $\QMA$ with exponentially small completeness-soundness gap is equal to $\PSPACE$, that determining whether a local Hamiltonian is frustration-free is $\PSPACE$-complete, and give a provable setting in which the ability to prepare $PEPS$ states gives less computational power than the ability to prepare the ground state of a generic local Hamiltonian.
 \end{abstract}
@@ -248,11 +248,13 @@ Matrix Inversion is one of the most important and ubiquitous computational probl
 Recently, Ta-Shma, building on work of Harrow, Hassidim, and Lloyd, showed that inverting a well-conditioned $n \times n$ matrix can be approximated by a quantum algorithm using $O(\log n)$ space, but with intermediate measurements \cite{tashma,HHL}. This gives a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.
 
 We first consider a generalization of Ta-Shma's well-conditioned matrix inversion problem \cite{tashma}:\begin{definition}[\matrixinvert{k(n)}]
-Given as input is the size-$n$ circuit encoding of a $2^{\bigoh (k(n))} \times 2^{\bigoh (k(n))}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{\bigoh(k(n))}$. It is promised that either $|H^{-1}(s,t)|\geq b$
+Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
  or $|H^{-1}(s,t)|\leq a$ for some constants $0 \le a < b \le 1$; determine which is the case.
  \end{definition}
 
-Here by a size-$n$ circuit encoding, we mean a classical circuit of size $n$ that on input $i$ outputs the locations and contents of the non-zero entries of the $i$-th row, using at most $\bigoh(k(n))$ workspace. As a consequence there are at most $\bigoh(n)$ nonzero entries in each row.\footnote{We note that for any explicit $m \times m$ matrix it is not difficult to construct a circuit encoding of size $n = \poly(m)$ that runs in $\bigoh(k(n)) = \bigoh(\log(n))$ space. Hence the requirement that there exists a circuit encoding is vacuous for $k(n) = \bigoh(\log(n))$.} We show the following:
+Here by a size-$n$ efficient encoding, we mean a classical procedure (e.g. Turing machine) specified using $n$ bits, that on input $i \in \{0,1\}^{k(n)}$ outputs the locations and contents of the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k(n))$ workspace. As a consequence there are at most $\poly(n)$ nonzero entries in each row.
+%\footnote{We note that for any explicit $m \times m$ matrix it is not difficult to construct a circuit encoding of size $n = \poly(m)$ that runs in $\bigoh(k(n)) = \bigoh(\log(n))$ space. Hence the requirement that there exists a circuit encoding is vacuous for $k(n) = \bigoh(\log(n))$.} 
+We show the following:
 \begin{theorem}
 \matrixinvert{\mathcal{O}(k(n))} is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
 \end{theorem}
@@ -274,7 +276,7 @@ Further, since it is straightforward to see that Well-conditioned Matrix Inversi
 \subsection{Matrix Eigenvalue problem}
 Our second result concerns a complete characterization of quantum space complexity via the following problem:
 \begin{definition}[$\spechamiltonian{k(n)}$ problem]
-Given as input is the size-$n$ circuit encoding of a positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
+Given as input is the size-$n$ efficient encoding of a positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 \end{definition}
 
 \begin{theorem}
@@ -357,11 +359,11 @@ We require $c$ and $s$ to be computable in classical $\bigoh(t(n))$-time and $\b
 \end{definition}
 
 \subsection{Other stuff}
-We will frequently use the following definition of \emph{circuit encodings} of matrices.
+We will frequently use the following definition of \emph{efficient encodings} of matrices.
 \begin{definition}
-Let $M$ be a $2^{k} \times 2^{k}$ matrix. We say that a classical circuit $\mathcal{C}$ is a \emph{circuit encoding} of $M$ if on input $i$, $\mathcal{C}$ outputs the non-zero entries of the $i$-th row, using at most $\bigoh(k)$ workspace. Note that as a consequence $M$ has at most $\bigoh(n)$ nonzero entries in each row.
+Let $M$ be a $2^{k} \times 2^{k}$ matrix, and $\mathcal{A}$ be a classical algorithm (e.g. a Turing machine) specified using $n$ bits. We say that $\mathcal{A}$ is an \emph{efficient encoding} of $M$ if on input $i\in\{0,1\}^k$, $\mathcal{C}$ outputs the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k)$ workspace (here as usual the size of the output is not counted in the workspace). Note that as a consequence $M$ has at most $\poly(n)$ nonzero entries in each row.
 \end{definition}
-Frequently in this paper we will specify a matrix $M$ in the input by giving a circuit encoding of it. The size of the encoding is then the input size, which we will usually indicate by $n$.
+Frequently in this paper we will specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
 
 Finally, we will frequently be assuming the existence of  algorithms that compute some common functions on $n$-bit numbers, as such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}. We will use these algorithms implicitly for the rest of the paper\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we will only use the $\bigoh (\log{n})$ upper bound.}.
 
@@ -369,7 +371,7 @@ Finally, we will frequently be assuming the existence of  algorithms that comput
 \section{Characterization 1: Matrix Inversion}
 \subsection{$\matrixinvert{k(n)}$ is in $\unitaryBQSPACE{k(n)}$}
 \begin{theorem} \label{thm: matrix inversion alg}
-Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ circuit encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
 \begin{compactenum}
 \item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
 \item Estimate $\|H^{-1}\ket{b}\|$ up to precision $\epsilon$.
@@ -395,7 +397,7 @@ W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket
 \end{equation}
 where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$, $\alpha$ is a positive number satisfying $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, and ``out'' is a 1-qubit register.
 \end{lemma}
-The proof of this lemma is essentially contained in the proof of \cite[Theorem~6.3]{tashma}, or can be obtained by combining \cite[Theorem~4.1]{tashma} with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}. The essential idea of the proof is to use phase estimation on $\exp(iA)$ to compute the eigenvalues $\lambda$ of the matrix $H$ into an auxilliary register; implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$; and finally uncompute the eigenvalues $\lambda$. Ta-Shma showed how to implement $\exp(iH)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general matrices with circuit encodings); alternatively the more recent sparse Hamiltonian simulation algorithms by Berry et al. has the same space requirement and is more time efficient (see e.g. \cite{bccks15} for an analysis).
+The proof of this lemma is essentially contained in the proof of \cite[Theorem~6.3]{tashma}, or can be obtained by combining \cite[Theorem~4.1]{tashma} with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}. The essential idea of the proof is to use phase estimation on $\exp(iA)$ to compute the eigenvalues $\lambda$ of the matrix $H$ into an auxilliary register; implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$; and finally uncompute the eigenvalues $\lambda$. Ta-Shma showed how to implement $\exp(iH)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general matrices with efficient encodings); alternatively the more recent sparse Hamiltonian simulation algorithms by Berry et al. has the same space requirement and is more time efficient (see e.g. \cite{bccks15} for an analysis).
 
 
 The proof idea for Theorem \ref{thm: matrix inversion alg} is essentially to use amplitude amplification to obtain the state $\ket{0}_{out} \otimes \ket{\psi_b}$, in the process also generating an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$. To be more precise, we consider the two projectors
@@ -459,7 +461,7 @@ In particular, given the ability to calculate this entry of $H^{-1}$ we are able
 \section{Characterization 2: The $\spechamiltonian{k(n)}$ Problem}
 We will now show an alternate characterization of unitary quantum space via another complete problem for $\unitaryBQSPACE{k(n)}$, for any function $k(n)$ at least $\Omega(\log n)$ and at most $\exp(\bigoh (n))$. Here completeness is defined under a reduction computable by a \emph{classical} algorithm in polynomial time and $\mathcal{O}(k(n))$ space.
 \begin{definition}[$\spechamiltonian{k(n)}$ problem]
-Given as input is the size-$n$ circuit encoding of a $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
+Given as input is the size-$n$ efficient encoding of a $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 \end{definition}
 
 We break the proof into three parts. In Section \ref{subsec:specham-in-bddqma} we show...
@@ -472,14 +474,14 @@ $\spechamiltonian{k(n)}$ is contained in $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k(
 \end{theorem}
 Our strategy will essentially be to simulate the time evolution of the Hamiltonian $e^{-iHt}$ using known simulation methods, and then use a stripped-down version of phase estimation to estimate an eigenvalue of $H$. We first note the following result for sparse matrix simulation:
 \begin{theorem}[\cite{berry14,bccks15,berry15}] \label{thm:ham_sim}
-Suppose the size-$n$ circuit encoding of a $2^{k(n)} \times 2^{k(n)}$ symmetric matrix $H$ is given. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
+Given as input is the size-$n$ circuit encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
 \end{theorem}
 While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Also note that we can upper bound the maximum eigenvalue of $H$, $\|H\|$, by its max with the following observation:
 \begin{remark}
 Suppose a matrix $H$ has at most $n$ nonzero entries per row, each of which is no more than $\|H\|_{max}$ in absolute value. Then $\| H \| \le n\|H\|_{max}$.
 \end{remark}
 \begin{proof}[Proof of Theorem \ref{lem:qma protocol}]
-We are given the size-$n$ circuit encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, and it is promised that the smallest eigenvalue $\lambda_{min}$ of $H$ is either  at most $a$ or at least $b$. Merlin would like to convince us that $\lambda_{min} \le a$; he will send us a purported $k$-qubit eigenstate $\ket{\psi}$ of $H$ with eigenvalue $\lambda_{min}$. We will carry out a stripped-down version of phase estimation on $\exp(-iHt)$ acting on $\ket{\psi}$ to decide, with exponentially small completeness-soundness gap, whether Merlin is telling the truth. Let us choose $t = \pi / (n\|H\|_{max}) \le \pi / \|H\|$; then all eigenvalues of $Ht$ lie in the range $[0,\pi]$, and the output of phase estimation will be unambiguous.
+We are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, and it is promised that the smallest eigenvalue $\lambda_{min}$ of $H$ is either  at most $a$ or at least $b$. Merlin would like to convince us that $\lambda_{min} \le a$; he will send us a purported $k$-qubit eigenstate $\ket{\psi}$ of $H$ with eigenvalue $\lambda_{min}$. We will carry out a stripped-down version of phase estimation on $\exp(-iHt)$ acting on $\ket{\psi}$ to decide, with exponentially small completeness-soundness gap, whether Merlin is telling the truth. Let us choose $t = \pi / (n\|H\|_{max}) \le \pi / \|H\|$; then all eigenvalues of $Ht$ lie in the range $[0,\pi]$, and the output of phase estimation will be unambiguous.
 
 To implement phase estimation, we first need to be able to implement $\exp(-iHt)$ efficiently and to high precision. This is what Theorem \ref{thm:ham_sim} gives us: we can implement $\exp(-iHt)$ up to error $\epsilon = 2^{-\Theta(k(n))}$ using only a polynomial number of operations, for any choice of $\epsilon$.
 
@@ -575,7 +577,7 @@ This follows from Theorem \ref{thm: gap amp} by taking $m=0$, $s = c-2^{-\Theta(
 \]
 \end{theorem}
 \begin{proof}
-The proof is very similar to the proof of \cite[Theorem 3.6]{mw05}. For any functions $m, k$, consider a problem $L\in\bddQMA{\mathcal{O}\left(t2^{\Theta(k)}\right)}{\mathcal{O}\left(k\right)}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^*}$ be the corresponding uniform family of verification circuits.
+The proof is very similar to that of \cite[Theorem 3.6]{mw05}. For any functions $m, k$, consider a problem $L\in\bddQMA{\mathcal{O}\left(t2^{\Theta(k)}\right)}{\mathcal{O}\left(k\right)}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^*}$ be a uniform family of verification circuits for $L$.
 If $x\in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
 \begin{equation}
 \left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \ge 1-2^{-(m+2)}
@@ -588,8 +590,7 @@ For convenience, define the $2^m \times 2^m$ matrix:
 \begin{equation}
 Q_x := \left(I_{2^m}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(I_{2^m}\otimes \ket{0^p}\right).
 \end{equation}
-$Q_x$ is positive semidefinite, and $\bra{\psi}Q_x\ket{\psi}$ is the acceptance probability of $V'_x$ on witness $\psi$.
-Note that
+$Q_x$ is positive semidefinite, and $\bra{\psi}Q_x\ket{\psi}$ is the acceptance probability of $V'_x$ on witness $\psi$. Thus
 \begin{equation}
 x\in L_{yes} \Rightarrow \tr[Q_x]\ge 1 - 2^{-(m+2)} \ge 3/4
 \end{equation}
@@ -636,7 +637,7 @@ H_{out} = (\ket{1}\bra{1}_{out} \otimes I_{k-1}) \otimes \ket{T}\bra{T}
 \begin{equation}
 H_{prop} = \sum_{j=1}^T \frac{1}{2} \left[ - V_j \otimes \ket{j}\bra{j-1} - V_j^\dagger \otimes \ket{j-1}\bra{j} + I \otimes (\ket{j}\bra{j} + \ket{j-1}\bra{j-1}) \right].
 \end{equation}
-Note that $H$ is a sparse matrix - in fact, there are only a constant number of nonzero terms in each row. Since each gate $V_{x,j}$ can be computed in classical polynomial time and $k(n)$ space, it follows that so can the nonzero entries of $H$. Moreover, let $\lambda_{min}$ be the minimum eigenvalue of $H$; then it was shown by Kitaev \cite{ksv02} that if $x \in L_{yes}$ then $\lambda_{min} \le a = (1-c)/(T+1)$, while if $x \in L_{no}$ then $\lambda_{min} \ge b = (1-s)/T^3$. Since $c = 1-1/T^3$ and $s = 1/T^3$ we see that $0 < b-a < 2^{-\mathcal{O}(k)}$. 
+$H$ is a sparse matrix - in fact, there are only a constant number of nonzero terms in each row. Since each gate $V_{x,j}$ can be computed in classical polynomial time and $k(n)$ space, it follows that so can the nonzero entries of $H$. Moreover, let $\lambda_{min}$ be the minimum eigenvalue of $H$; then it was shown by Kitaev \cite{ksv02} that if $x \in L_{yes}$ then $\lambda_{min} \le a = (1-c)/(T+1)$, while if $x \in L_{no}$ then $\lambda_{min} \ge b = (1-s)/T^3$. Since $c = 1-1/T^3$ and $s = 1/T^3$ we see that $0 < b-a < 2^{-\mathcal{O}(k)}$. 
 \end{proof}
 
 Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref{thm:pqpspace}), we can use Theorem \ref{thm: pspace upper bound} to give us that $\QMAexp\subseteq\PSPACE$ while Theorem \ref{lem:qma protocol} together with Theorem \ref{thm: specham-hardness} give us the lower bound $\PSPACE\subseteq\QMAexp$.  Therefore, we have:
@@ -650,7 +651,7 @@ Finally, we end with two results particular to the polynomial space case. First 
 \end{proposition}
 The containment $\QMA(1,s) \subseteq \PSPACE$ is known \cite{ikw12}. We prove this proposition in Appendix~\ref{app:perfectcompleteness}.
 
-Our second result concerns the $\QMA$-complete Local Hamiltonian problem. We consider the following variant of the local Hamiltonian problem, where the promise gap is only exponentially small: 
+Our second result concerns the $\QMA$-complete Local Hamiltonian problem. We consider the variant of the local Hamiltonian problem where the promise gap is only exponentially small: 
 \begin{definition}[\preciseklh]
 Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_j\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
 \end{definition}
@@ -820,7 +821,7 @@ where the first line follows by taking $r=2$ in Lemma \ref{lem: gap amp 2}, and 
 \begingroup
 \def\thetheorem{\ref{thm: matrix inversion alg}}
 \begin{theorem}
-Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ circuit encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
 \begin{compactenum}
 \item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
 \item Estimate $\|H^{-1}\ket{b}\|$ up to precision $\epsilon$.
