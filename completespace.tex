@@ -274,8 +274,7 @@ Further, since it is straightforward to see that Well-conditioned Matrix Inversi
 \subsection{Sparse Hamiltonian problem}
 Our second result concerns a complete characterization of quantum space complexity via the following problem:
 \begin{definition}[$\spechamiltonian{k(n)}$ problem]
-Given as input is %the succinct encoding of 
-a succinct $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ positive semidefinite (PSD) matrix $H$. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are real functions constructible in classical $\mathcal{O}(k(n))$ space such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
+Given as input is a succinct sparse $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 \end{definition}
 
 \begin{theorem}
@@ -337,7 +336,7 @@ Furthermore, we require $c$ and $s$ to be computable in classical $\bigoh(k(n))$
 \begin{theorem}[Watrous \cite{Watrous99}]\label{thm:pqpspace} $\BQSPACE[poly]=\PSPACE$.
 \end{theorem}
 
-We now define space and time-bounded analogues of $\QMA$:
+We now define space- and time-bounded analogues of $\QMA$:
 \begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\bddQMA{t}{k}{m}{c}{s}$ if there exists a $t$ time and $(k+m)$ space uniformly generated family of quantum circuits $\{ V_x\}_{x\in\{0,1\}^*}$, each of size at most $t(|x|)$, acting on $k(|x|)+m(|x|)$ qubits, so that:\\
 
 If $x \in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that:
@@ -360,17 +359,17 @@ We require $c$ and $s$ to be computable in classical $\bigoh(t(n))$-time and $\b
 \subsection{Other stuff}
 We will frequently use the following definition of \emph{succinct sparse} matrices.
 \begin{definition}
-Let $M$ be a $2^{k(n)} \times 2^{k(n)}$ matrix, where $n$ is the input size. Say that $M$ is a \emph{sparse} matrix if each row has at most polynomially many nonzero entries. Moreover if $M$ is sparse, we say it is a \emph{succinct} matrix if there is a circuit, \emph{the succinct encoding}, that outputs the nonzero entries of any given row in $\poly(n)$ time and $\mathcal{O}(k)$ space.
+Let $M$ be a $2^{k(n)} \times 2^{k(n)}$ matrix. Say that $M$ is a \emph{succinct sparse} matrix if each row has at most $\poly(n)$ many nonzero entries; moreover there is a circuit of size $n$, the \emph{succinct encoding}, that on input $i$ outputs the nonzero entries of the $i$-th row in $\poly(n)$ time and $\bigoh (k)$ space.
 \end{definition}
 Later in the paper when we say that a succinct matrix $M$ is given as input, we will always mean that the succinct encoding of $M$ is given.
 
-Finally, we will frequently be assuming the existence of  algorithms that compute some common functions on $n$-bit numbers, as such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within inverse polynomial accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}. We will use these algorithms implicitly for the rest of the paper\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we will only use the $\bigoh (\log{n})$ upper bound.}.
+Finally, we will frequently be assuming the existence of  algorithms that compute some common functions on $n$-bit numbers, as such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}. We will use these algorithms implicitly for the rest of the paper\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we will only use the $\bigoh (\log{n})$ upper bound.}.
 
 %%Bill's note: End of preliminary section
 \section{Characterization 1: Matrix Inversion}
 \subsection{$\matrixinvert{k(n)}$ is in $\unitaryBQSPACE{k(n)}$}
 \begin{theorem} \label{thm: matrix inversion alg}
-Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the encoding of a succinct $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the encoding of a succinct sparse $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
 \begin{compactenum}
 \item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
 \item Estimate $\|H^{-1}\ket{b}\|$ up to precision $\epsilon$.
@@ -411,7 +410,7 @@ The above argument will show how to do the first and second tasks listed in Theo
 \subsection{$\matrixinvert{k(n)}$ is hard for $\unitaryBQSPACE{k(n)}$}
 We will start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$:
 \begin{definition}[\qca{k(n)}]
-	Given as input is an efficiently encoded quantum circuit $Q$ acting on $k(n)$ qubits with $T = 2^{\mathcal{O}(k(n))}$ 1- or 2-qubit gates.  It is promised that either the matrix entry $|\langle {\zero}|Q|{\zero}\rangle| \geq 2/3$ or $|\langle {\zero}|Q|{\zero}\rangle| \leq 1/3$; determine which is the case.
+	Given as input is the encoding of a $\poly(n)$-time $k(n)$-space uniform quantum circuit $Q$ acting on $k(n)$ qubits with $T = 2^{\mathcal{O}(k(n))}$ 1- or 2-qubit gates.  It is promised that either the matrix entry $|\langle {\zero}|Q|{\zero}\rangle| \geq 2/3$ or $|\langle {\zero}|Q|{\zero}\rangle| \leq 1/3$; determine which is the case.
 \end{definition}
 \begin{lemma} \label{lem: quantum circuit acceptance}
 	$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
@@ -460,7 +459,7 @@ In particular, given the ability to calculate this entry of $H^{-1}$ we are able
 \section{Characterization 2: The $\spechamiltonian{k(n)}$ Problem}
 We will now show an alternate characterization of unitary quantum space via another complete problem for $\unitaryBQSPACE{k(n)}$, for any function $k(n)$ at least $\Omega(\log n)$ and at most $\exp(\bigoh (n))$. Here completeness is defined under a reduction computable by a \emph{classical} algorithm in polynomial time and $\mathcal{O}(k(n))$ space.
 \begin{definition}[$\spechamiltonian{k(n)}$ problem]
-Given as input is the succinct encoding of a succinctly representable sparse $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ Hermitian positive semidefinite (PSD) matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
+Given as input is a succinct sparse $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 \end{definition}
 
 We break the proof into three parts. In Section \ref{subsec:specham-in-bddqma} we show...
