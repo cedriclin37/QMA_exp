@@ -447,7 +447,7 @@ which is a particular entry in $H^{-1}$. In the second line we've used $j = 3Tx 
 \begin{equation}
 \frac{e^{-t/T}}{1-e^{-3}}\langle\zero|Q|\zero\rangle.
 \end{equation}
-In particular, an estimation this entry of $H^{-1}$ gives a solution to \qca{k(n)}.
+In particular, an estimation of this entry of $H^{-1}$ will solve \qca{k(n)}.
 \end{proof}
 
 %%Bill's Note: End of Matrix Inversion section
@@ -469,7 +469,7 @@ Our strategy will essentially be to simulate the time evolution of the Hamiltoni
 \begin{theorem}[\cite{berry14,bccks15,berry15}] \label{thm:ham_sim}
 Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
 \end{theorem}
-While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Also note that we can upper bound the maximum eigenvalue of $H$, $\|H\|$, by its max with the following observation:
+While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Note that we have an upper bound for the maximum eigenvalue of $H$, $\|H\|$:
 \begin{remark}
 Suppose a matrix $H$ has at most $n$ nonzero entries per row, each of which is no more than $\|H\|_{max}$ in absolute value. Then $\| H \| \le n\|H\|_{max}$.
 \end{remark}
@@ -487,18 +487,15 @@ Now to use phase estimation to distinguish the phase up to exponential precision
 \end{align}
 In the above we've assumed $\ket{\psi}$ is an eigenstate of $H$ with eigenvalue $\lambda$. If we measure the control qubit at the end, we see the probability we obtain 0 is $(1+\cos(\lambda t))/2$. Therefore if $\psi$ is a eigenstate with eigenvalue at most $a$, we can verify this with probability at least $(1+\cos(at))/2 - \epsilon$, where recall $\epsilon$ is the error in the implementation of $\exp(-iHt)$. Otherwise if $\lambda_{min} \ge b$, no state $\psi$ will be accepted with probability greater than $(1+\cos(bt))/2 + \epsilon$. The separation between the acceptance probabilities between the YES case and the NO case is at least 
 \begin{align}
-(\cos(at)-\cos(bt)) - 2\epsilon &= 2 \sin \left(\frac{(a+b)t}{2}\right) \sin \left(\frac{(b-a)t}{2}\right) - 2\epsilon \\
-&\ge 2^{-\mathcal{O}(k)}
+(\cos(at)-\cos(bt)) - 2\epsilon &= 2 \sin \left(\frac{(a+b)t}{2}\right) \sin \left(\frac{(b-a)t}{2}\right) - 2\epsilon \ge 2^{-\mathcal{O}(k)}
 \end{align}
 since $\sin x = \Omega(x)$ for $x \in [0,1]$, $(a+b)t \ge (b-a)t = 2^{-\mathcal{O}(k(n))}$, as long as we choose $\epsilon = 2^{-\Theta(k(n))}$ to be sufficiently small enough. This therefore gives a $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k)}{c}{s}$ protocol for $c - s = 2^{-\mathcal{O}(k(n))}$, as desired.
 \end{proof}
 \subsection{$k(n)$-Space-bounded $\QMAexp$ is in $\unitaryBQSPACE{k(n)}$} \label{subsec:bddqma-in-bqspace}
 %%HERE
 In this section we will establish the following result:
-\begin{theorem} \label{thm: pspace upper bound}
-\[
-\bigcup_{c \in (0,1]}\bddQMA{\poly}{\Theta(k)}{\Theta(k)}{c}{c-2^{-\Theta(k)}} \subseteq \unitaryQSPACE{\Theta(k)}{2/3}{1/3}.
-\]
+\begin{theorem} \label{thm: pspace upper bound}$
+\bigcup_{c \in (0,1]}\bddQMA{\poly}{\Theta(k)}{\Theta(k)}{c}{c-2^{-\Theta(k)}} \subseteq \unitaryBQSPACE{\Theta(k)}$.
 \end{theorem}
 The results of this section have been independently obtained in \cite{fklmn16} as well using a different method (based on \cite{kln15} instead of \cite{nwz11}), with stronger results for some of the statements; for example in Lemma \ref{lem: gap amp 2} the completeness and soundness parameters of the right hand side can be replaced by $1-2^{2^{-r}}$ and $2^{2^{-r}}$, at the price of possibly increasing the time bound. Nevertheless the proof in \cite{fklmn16} is somewhat more complicated, and therefore we have included our proof in this paper.
 
@@ -515,10 +512,9 @@ For any functions $t,k,r>0$,
 \begin{proof}
 	Let $L=(L_{yes}, L_{no})$ be a promise problem in $\QMA(c,s)$ and $\{V_x\}_{x\in\{0,1\}^*}$ the corresponding uniform family of verification circuits.
 Define the projectors:
-\begin{align}
-\Pi_0 &= I_m \otimes \ket{0^k}\bra{0^k} \\
-\Pi_1 &= V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
-\end{align}
+\begin{equation}
+\Pi_0 = I_m \otimes \ket{0^k}\bra{0^k}, \quad \Pi_1 = V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
+\end{equation}
 and the corresponding reflections:
 \begin{equation}
 R_0 = 2\Pi_0 - I, \quad R_1 = 2\Pi_1 - I.
@@ -529,7 +525,8 @@ Now consider the following procedure:
 \item Perform phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with precision $\bigoh (c-s)$ and failure probability $2^{-r}$.
 \item Output YES if the phase is at most $(\phi_{c}+\phi_{s})/2$; otherwise output NO.
 \end{compactenum}
-One way of performing phase estimation to high confidence would be to perform it to much higher precision and discard the higher order bits. Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancilla qubits. This procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
+%One way of performing phase estimation to high confidence would be to perform it to much higher precision and discard the higher order bits. 
+Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancilla qubits. This procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
 \end{proof}
 
 In Appendix \ref{app: gap amplification} we will prove the following stronger error reduction lemma that gives the same space bound but uses less space; this better space bound will be required for proving Theorem \ref{thm: specham-hardness}.
@@ -543,6 +540,15 @@ For any functions $t,k,r>0$,
 
 
 Thus, we get the following corollaries:
+\begin{corollary} \label{obvious2} For any $r = \mathcal{O}(k)$,
+$
+\unitaryQSPACE{k}{c}{c-2^{-\bigoh (k)}} \subseteq
+\unitaryQSPACE{\Theta(k)}{1-2^{-r}}{2^{-r}}$.
+\end{corollary}
+This corollary shows that error reduction is possible for unitary quantum $\bigoh(k)$-space bounded classes, as long as the completeness-soundness gap is at least $2^{-\bigoh (k)}$.
+\begin{proof}
+This follows from Theorem \ref{thm: gap amp} by taking $m=0$, $s = c-2^{-\Theta(k)}$, and $r = \Theta(k)$.
+\end{proof}
 \begin{corollary}\label{obvious1}
 \[
 \bddQMA{t}{k}{m}{c}{c-2^{-\Theta(k)}}\subseteq\bddQMA{\mathcal{O}\left(t2^{\Theta(k)}\right)}{\mathcal{O}\left(k\right)}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}.
@@ -551,17 +557,6 @@ Thus, we get the following corollaries:
 \begin{proof}
 This follows from Theorem \ref{thm: gap amp} by taking $s = c-2^{-\Theta(k)}$ and $r = m+2$.
 \end{proof}
-\begin{corollary} \label{obvious2} For any function $r = \mathcal{O}(k)$,
-\[
-\unitaryQSPACE{k}{c}{c-2^{-\bigoh (k)}} \subseteq
-\unitaryQSPACE{\Theta(k)}{1-2^{-r}}{2^{-r}}.
-\]
-\end{corollary}
-This corollary shows that error reduction is possible for unitary quantum $\bigoh(k)$-space bounded classes, as long as the completeness-soundness gap is at least $2^{-\bigoh (k)}$.
-\begin{proof}
-This follows from Theorem \ref{thm: gap amp} by taking $m=0$, $s = c-2^{-\Theta(k)}$, and $r = \Theta(k)$.
-\end{proof}
-
 \subsubsection{$\PSPACE$ simulation}
 \begin{theorem} \label{thm:pqpspace simulation} For any function $t$,
 \[
@@ -570,15 +565,19 @@ This follows from Theorem \ref{thm: gap amp} by taking $m=0$, $s = c-2^{-\Theta(
 \]
 \end{theorem}
 \begin{proof}
-The proof is very similar to that of \cite[Theorem 3.6]{mw05}. For any functions $m, k$, consider a problem $L\in\bddQMA{\mathcal{O}\left(t2^{\Theta(k)}\right)}{\mathcal{O}\left(k\right)}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^*}$ be a uniform family of verification circuits for $L$.
-If $x\in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
-\begin{equation}
-\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \ge 1-2^{-(m+2)}
-\end{equation}
-whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have
-\begin{equation}
-\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \le 2^{-(m+2)}.
-\end{equation}
+The proof is very similar to that of \cite[Theorem 3.6]{mw05}. For any functions $m, k$, consider a problem $L\in\bddQMA{\mathcal{O}\left(t2^{\Theta(k)}\right)}{\mathcal{O}\left(k\right)}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^*}$ be a uniform family of verification circuits for $L$ with completeness $1-2^{-(m+2)}$ and soundness $2^{-(m+2)}$. 
+%The acceptance probability of $V'_x$ on witness $\psi$ is
+%\begin{equation}
+%\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right)
+%\end{equation}
+%If $x\in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
+%\begin{equation}
+%\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \ge 1-2^{-(m+2)}
+%\end{equation}
+%whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have
+%\begin{equation}
+%\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \le 2^{-(m+2)}.
+%\end{equation}
 For convenience, define the $2^m \times 2^m$ matrix:
 \begin{equation}
 Q_x := \left(I_{2^m}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(I_{2^m}\otimes \ket{0^p}\right).
@@ -622,9 +621,7 @@ H = H_{in} + H_{prop} + H_{out}
 \end{equation}
 defined on the Hilbert space $\mathbb{C}^{2^k} \otimes \mathbb{C}^{T+1}$, where
 \begin{equation}
-H_{in} = \ket{0^k}\bra{0^k} \otimes \ket{0}\bra{0}
-\end{equation}
-\begin{equation}
+H_{in} = \ket{0^k}\bra{0^k} \otimes \ket{0}\bra{0}, \quad
 H_{out} = (\ket{1}\bra{1}_{out} \otimes I_{k-1}) \otimes \ket{T}\bra{T}
 \end{equation}
 \begin{equation}
@@ -635,7 +632,7 @@ $H$ is a sparse matrix - in fact, there are only a constant number of nonzero te
 Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref{thm:pqpspace}), we can use Theorem \ref{thm: pspace upper bound} to give us that $\QMAexp\subseteq\PSPACE$ while Theorem \ref{lem:qma protocol} together with Theorem \ref{thm: specham-hardness} give us the lower bound $\PSPACE\subseteq\QMAexp$.  Therefore, we have:
 \begin{corollary} $\QMAexp=\PSPACE$. \end{corollary}
 
-Finally, we end with two results particular to the polynomial space case. First of all, in the equality $\QMAexp=\PSPACE$, we can actually achieve perfect completeness ($c=1$) for the $\QMA$ proof protocol. Moreover for perfect completeness we don't require that $c-s = 2^{-\poly}$:
+Finally, we end with two results particular to the polynomial space case. First of all, in the equality $\QMAexp=\PSPACE$, we can actually achieve perfect completeness ($c=1$) for the $\QMA$ proof protocol. Moreover for perfect completeness we do not require that $c-s = 2^{-\poly}$:
 \begin{proposition} \label{prop: perfect completeness} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
 \[
 \PSPACE = \QMA(1,1-2^{-\poly}) = \bigcup_{s \in [0,1)}\QMA(1,s).
