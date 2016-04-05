@@ -361,11 +361,11 @@ We use the following definition of \emph{efficient encodings} of matrices:
 \end{definition}
 We will often specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
 
-Finally, we will frequently be assuming the existence of  algorithms that compute some common functions on $n$-bit numbers, such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}. We will use these algorithms implicitly for the rest of the paper\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we only use the $\bigoh (\log{n})$ upper bound.}.
+Finally, we will often implicitly assume the existence of  algorithms that compute some common functions on $n$-bit numbers, such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}.\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we only use the $\bigoh (\log{n})$ upper bound.}.
 
 %%Bill's note: End of preliminary section
 \section{Characterization 1: Matrix Inversion}
-This section is devoted to showing Theorem \ref{thm: matrix invert}, which gives a characterization of $\unitaryBQSPACE{k(n)}$ via the complete problem $\matrixinvert{k(n)}$ (recall Definition \ref{def: matrix invert}). %We first give a space-bounded algorithm for $\matrixinvert{k(n)}$ in Section \ref{sec: matrix inversion alg}, and then demonstrate hardness in Section \ref{sec: matrix inversion hard}.
+This section is devoted to showing Theorem \ref{thm: matrix invert}, which gives a characterization of $\unitaryBQSPACE{k(n)}$ via the complete problem $\matrixinvert{k(n)}$ (recall Definition \ref{def: matrix invert}). In Section \ref{sec: matrix inversion alg} we show containment in $\unitaryBQSPACE{k}$ by using amplitude amplification on Ta-Shma's algoritm \cite{tashma}. We obtain hardness for $\unitaryBQSPACE{k}$ in Section \ref{sec: matrix inversion hard} by adapting the hardness proof of \cite{HHL}. %We first give a space-bounded algorithm for $\matrixinvert{k(n)}$ in Section \ref{sec: matrix inversion alg}, and then demonstrate hardness in Section \ref{sec: matrix inversion hard}.
 \subsection{$\matrixinvert{k(n)}$ is in $\unitaryBQSPACE{k(n)}$} \label{sec: matrix inversion alg}
 \begin{theorem} \label{thm: matrix inversion alg}
 Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
@@ -376,7 +376,7 @@ Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the s
 \end{compactenum}
 These circuits do not require intermediate measurements.
 \end{theorem}
-Note that if intermediate measurements were allowed instead, then in the case $k = \mathcal{O}(\log n)$ this result is already proven by Ta-Shma \cite[Theorem~6.3]{tashma} (and generalizes to other space bounds without much difficulty). We strengthen Ta-Shma's result by showing that intermediate measurements are not necessary. By taking $\kappa = 2^{\bigoh (k)}$ and $\epsilon = 2^{-\bigoh (k)}$ to be constant, we get: 
+Note that if intermediate measurements were instead allowed, then for $k = \mathcal{O}(\log n)$ this result was already proven by Ta-Shma \cite[Theorem~6.3]{tashma} (and generalizes to other choices of $k$ without much difficulty). We strengthen Ta-Shma's result by showing that intermediate measurements are unnecessary. By taking $\kappa = 2^{\bigoh (k)}$ and $\epsilon = 2^{-\bigoh (k)}$, the total space used is $\bigoh(k)$, and hence:
 
 \begin{corollary}
 $\matrixinvert{k(n)} \in \unitaryBQSPACE{k(n)}$.
@@ -460,15 +460,15 @@ In particular, an estimation of this entry of $H^{-1}$ will solve \qca{k(n)}.
 %\begin{definition}[$\spechamiltonian{k(n)}$ problem]
 %Given as input is the size-$n$ efficient encoding of a $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 %\end{definition}
-We will now prove Theorem \ref{thm: spechamiltonian}; this gives an alternate characterization of unitary quantum space via the complete problem $\spechamiltonian{k(n)}$ (see Definition \ref{def: spechamiltonian}). In the process we will show an equivalence with a suitably defined $\QMA$ protocol.
+We will now prove Theorem \ref{thm: spechamiltonian}; this gives an alternate characterization of unitary quantum space via the complete problem $\spechamiltonian{k(n)}$ (see Definition \ref{def: spechamiltonian}). We do so by three steps: in Section \ref{subsec:specham-in-bddqma} we show containment in a generalized $\QMA$ class; in Section \ref{subsec:bddqma-in-bqspace} we show that this generalized $\QMA$ class is contained in $\unitaryBQSPACE{k(n)}$; and finally in Section \ref{sec: specham-hardness} we show $\unitaryBQSPACE{k(n)}$-hardness of $\spechamiltonian{k(n)}$.
 %\subsection{$\spechamiltonian{k(n)}$ is in $\unitaryBQSPACE{k(n)}$}
 %We show the main result of this section by proving first, in Section \ref{subsec:specham-in-bddqma}, that $\spechamiltonian{k(n)}$ is in $k(n)$-Space-bounded $\QMAexp$ and then in Section \ref{subsec:bddqma-in-bqspace} that $k(n)$-Space-bounded $\QMAexp$ is in $\unitaryBQSPACE{k(n)}$.
-\subsection{A $\QMA$ proof system for $\spechamiltonian{k(n)}$}\label{subsec:specham-in-bddqma}
+\subsection{A generalized $\QMA$ proof system for $\spechamiltonian{k(n)}$}\label{subsec:specham-in-bddqma}
 This section will be devoted to showing the following result:
 \begin{theorem} \label{lem:qma protocol}
 $\spechamiltonian{k(n)}$ is contained in $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k(n))}{c}{s}$ for some $c,s$ such that $c - s > 2^{-\mathcal{O}(k(n))}$.
 \end{theorem}
-Our strategy is to simulate the operator $e^{-iHt}$, and then use a stripped-down version of phase estimation to estimate an eigenvalue of $H$. For sparse Hamiltonian simulation we use the following:
+Our strategy is to use a stripped-down version of phase estimation on $e^{-iHt}$ to estimate an eigenvalue of $H$. To simulate $e^{-iHt}$ we use the following result for sparse Hamiltonian simulation:
 \begin{theorem}[\cite{berry14,bccks15,berry15}] \label{thm:ham_sim}
 Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
 \end{theorem}
@@ -611,7 +611,7 @@ This follows from Corollary \ref{obvious1}, Theorem \ref{thm:pqpspace simulation
 %$\spechamiltonian{k(n)}\in\unitaryQSPACE{\Theta(k)}{2/3}{1/3}$.
 %\end{corollary}
 
-\subsection{$\spechamiltonian{k(n)}$ is hard for $\unitaryBQSPACE{k(n)}$}
+\subsection{$\spechamiltonian{k(n)}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: specham-hardness}
 
 \begin{theorem}\label{thm: specham-hardness}
 $\spechamiltonian{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical poly-time $k(n)$-space reductions.
