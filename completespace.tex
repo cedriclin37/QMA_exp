@@ -277,7 +277,7 @@ Furthermore, since it is straightforward to see that Well-conditioned Matrix Inv
 \subsection{Minimum Eigenvalue problem} 
 Our second result completely characterizes quantum space complexity via the following problem:
 \begin{definition}[$\spechamiltonian{k(n)}$ problem] \label{def: spechamiltonian}
-Given as input is the size-$n$ efficient encoding of a positive semidefinite matrix $H$, such that% the maximum entry in absolute value 
+Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, such that% the maximum entry in absolute value 
 $\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 \end{definition}
 
@@ -407,18 +407,18 @@ $\Pi_0$ projects onto the initial subspace, while $\Pi_1$ projects onto the init
 
 We have addressed the first two tasks in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can choose $\Pi'_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will give an estimate for $|\bra{a}H^{-1}\ket{b}|$. See Appendix \ref{app: matrix inversion alg} for the full proof.
 
-\subsection{$\matrixinvert{k(n)}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: matrix inversion hard}
+\subsection{$\matrixinvert{\bigoh(k(n))}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: matrix inversion hard}
 We start from the following simple hard problem for $\unitaryBQSPACE{k(n)}$:
 \begin{definition}[\qca{k(n)}]
-	Given as input is the encoding of a $\poly(n)$-time $k(n)$-space uniform quantum circuit $Q$ acting on $k(n)$ qubits with $T = 2^{\mathcal{O}(k(n))}$ 1- or 2-qubit gates.  It is promised that either the matrix entry $|\langle {\zero}|Q|{\zero}\rangle| \geq 2/3$ or $|\langle {\zero}|Q|{\zero}\rangle| \leq 1/3$; determine which is the case.
+	Given as input is the description of a quantum circuit $Q$ acting on $k(n)$ qubits with $T = 2^{\mathcal{O}(k(n))}$ 1- or 2-qubit gates.  It is promised that either the matrix entry $|\langle {\zero}|Q|{\zero}\rangle| \geq 2/3$ or $|\langle {\zero}|Q|{\zero}\rangle| \leq 1/3$; determine which is the case.
 \end{definition}
 \begin{lemma} \label{lem: quantum circuit acceptance}
-	$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
+$\bigoh(\qca{k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard under classical $\poly(n)$, $\bigoh(k(n))$ space reductions.
 \end{lemma}
 \begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We give a proof in Appendix \ref{app:qca} for completeness.
 \end{proof}
 \begin{theorem}
-$\matrixinvert{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical reductions computable in polynomial time and $\bigoh (k)$ space.
+$\matrixinvert{\bigoh(k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard under classical reductions computable in polynomial time and $\bigoh (k)$ space.
 \end{theorem}
 \begin{proof}
 Our proof proceeds as in \cite{HHL}.  We will show that $\matrixinvert{k(n)}$ is as hard as $\qca{k(n)}$.  Given an instance of the latter, i.e., a circuit on $k(n)$ qubits, $Q=U_TU_{T-1}\cdots U_1$ with $T = 2^{\mathcal{O}(k(n))}$, define the following unitary of dimension $3T2^k$:
@@ -613,10 +613,10 @@ This follows from Corollary \ref{obvious1}, Theorem \ref{thm:pqpspace simulation
 %$\spechamiltonian{k(n)}\in\unitaryQSPACE{\Theta(k)}{2/3}{1/3}$.
 %\end{corollary}
 
-\subsection{$\spechamiltonian{k(n)}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: specham-hardness}
+\subsection{$\spechamiltonian{\bigoh(k(n))}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: specham-hardness}
 
 \begin{theorem}\label{thm: specham-hardness}
-$\spechamiltonian{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical poly-time $k(n)$-space reductions.
+$\spechamiltonian{\bigoh(k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard under classical poly-time $\bigoh(k(n))$-space reductions.
 \end{theorem}
 \begin{proof}
 Let $L=(L_{yes},L_{no})$ be a problem in $\unitaryBQSPACE{k(n)}$, and suppose it has a verifier that uses $t=2^{\bigoh(k)}$ gates with completeness $2/3$ and soundness $1/3$. By Theorem \ref{thm: gap amp}, we can   amplify the gap to get a new verifier circuit that uses $T=\mathcal{O}(rt)$ gates, and has completeness $c=1-2^{-r}$ and soundness $s=2^{-r}$. Choose $r=\bigoh(k)$ large enough so that $c \ge 1 - 1/T^3$ and $s \le 1/T^3$, and suppose $V_x=V_{x,T}V_{x,T-1}\cdots V_{x,1}$ is the new (gap-amplified) verifier circuit for $L$ acting on $k$ qubits. Consider the Kitaev clock Hamiltonian:
@@ -907,11 +907,11 @@ where the first line follows by taking $r=2$ in Lemma \ref{lem: gap amp 2}, and 
 Since $\PP \subseteq \BQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ \cite{swv07}, we only need to show that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PP$. In \cite{swv07} it was noted that all PEPS can be seen as the output of a quantum circuit followed by a postselected measurement. Therefore $\PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ corresponds to the problems that can be decided by a quantum circuit, followed by a postselected measurement (since the queries to $O_{PEPS}$ are classical and nonadaptive, we can compose them into one single postselection), followed by a measurement. In the YES case the measurement outputs 1 with probability at least $c$, whereas in the NO case the measurement outputs 1 with probability at most $s$, with $c > s$. The standard counting argument placing $\BQP$ inside $\PP$ then applies to this case as well; see for instance \cite[Propositions~2~and~3]{aaronson05}.
 
 
-\section{$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard}\label{app:qca}
+\section{$\bigoh(\qca{k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard}\label{app:qca}
 \begingroup
 \def\thelemma{\ref{lem: quantum circuit acceptance}}
 \begin{lemma}
-$\qca{k(n)}$ is $\unitaryBQSPACE{k(n)}$-hard under classical polynomial time, $k(n)$ space reductions.
+$\bigoh(\qca{k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard under classical $\poly(n)$, $\bigoh(k(n))$ space reductions.
 \end{lemma}
 \addtocounter{theorem}{-1}
 \endgroup
