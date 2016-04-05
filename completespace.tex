@@ -175,7 +175,8 @@
 \newcommand{\I}{{\mathbb I}}
 \newcommand{\CNOT}{{\mathrm{CNOT}}}
 \newcommand{\plr}[1]{\hat{#1}} %pauli-liouville-represenation
-\newcommand{\poly}{\textrm{poly}}
+%\newcommand{\poly}{\textrm{poly}}
+\DeclareMathOperator{\poly}{poly}
 
 %\newcommand{\ket}[1]{|{#1}\rangle}
 %\newcommand{\bra}[1]{\langle{#1}|}
@@ -244,7 +245,7 @@ In the following discussion, $\unitaryBQSPACE{k(n)}$ refers to the class of prob
 \subsection{Inverting well-conditioned matrices}
 Matrix Inversion is one of the most important and ubiquitous computational problems.  The problem of inverting integer matrices is complete for $\DET$, the class of functions reducible in $\Logspace$ (i.e., in deterministic space $\bigoh(\log{n})$) to computing the determinant of an integer matrix, which is contained in deterministic $\bigoh(\log^2{n})$ space \cite{berkowitz, cook}.  It has long been a major question in computational complexity to understand if Integer Matrix Inversion is in $\Logspace$, which would imply that $\Logspace=\sf{NL}=\DET$.
 
-Recently, Ta-Shma, building on work of Harrow, Hassidim, and Lloyd, showed that inverting a well-conditioned $n \times n$ matrix can be approximated by a quantum algorithm using $O(\log n)$ space, but with intermediate measurements \cite{tashma,HHL}. This gives a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.
+Recently, Ta-Shma \cite{tashma}, building on work of Harrow, Hassidim, and Lloyd \cite{HHL}, showed that inverting a well-conditioned $n \times n$ matrix can be approximated by a quantum algorithm using $O(\log n)$ space, but with intermediate measurements. This gives a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.
 
 We first consider a generalization of Ta-Shma's well-conditioned matrix inversion problem \cite{tashma}:\begin{definition}[\matrixinvert{k(n)}] \label{def: matrix invert}
 Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
@@ -255,7 +256,7 @@ For a definition of efficient encoding, see Definition \ref{def: efficient encod
 %\footnote{We note that for any explicit $m \times m$ matrix it is not difficult to construct a circuit encoding of size $n = \poly(m)$ that runs in $\bigoh(k(n)) = \bigoh(\log(n))$ space. Hence the requirement that there exists a circuit encoding is vacuous for $k(n) = \bigoh(\log(n))$.} 
 We show the following:
 \begin{theorem} \label{thm: matrix invert}
-For $\Omega(\log(n)) \le k(n) \le 2^{\poly(n)}$, \matrixinvert{\mathcal{O}(k(n))} is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+For $\Omega(\log(n)) \le k(n) \le \poly(n)$, \matrixinvert{\mathcal{O}(k(n))} is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
 \end{theorem}
 
 Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. We also note that our algorithm (Theorem \ref{thm: matrix inversion alg}) actually approximates the matrix entry $|H^{-1}(s,t)|$ to precision $2^{-\mathcal{O}(k)}$. In particular, if we take $k = \bigoh(\log n)$ we get the following:
@@ -279,7 +280,7 @@ $\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be
 \end{definition}
 
 \begin{theorem} \label{thm: spechamiltonian}
-For $\Omega(\log(n)) \le k(n) \le 2^{\poly(n)}$, $\spechamiltonian{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\spechamiltonian{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
 \end{theorem}
 
 In the process, we also show the following equivalence between unitary quantum space-bounded computation and $\QMA$-proof systems:
@@ -302,7 +303,7 @@ Lastly, we are able to strengthen our characterization to show that $\QMAexp$ co
 \subsection{Quantum circuits}
 We will assume a working knowledge of quantum information. For an introduction, see \cite{nc00}.
 
-A \emph{quantum circuit} consists of a series of quantum gates each of which come from some universal gateset, such as the gateset consisting of Hadamard and Toffoli gates \cite{shi}. % A \emph{description} of the quantum circuit is a string consisting of the gates in the circuit, together with the qubits that each gate acts on.
+A \emph{quantum circuit} consists of a series of quantum gates each taken from some universal gateset, such as the gateset consisting of Hadamard and Toffoli gates \cite{shi}. % A \emph{description} of the quantum circuit is a string consisting of the gates in the circuit, together with the qubits that each gate acts on.
  For functions $f,g:\mathbb{N}\rightarrow\mathbb{N}$, we say a family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$ is \emph{$f$-time $g$-space uniformly generated} if there exists a deterministic classical Turing machine that on input $x\in\{0,1\}^n$ and $i>0$ outputs the $i$-th gate of $Q_x$ within time $f(n)$ and workspace $g(n)$ \cite{nc00}.  
  
 Our restriction to a specific gateset is without loss of generality, even for logarithmic space algorithms:  there exists a deterministic algorithm that given any unitary quantum gate $U$ and a parameter $\epsilon$, outputs a sequence of at most $\polylog({1/\epsilon})$ gates from any universal quantum gateset that approximates $U$ to precision $\epsilon$ in space $\bigoh({\log({1/\epsilon})})$ and time $\polylog({1/\epsilon})$ \cite{mw12}.  This improves the Solovay-Kitaev theorem, which guarantees a space bound of $\polylog(n)$; see e.g., \cite{nc00}.
@@ -311,8 +312,7 @@ Our restriction to a specific gateset is without loss of generality, even for lo
 For our model of unitary quantum space-bounded computation, we will consider a quantum system with purely classical control, because there are no intermediate quantum measurements to condition future operations on. Specifically, we use the following definition (see Appendix \ref{app: space bounded} for more details):
 
 \begin{definition} \label{def: qspace}
-Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le 2^{
-\poly(n)}$. A promise problem $L=(L_{yes},L_{no})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
+Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le \poly(n)$. A promise problem $L=(L_{yes},L_{no})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
  If $x \in L_{yes}$:
 \begin{equation}
 \bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \ge c.
@@ -326,8 +326,7 @@ Furthermore, we require $c$ and $s$ to be computable in classical $\bigoh(k(n))$
 %For the purposes of this work, we will demand that the space bound $k(n)$ is at least $\bigoh(\log{n})$ and no more than $2^{\poly(n)}$.  
 \end{definition}
 
-For the rest of the paper we will always assume that $\Omega(\log(n)) \le k(n) \le 2^{
-\poly(n)}$.
+For the rest of the paper we will always assume that $\Omega(\log(n)) \le k(n) \le \poly(n)$.
 
 The bound $T=2^{\mathcal{O}(k)}$ on the circuit size comes from that any classical Turing machine generating $Q_x$ using space $\bigoh(k(|x|))$ has at most $2^{\mathcal{O}(k)}$ configurations. We note that $2^{\mathcal{O}(k)}$ gates suffice to approximate any gate on $\bigoh(k)$ qubits to high accuracy (see e.g. \cite[Chapter~4]{nc00}). The $\poly(|x|)$ time bound on the classical control can be assumed WLOG; see Appendix \ref{app: space bounded} for details.
 
@@ -670,7 +669,7 @@ We are grateful to Andrew Childs, Sevag Gharibian, Aram Harrow, Hirotada Kobayas
 \appendix
 
 \section{More details on space-bounded computation}\label{app: space bounded}
-For this section, it would be helpful to keep in mind that we always assume the space bound $k(n)$ always satisfies $\Omega(\log(n)) \le k(n) \le 2^{\poly(n)}$.
+For this section, it would be helpful to keep in mind that we always assume the space bound $k(n)$ always satisfies $\Omega(\log(n)) \le k(n) \le \poly(n)$.
 
 We start with the definitions of classical bounded space computation. In discussion of space-bounded classes, we usually consider Turing machines with two tapes, a read-only input tape and a work tape; only the space used on the work tape is counted. For $k:\mathbb{N}\rightarrow\mathbb{N}$, a function $f:\{0,1\}^{*}\rightarrow\{0,1\}^*$ is said to be computable in $k(n)$ space if any bit of $f(x)$ can be computed by a deterministic Turing machine using space $\bigoh(k(|x|))$ on the work tape.  For example, $\Logspace$ is the class of functions that can be computed in $\bigoh(\log{n})$ space.
 
@@ -683,8 +682,7 @@ Moreover, the $\mathcal{O}(k)$-space bounded classical Turing machine can be rep
 \begingroup
 \def\thedefinition{\ref{def: qspace}}
 \begin{definition}
-Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le 2^{
-\poly(n)}$. A promise problem $L=(L_{yes},L_{no})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
+Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le \poly(n)$. A promise problem $L=(L_{yes},L_{no})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
  If $x \in L_{yes}$:
 \begin{equation}
 \bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \ge c.
