@@ -232,7 +232,7 @@
 \begin{abstract}
 We give two complete characterizations of unitary quantum space-bounded classes.  The first is based on the Matrix Inversion problem for well-conditioned matrices.  We show that given the size-$n$ efficient encoding of a $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ well-conditioned matrix $H$, approximating a particular entry of $H^{-1}$ is complete for the class of problems solvable by a quantum algorithm that uses $\mathcal{O}(k(n))$ space and performs all quantum measurements at the end of the computation. In particular, the problem of computing entries of $H^{-1}$ for an explicit well-conditioned $n \times n$ matrix $H$ is complete for unitary quantum logspace.
 
-We then show that the problem of approximating to high precision the least eigenvalue of a positive semidefinite matrix $H$, encoded as a circuit, gives a second characterization of unitary quantum space complexity. In the process we also establish an equivalence between unitary quantum space-bounded classes and certain $\QMA$ proof systems. As a consequence, we establish that $\QMA$ with exponentially small completeness-soundness gap is equal to $\PSPACE$, that determining whether a local Hamiltonian is frustration-free is $\PSPACE$-complete, and give a provable setting in which the ability to prepare $PEPS$ states gives less computational power than the ability to prepare the ground state of a generic local Hamiltonian.
+We then show that the problem of approximating to high precision the least eigenvalue of a positive semidefinite matrix $H$, encoded as a circuit, gives a second characterization of unitary quantum space complexity. In the process we also establish an equivalence between unitary quantum space-bounded classes and certain $\QMA$ proof systems. As  consequences, we establish that $\QMA$ with exponentially small completeness-soundness gap is equal to $\PSPACE$, that determining whether a local Hamiltonian is frustration-free is $\PSPACE$-complete, and give a provable setting in which the ability to prepare $PEPS$ states gives less computational power than the ability to prepare the ground state of a generic local Hamiltonian.
 \end{abstract}
 \thispagestyle{empty}
 \end{titlepage}
@@ -309,7 +309,7 @@ A \emph{quantum circuit} consists of a series of quantum gates each taken from s
 Our restriction to a specific gateset is without loss of generality, even for logarithmic space algorithms:  there exists a deterministic algorithm that given any unitary quantum gate $U$ and a parameter $\epsilon$, outputs a sequence of at most $\polylog({1/\epsilon})$ gates from any universal quantum gateset that approximates $U$ to precision $\epsilon$ in space $\bigoh({\log({1/\epsilon})})$ and time $\polylog({1/\epsilon})$ \cite{mw12}.  This improves the Solovay-Kitaev theorem, which guarantees a space bound of $\polylog(n)$; see e.g., \cite{nc00}.
  %\begin{theorem}[\cite{mw12}]  For every universal set $S$ of unitary gates that is closed under adjoint, every language solvable by a bounded-error quantum %
 \subsection{Space-bounded computation} \label{sec: space bounded computation}
-For our model of unitary quantum space-bounded computation, we will consider a quantum system with purely classical control, because there are no intermediate quantum measurements to condition future operations on. Specifically, we use the following definition (see Appendix \ref{app: space bounded} for more details):
+For our model of unitary quantum space-bounded computation, we consider a quantum system with purely classical control, because there are no intermediate quantum measurements to condition future operations on. Specifically, we use the following definition (see Appendix \ref{app: space bounded} for more details):
 
 \begin{definition} \label{def: qspace}
 Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le \poly(n)$. A promise problem $L=(L_{yes},L_{no})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
@@ -594,7 +594,7 @@ x\in L_{no} \Rightarrow \tr[Q_x]\le 2^m \cdot 2^{-(m+2)} = 1/4
 \end{equation}
 since the trace is the sum of the $2^m$ eigenvalues, each of which is at most $2^{-(m+2)}$. 
 
-Therefore our problem reduces to determining whether the trace of $Q_x$ is at least $3/4$ or at most $1/4$.  Now we will show that using the totally mixed state $2^{-m}I_m$ (alternatively, preparing $m$ EPR pairs and taking a qubit from each pair) as the witness of the verification procedure encoded by $Q_x$, succeeds with the desired completeness and soundness bounds.  The acceptance probability is given by
+Therefore our problem reduces to determining whether the trace of $Q_x$ is at least $3/4$ or at most $1/4$.  Now we show that using the totally mixed state $2^{-m}I_m$ (alternatively, preparing $m$ EPR pairs and taking a qubit from each pair) as the witness of the verification procedure encoded by $Q_x$, succeeds with the desired completeness and soundness bounds.  The acceptance probability is given by
 %\begin{equation}
 $\tr(Q_x 2^{-m}I_m) = 2^{-m} \tr(Q_x)$,
 %\end{equation}
