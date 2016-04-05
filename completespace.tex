@@ -92,9 +92,10 @@
 \newcommand\QMA{{\sf{QMA}}}
 \newcommand\QCMA{{\sf{QCMA}}}
 \newcommand\QSPACE{{\sf{Q_{U}SPACE}}}
+\newcommand\DSPACE{{\sf{SPACE}}}
 \newcommand\QIP{{\sf{QIP}}}
 \newcommand\PQSPACE{{\sf{PQ_{U}SPACE}}}
-\newcommand\BQSPACE{{\sf{BQ_{U}SPACE}}}
+\newcommand\BQSPACE{{\sf{BQSPACE}}}
 \newcommand\PSPACE{{\sf{PSPACE}}}
 \newcommand\BQPSPACE{{\sf{BQ_{U}PSPACE}}}
 \newcommand\FPSPACE{{\sf{FPSPACE}}}
@@ -117,7 +118,7 @@
 \newcommand\preciseklh{\textit{Precise }$k$\textit{-Local Hamiltonian}}
 \newcommand\preciseilh[1]{\textit{Precise }\ensuremath{#1}\textit{-Local Hamiltonian}}
 \newcommand\matrixinvert[1]{{\ensuremath{#1}}\textit{-Well-conditioned Matrix Inversion}}
-\newcommand\spechamiltonian[1]{#1\textit{-Matrix Eigenvalue}}
+\newcommand\spechamiltonian[1]{#1\textit{-Minimum Eigenvalue}}
 \newcommand\qca[1]{\ensuremath{#1}\textit{-Quantum Circuit Acceptance}}
 \newcommand{\zero}{\ensuremath{0^{\otimes{k(n)}}}}
 
@@ -245,7 +246,7 @@ In the following discussion, $\unitaryBQSPACE{k(n)}$ refers to the class of prob
 \subsection{Inverting well-conditioned matrices}
 Matrix Inversion is one of the most important and ubiquitous computational problems.  The problem of inverting integer matrices is complete for $\DET$, the class of functions reducible in $\Logspace$ (i.e., in deterministic space $\bigoh(\log{n})$) to computing the determinant of an integer matrix, which is contained in deterministic $\bigoh(\log^2{n})$ space \cite{berkowitz, cook}.  It has long been a major question in computational complexity to understand if Integer Matrix Inversion is in $\Logspace$, which would imply that $\Logspace=\sf{NL}=\DET$.
 
-Recently, Ta-Shma \cite{tashma}, building on work of Harrow, Hassidim, and Lloyd \cite{HHL}, showed that inverting a well-conditioned $n \times n$ matrix can be approximated by a quantum algorithm using $O(\log n)$ space, but with intermediate measurements. This gives a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.
+Recently, Ta-Shma \cite{tashma}, building on work of Harrow, Hassidim, and Lloyd \cite{HHL}, showed that inverting a well-conditioned $n \times n$ matrix can be approximated by a quantum algorithm using $O(\log n)$ space, but with intermediate measurements. This gives a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.  This is the maximum quantum advantage possible, since Watrous has shown $\BQSPACE[k(n)]\subseteq\DSPACE[k(n)^2]$ \cite{Watrous99,Watrous03} even for quantum algorithms with intermediate measurements.% (which holds even for computations with intermediate measurements).
 
 We first consider a generalization of Ta-Shma's well-conditioned matrix inversion problem \cite{tashma}:\begin{definition}[\matrixinvert{k(n)}] \label{def: matrix invert}
 Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
@@ -259,12 +260,13 @@ We show the following:
 For $\Omega(\log(n)) \le k(n) \le \poly(n)$, \matrixinvert{\mathcal{O}(k(n))} is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
 \end{theorem}
 
-Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. We also note that our algorithm (Theorem \ref{thm: matrix inversion alg}) actually approximates the matrix entry $|H^{-1}(s,t)|$ to precision $2^{-\mathcal{O}(k)}$. In particular, if we take $k = \bigoh(\log n)$ we get the following:
+%Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. 
+Our algorithm (Theorem \ref{thm: matrix inversion alg}) actually approximates the matrix entry $|H^{-1}(s,t)|$ to precision $2^{-\mathcal{O}(k)}$. In particular, if we take $k = \bigoh(\log n)$ we get the following:
 \begin{corollary}
 The problem of approximating, to $1/\poly(n)$ precision, an entry of the inverse of an $n \times n$ PSD matrix with condition number at most $\poly(n)$ is $\unitaryBQL$-complete under $\Logspace$-reductions.
 \end{corollary}
 
-This result improves upon Ta-Shma's result \cite{tashma} in two ways. First, unlike Ta-Shma's algorithm, our algorithm does not use intermediate measurements.  Although the ``safe storage'' principle of quantum time-bounded computation tells us that quantum measurements can be deferred, an equivalent principle is not known for space complexity.  The standard procedure for deferring measurements in time-bounded computation may incur an exponential blow-up in space.  
+This result improves upon Ta-Shma's result \cite{tashma} in two ways. First, unlike Ta-Shma's algorithm, our algorithm does not use intermediate measurements.  Although the ``safe storage'' principle of quantum time-bounded computation tells us that quantum measurements can be deferred, the standard method of deferring quantum measurements may incur an exponential blow-up in space.% an equivalent principle is not known for space complexity.  The standard procedure for deferring measurements in time-bounded computation may incur an exponential blow-up in space.  
 
 In addition, we show that the problem of inverting well-conditioned matrices is hard for unitary quantum logspace under $\Logspace$-reductions. In other words, one cannot show that well-conditioned matrices are invertible in $\Logspace$ unless one also shows that $\Logspace=\unitaryBQL$, which seems quite unlikely.
 
@@ -272,7 +274,7 @@ Furthermore, since it is straightforward to see that Well-conditioned Matrix Inv
 
 %\cl{Maybe add a discussion on matchgates and determinants.}
 %When $k(n)=\bigoh(\log{n})$ this result has an interesting interpretation: one cannot show that well-conditioned matrices are invertible in solvable in classical $\Logspace$ unless one also shows that classical $\Logspace$ equals unitary quantum $\Logspace$, which seems quite unlikely.
-\subsection{Matrix Eigenvalue problem} 
+\subsection{Minimum Eigenvalue problem} 
 Our second result completely characterizes quantum space complexity via the following problem:
 \begin{definition}[$\spechamiltonian{k(n)}$ problem] \label{def: spechamiltonian}
 Given as input is the size-$n$ efficient encoding of a positive semidefinite matrix $H$, such that% the maximum entry in absolute value 
@@ -330,9 +332,9 @@ For the rest of the paper we will always assume that $\Omega(\log(n)) \le k(n) \
 
 The bound $T=2^{\mathcal{O}(k)}$ on the circuit size comes from that any classical Turing machine generating $Q_x$ using space $\bigoh(k(|x|))$ has at most $2^{\mathcal{O}(k)}$ configurations. We note that $2^{\mathcal{O}(k)}$ gates suffice to approximate any gate on $\bigoh(k)$ qubits to high accuracy (see e.g. \cite[Chapter~4]{nc00}). The $\poly(|x|)$ time bound on the classical control can be assumed WLOG; see Appendix \ref{app: space bounded} for details.
 
-\begin{definition} $\BQSPACE[k]=\QSPACE[k](2/3,1/3)$.\end{definition}
+\begin{definition} $\unitaryBQSPACE{k}=\unitaryQSPACE{k}{2/3}{1/3}$.\end{definition}
 %\begin{definition}$\PQSPACE[k]=\QSPACE[k](1/2,1/2)$.\end{definition}
-\begin{theorem}[Watrous \cite{Watrous99}]\label{thm:pqpspace} $\BQSPACE[poly]=\PSPACE$.
+\begin{theorem}[Watrous \cite{Watrous99,Watrous03}]\label{thm:pqpspace} $\unitaryBQSPACE{\poly}=\PSPACE$.
 \end{theorem}
 
 We now define space- and time-bounded analogues of $\QMA$:
