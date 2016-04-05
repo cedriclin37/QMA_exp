@@ -59,7 +59,6 @@
 % Theorem-like environments and related macros:
 %-----------------------------------------------------------------------------%
 
-
 \newtheorem{theorem}{Theorem}
 \newtheorem{claim}[theorem]{Claim}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -385,7 +384,7 @@ $\matrixinvert{k(n)} \in \unitaryBQSPACE{k(n)}$.
 \end{corollary}
 In fact our algorithm is much stronger: to solve $\matrixinvert{k(n)}$ we merely need to approximate $|\bra{s}H^{-1}\ket{t}|$ to constant precision, while Theorem \ref{thm: matrix inversion alg} actually gives an approximation to precision $2^{-\bigoh (k)}$ in $\bigoh (k(n))$ unitary quantum space. Moreover our algorithm does not require $s$ and $t$ to be computational basis states.
 
-We note that we can modify our definition of unitary quantum space-bounded classes to include computing functions, for instance by adding a write-only one-way output tape of qubits to the Turing machine (see the discussion in Appendix \ref{app: space bounded}), that are all measured at the very end of the computation. The error reduction result (Corollary \ref{obvious2}) later in our work allows the total error can be reasonably controlled. With such a modification we can compute the whole matrix inverse in unitary quantum logspace. We will not pursue this modified model further in this work.
+We note that we can modify our definition of unitary quantum space-bounded classes to include computing functions, for instance by adding a write-only one-way output tape of qubits to the Turing machine (see the discussion in Appendix \ref{app: space bounded}), that are all measured at the very end of the computation. The error reduction result (Corollary \ref{obvious2}) later in our work allows the total error to be reasonably controlled. With such a modification we can compute the whole matrix inverse in unitary quantum logspace. We will not pursue this modified model further in this work.
 %\wf{We should also point out that our result scales for non-logarithmic space bounds, where Ta-Shma's does not}
 
 To prove Theorem \ref{thm: matrix inversion alg}, we first start out with the following lemma:
@@ -494,7 +493,8 @@ In Circuit (\ref{circ: poor man phase estimation}) we've assumed $\ket{\psi}$ is
 \end{align}
 since $\sin x = \Omega(x)$ for $x \in [0,1]$, $(a+b)t \ge (b-a)t = 2^{-\mathcal{O}(k(n))}$, as long as we choose $\epsilon = 2^{-\Theta(k(n))}$ to be sufficiently small enough. This therefore gives a $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k)}{c}{s}$ protocol for $c - s = 2^{-\mathcal{O}(k(n))}$, as desired.
 \end{proof}
-\subsection{$\bigcup_{c \in (0,1]}\bddQMA{\poly}{\Theta(k)}{\Theta(k)}{c}{c-2^{-\Theta(k)}}$ is in $\unitaryBQSPACE{k(n)}$} \label{subsec:bddqma-in-bqspace}
+
+\subsection{$\bigcup_{c \in (0,1]}{\bddQMA{poly}{\Theta(k)}{\Theta(k)}{c}{c-2^{-\Theta(k)}}}$ is in $\unitaryBQSPACE{k(n)}$} \label{subsec:bddqma-in-bqspace}
 %%HERE
 In this section we will establish the following result:
 \begin{theorem} \label{thm: pspace upper bound}$
