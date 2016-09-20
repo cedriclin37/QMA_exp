@@ -1,0 +1,258 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+
+\usepackage{varioref}
+\usepackage{verbatim} 
+\usepackage{multicol}
+\usepackage{lmodern}
+\usepackage{enumerate}
+%\usepackage[normalem]{ulem}
+%
+%\usepackage{caption}
+%\usepackage{subcaption}
+%\usepackage[T1]{fontenc}
+%\usepackage[margin=1in]{geometry}
+%\usepackage{fancyhdr}
+%\usepackage{authblk}
+%
+%\usepackage{thm-restate}
+%
+\usepackage{mathrsfs}
+
+\usepackage{hyperref}
+\hypersetup{
+    bookmarksnumbered=true, % If Acrobat bookmarks are requested, include section numbers
+    unicode=false, % non-Latin characters in Acrobat bookmarks
+    pdfstartview={}, % fits the width of the page to the window
+    pdftitle={}, % title
+    pdfauthor={}, % author
+    pdfsubject={}, % subject of the document
+    pdfcreator={}, % creator of the document
+    pdfproducer={}, % producer of the document
+    pdfkeywords={}, % list of keywords
+    pdfnewwindow=true, % links in new window
+    colorlinks=true, % false: boxed links; true: colored links
+    linkcolor=blue, % color of internal links
+    citecolor=blue, % color of links to bibliography
+    filecolor=blue, % color of file links
+    urlcolor=blue % color of external links
+}
+
+\newcommand{\classfont}{\sf}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{corollary}[lemma]{Corollary}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{proposition}[lemma]{Proposition}
+\newtheorem{question}{Question}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{condition}{Condition}
+
+\newtheorem{claim}{Claim}
+\newtheorem{example}{Example}
+\numberwithin{lemma}{section}
+%\numberwithin{definition}{section}
+%\numberwithin{question}{section} \numberwithin{claim}{lemma}
+\newenvironment{restate}[1]{\bigskip \noindent {\bf #1 (restated).} \it}{\smallskip}
+
+\theoremstyle{definition}
+\newtheorem{remark}[lemma]{Remark}
+
+\newcommand\PH{\sf{PH}}
+\newcommand\BQP{\sf{BQP}}
+\newcommand\NP{\sf{NP}}
+\newcommand\MA{\sf{MA}}
+\newcommand\AM{\sf{AM}}
+\newcommand\PP{\sf{PP}}
+\newcommand\BQSPACE{\sf{BQSPACE}}
+\newcommand\PSPACE{\sf{PSPACE}}
+\newcommand\Poly{\sf{P}}
+\newcommand\EXP{{\sf{EXP}}}
+\newcommand\DET{{\sf{DET}}}
+\newcommand\Logspace{{\sf{L}}}
+\newcommand\DSPACE{{\sf{SPACE}}}
+\newcommand\NL{{\sf{NL}}}
+\newcommand\preciseQMA{{\sf{preciseQMA}}}
+\newcommand\QMA{{\sf{QMA}}}
+\newcommand\QCMA{{\sf{QCMA}}}
+\newcommand\expQCMA{{\sf{QCMA_{exp,poly}}}}
+\newcommand\QCIP{{\sf{QCIP}}}
+\newcommand\bigoh{\mathcal{O}}
+\newcommand\PLclass{{\sf{PL}}}
+\newcommand\C{{\mathbb{C}}}
+\newcommand\R{{\mathbb{R}}}
+\newcommand\Quat{{\mathbb{H}}}
+\newcommand\M{{\mathbb{M}}}
+\newcommand\F{{\mathbb{F}}}
+\newcommand\Z{{\mathbb{Z}}}
+\newcommand\N{\mathbb{N}}
+\newcommand\Tr{{\mathop\textup{Tr }}}
+\newcommand{\Ext}{E}
+\newcommand{\Unitary}{\mathbf{U}}
+\newcommand{\unitaryBQL}{{\classfont{BQL}}}
+\newcommand{\unitaryQMASPACE}{{\classfont{QMA}_\Unitary\classfont{SPACE}}}
+\newcommand{\unitaryQSPACE}[3]{{\classfont{Q}_\Unitary\classfont{SPACE}}[#1](#2,#3)}
+\newcommand{\unitaryBQSPACE}[1]{{\classfont{BQ}_\Unitary\classfont{SPACE}}[#1]}
+
+\newcommand{\rv}[1]{{\mathbf{#1}}}
+\newcommand{\pr}[1]{\Pr\left[#1\right]}
+\newcommand{\set}[1]{\left\{{#1}\right\}}
+\newcommand{\poly}{\mathrm{poly}}
+\newcommand{\remove}[1]{}
+
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand*\samethanks[1][\value{footnote}]{\footnotemark[#1]}
+
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\newcommand{\eqdef}{\stackrel{{\rm def}}{=}}
+
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\supp}{\mathrm{supp}}
+
+\newcommand{\ee}{\mathcal{E}}
+\newcommand{\ii}{\mathbb{I}}
+\newcommand{\rl}{\rangle\langle}
+\newcommand{\mg}{\mathcal{G}}
+\newcommand{\hn}[1]{\|#1\|^H_{1\rightarrow 1}}
+\newcommand{\ve}[1]{|#1\rangle\!\rangle}
+\newcommand{\ro}[1]{\langle\!\langle#1|}
+\newcommand{\bkett}[1]{|#1\rangle\!\rangle\langle\!\langle#1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\bk}[1]{|#1\rangle\langle#1|}
+
+
+\newcommand{\tth}[0]{\textsuperscript{th}}
+\newcommand{\st}[0]{\textsuperscript{st}}
+\newcommand{\nd}[0]{\textsuperscript{nd}}
+\newcommand{\rd}[0]{\textsuperscript{rd}}
+
+
+\usepackage{xcolor}
+\newcommand{\todo}[1]{{\color{red}{[{\bf TODO:}#1]}}}
+\newcommand{\skimmel}[1]{{\color{violet}{[{\bf skimmel:}#1]}}}
+\newcommand{\wf}[1]{{\color{violet}{[{\bf wf:}#1]}}}
+\newcommand{\tocite}[1]{{\color{blue}{[{\bf CITE:}#1]}}}
+\newcommand{\tocheck}[1]{{\color{red}{[{\bf TO CHECK:}#1]}}}
+
+\DeclareMathAlphabet{\matheu}{U}{eus}{m}{n}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\id}{id}
+\newcommand{\Favg}{\overline{F}}
+\newcommand{\Paulis}{{\matheu P}}
+\newcommand{\Clifs}{{\matheu C}}
+\newcommand{\Hilb}{{\matheu H}}
+\newcommand{\T}{{\matheu T}}
+\newcommand{\sop}[1]{{\mathcal #1}}
+\newcommand{\PL}[1]{{#1}^{P\!L}}
+\newcommand{\BHn}{{{\mathcal B}({\mathcal H}^{\otimes n})}}
+\newcommand{\I}{{\mathbb I}}
+\newcommand{\CNOT}{{\mathrm{CNOT}}}
+\newcommand{\plr}[1]{\hat{#1}} %pauli-liouville-represenation
+
+%\newcommand{\ket}[1]{|{#1}\rangle}
+%\newcommand{\bra}[1]{\langle{#1}|}
+\newcommand{\braket}[2]{\langle{#1}|{#2}\rangle}
+\newcommand{\ketbra}[2]{|{#1}\rangle\!\langle{#2}|}
+\newcommand{\kket}[1]{|{#1}\rangle\!\rangle}
+\newcommand{\bbra}[1]{\langle\!\langle{#1}|}
+\newcommand{\bbrakket}[2]{\langle\!\langle{#1}|{#2}\rangle\!\rangle}
+
+\newcommand{\no}{\nonumber\\}
+\newcommand{\even}{_\textrm{even}}
+\newcommand{\odd}{_\textrm{odd}}
+
+\newcommand{\ns}{{\textsc{ns}}}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\se}{\succcurlyeq}
+\newcommand{\di}{\textrm{diag}}
+\newcommand{\orcl}{{\pmb{\sop O}}}
+\newcommand{\porcl}{{\pmb{\sop P}}}
+\newcommand{\SA}{{\mathbf{S}_X^n}}
+\newcommand{\SB}{{\mathbf{S}_Y^n}}
+\newcommand{\Si}{{\mathbf{S}_1}}
+\newcommand{\Sj}{{\mathbf{S}_2}}
+\newcommand{\SU}{{S}}
+\newcommand{\Ugroup}[1]{\mathbf{U}^{#1}}
+\newcommand{\polyn}{\mathrm{poly\:}}
+\usepackage{mathtools}
+\usepackage{titling}
+\newcommand\psham[1]{#1\textit{\sf{-Precise Succinct Hamiltonian}}}
+\newcommand\matrixinversion[1]{#1\textit{\sf{-Well Conditioned Matrix Inversion}}}
+
+\setlength{\droptitle}{-5em}
+
+%\usepackage[hmargin=1.75cm,vmargin=1.0cm]{geometry}
+\usepackage[hmargin=.85in,vmargin=.7in]{geometry}
+\title{A Complete Characterization of Unitary Quantum Space \\ {\small \bf (3 page abstract)}}
+\author{Bill Fefferman\thanks{Joint Center for Quantum Information and Computer Science (QuICS), University of Maryland,
+College Park, MD 20742.}
+\and {Cedric Lin\samethanks}}
+
+\date{}
+\begin{document}
+\vspace{-2.0in}
+\maketitle
+\setcounter{page}{0}
+\thispagestyle{empty}
+\pagestyle{empty}
+\vspace{-.6in}
+\section{Introduction}
+%My suggestion: we put all motivation in the introduction and then give proof sketches of the two main results in the next two sections
+How powerful is quantum computation with a restricted number of qubits? In this work we give two complete problems for $\BQSPACE[k(n)]$, the class of problems that can be solved by a uniformly generated family of unitary\footnote{In this context a {\emph{unitary}} quantum circuit makes all measurements at the end of the computation.  Note that the standard method for deferring quantum measurements may incur an exponential blow-up in space.} quantum circuits that act on $k(n)$ qubits, for any fixed function $k$ between $\log{n}$ and $\polyn{n}$.
+
+The first problem we consider, the $\psham{k(n)}$ problem, is a natural generalization of the familiar local Hamiltonian problem and asks us to decide if the ground state energy of a sparse Hamiltonian, whose entries are efficiently specified, is above or below a specified threshold.  As consequences we establish that $\QMA$ with exponentially small completeness-soundness gap is equal to $\PSPACE$, that determining whether a local Hamiltonian is frustration-free is $\PSPACE$-complete, and give a provable setting in which the ability to prepare $PEPS$ states gives less computational power than the ability to prepare the ground state of a generic local Hamiltonian.
+
+The second problem we consider is a well-conditioned version of the ubiquitous matrix inversion problem.  Matrix inversion is known to be complete for $\DET$, the class of functions as hard as computing the determinant of an integer matrix, which can be solved in classical $\log^{2}(n)$ space. It is a major open problem to determine if Matrix Inversion can be solved in classical logarithmic space, which would imply $\Logspace=\NL=\DET$.  
+
+Recently, Ta-Shma \cite{tashma}, building on work of Harrow, Hassidim, and Lloyd \cite{HHL}, showed that inverting a well-conditioned $n \times n$ matrix can be approximated by a quantum algorithm using $O(\log n)$ space, but with intermediate measurements. This gives a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.  This is the maximum quantum advantage possible, since Watrous has shown $\BQSPACE[k(n)]\subseteq\DSPACE[\bigoh(k(n)^2)]$ \cite{Watrous99,Watrous03} even for quantum algorithms with intermediate measurements. 
+ 
+Our results improve upon Ta-Shma's result \cite{tashma} in two ways. First, unlike Ta-Shma's result, we show that this problem can be solved without intermediate measurements.  In addition, we show that the problem of inverting well-conditioned matrices is hard for unitary quantum logspace under $\Logspace$-reductions. In other words, one cannot show that well-conditioned matrices are invertible in $\Logspace$ unless one also shows that $\Logspace=\unitaryBQL$, which seems quite unlikely.
+
+Furthermore, since it is straightforward to see that Well-conditioned Matrix Inversion reduces to Integer Matrix Inversion, we can use our result to obtain a direct proof that $\unitaryBQL\subseteq\DET$, which was previously known indirectly via the containments $\unitaryBQL\subseteq\PLclass\subseteq\DET$ \cite{Watrous03,Borodin84}.
+     
+    
+\section{$\psham{k(n)}$}
+
+\begin{definition}
+[$\psham{k(n)}$ problem] \label{def: spechamiltonian}
+Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, such that % the maximum entry in absolute value 
+ $\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
+\end{definition}
+
+\begin{theorem} \label{thm: spechamiltonian}
+For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\psham{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+\end{theorem}
+
+\subsection{$\psham{k(n)}\in k(n)$-bounded $\preciseQMA$}
+\subsection{$k(n)$-bounded $\preciseQMA\subseteq\BQSPACE[k(n)]$}
+\section{$\matrixinversion{k(n)}$}
+\begin{definition}[\matrixinversion{k(n)}] \label{def: matrix invert}
+Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
+ or $|H^{-1}(s,t)|\leq a$ for some constants $0 \le a < b \le 1$; determine which is the case.
+ \end{definition}
+\begin{theorem} \label{thm: matrix invert}
+For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\matrixinversion{\mathcal{O}(k(n))}$ is complete for $\BQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+\end{theorem}
+
+%Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. 
+In particular, if we take $k = \bigoh(\log n)$ we get the following:
+\begin{corollary}
+The problem of approximating, to $1/\poly(n)$ precision, an entry of the inverse of an $n \times n$ PSD matrix with condition number at most $\poly(n)$ is $\unitaryBQL$-complete under $\Logspace$-reductions.
+\end{corollary}
+
+ \bibliographystyle{alpha}
+\bibliography{completespace}
+\end{document} 
