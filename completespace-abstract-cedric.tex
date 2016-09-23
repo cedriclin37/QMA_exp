@@ -199,9 +199,9 @@
 \setlength{\droptitle}{-5em}
 
 %\usepackage[hmargin=1.75cm,vmargin=1.0cm]{geometry}
-\usepackage[hmargin=.85in,vmargin=.7in]{geometry}
-\title{A Complete Characterization of Unitary Quantum Space \\ {\small \bf (3 page abstract)}}
-\author{Bill Fefferman\thanks{Joint Center for Quantum Information and Computer Science (QuICS), University of Maryland,
+\usepackage[hmargin=.9in,vmargin=.7in]{geometry}
+\title{A Complete Characterization of Unitary Quantum Space\vspace{-.1in}}% \\ {\small \bf (3 page abstract)}}
+\author{Bill Fefferman\thanks{Joint Center for Quantum Information and Computer Science, University of Maryland,
 College Park, USA.}
 \and {Cedric Yen-Yu Lin\samethanks}}
 
@@ -212,21 +212,22 @@ College Park, USA.}
 \setcounter{page}{0}
 \thispagestyle{empty}
 \pagestyle{empty}
-\vspace{-.6in}
+\vspace{-.7in}
 \section{Introduction}
 %My suggestion: we put all motivation in the introduction and then give proof sketches of the two main results in the next two sections
 How powerful is quantum computation with a restricted number of qubits? In this work we give two complete problems for $\BQSPACE[k(n)]$, the class of problems that can be solved by a uniformly generated family of unitary\footnote{In this context a {\emph{unitary}} quantum circuit makes all measurements at the end of the computation.  Note that the standard method for deferring quantum measurements may incur an exponential blow-up in space.} quantum circuits that act on $k(n)$ qubits, for any fixed function $k$ between $\log{n}$ and $\polyn{n}$. To the best of our knowledge these are the first natural complete problems for quantum space-bounded classes.
 
-The first problem we consider, the $\matrixinversion{k(n)}$ problem, is a well-conditioned version of the ubiquitous matrix inversion problem. The second problem we consider, the $\spechamiltonian{k(n)}$ problem, is a natural generalization of the familiar local Hamiltonian problem, and asks us to compute the ground state energy of a sparse Hamiltonian up to exponentially small precision. Interestingly enough, the first (resp. second) problem is the space-bounded variant of a $\BQP$-complete (resp. $\QMA$-complete problem); their complexities coincide in the space-bounded regime.
+The first problem we consider, the $\matrixinversion{k(n)}$ problem, is a well-conditioned version of the ubiquitous matrix inversion problem. The second problem we consider, the $\spechamiltonian{k(n)}$ problem, is a natural generalization of the familiar local Hamiltonian problem, and asks us to compute the ground state energy of a sparse Hamiltonian up to exponentially small precision. Interestingly enough, the first (resp. second) problem is the space-bounded variant of a $\BQP$-complete (resp. $\QMA$-complete); their complexities coincide in the space-bounded regime.
 
 We now proceed to give some justification for the importance of our results.
 
 \subsection{Computational Complexity Background}
 The complexity of the Matrix Inversion problem is a very important question in computational complexity. Matrix inversion is known to be complete for $\DET$, the class of functions as hard as computing the determinant of an integer matrix, which can be solved in classical $\mathcal{O}(\log^{2}(n))$ space \cite{berkowitz, cook}. It is a major open problem to determine if Matrix Inversion can be solved in classical logarithmic space, which would imply $\Logspace=\NL=\DET$.
 
-Recently, Ta-Shma \cite{tashma}, building on work of Harrow, Hassidim, and Lloyd \cite{HHL}, showed that inverting a well-conditioned $n \times n$ matrix can be approximated by a quantum algorithm using $O(\log n)$ space, but with intermediate measurements. Similarly, Ta-Shma also gives an algorithm for computing eigenvalues of a Hermitian matrix with similar space. These algorithms achieve a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.  This is the maximum quantum advantage possible, since Watrous has shown $\BQSPACE[k(n)]\subseteq\DSPACE[\bigoh(k(n)^2)]$ \cite{Watrous99,Watrous03} even for quantum algorithms with intermediate measurements.
+Recently, Ta-Shma \cite{tashma}, building on work of Harrow, Hassidim, and Lloyd \cite{HHL}, showed that a well-conditioned $n \times n$ matrix can be approximately inverted by a quantum algorithm using $O(\log n)$ space, but with intermediate measurements. Similarly, Ta-Shma also gives an algorithm for computing eigenvalues of a Hermitian matrix with similar space. These algorithms achieve a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.  This is the maximum quantum advantage possible, since Watrous has shown $\BQSPACE[k(n)]\subseteq\DSPACE[\bigoh(k(n)^2)]$ \cite{Watrous99,Watrous03} even for quantum algorithms with intermediate measurements.
 
-Our results improve upon Ta-Shma's result \cite{tashma} in two ways. First, unlike Ta-Shma's result, we show that these problems can be solved without intermediate measurements.  In addition, we show that the problems of inverting well-conditioned matrices and computing minimum eigenvalues of Hermitian matrices are hard for unitary quantum logspace under $\Logspace$-reductions. In other words, one cannot show that well-conditioned matrices are invertible in $\Logspace$ unless one also shows that $\Logspace=\unitaryBQL$, which seems quite unlikely. Interestingly, our algorithm for computing the minimum eigenvalue is very different from Ta-Shma's algorithm.
+Our results improve upon Ta-Shma's result \cite{tashma} in two ways. First, %unlike Ta-Shma's result, 
+we show that these problems can be solved without intermediate measurements.  In addition, we show that the problems of inverting well-conditioned matrices and computing minimum eigenvalues of Hermitian matrices are hard for unitary quantum logspace under $\Logspace$-reductions. In other words, one cannot show that well-conditioned matrices are invertible in $\Logspace$ unless one also shows that $\Logspace=\unitaryBQL$, which seems quite unlikely. Interestingly, our algorithm for computing the minimum eigenvalue is very different from Ta-Shma's algorithm.
 
 Concurrently with our work, Doron, Sarid, and Ta-Shma have shown that analogous problems for stochastic matrices (e.g. computing the eigenvalue gap) are complete for classical randomized logspace, or $\BPL$ \cite{dt15,dst16}. In addition, Le Gall has shown that analogous problems for Laplacian matrices can be solved in $\BPL$ \cite{legall16}. Since it is straightforward to see that Well-conditioned Matrix Inversion reduces to Integer Matrix Inversion, we can use our result to obtain a direct proof that $\unitaryBQL\subseteq\DET$, which was previously known indirectly via the containments $\unitaryBQL\subseteq\PLclass\subseteq\DET$ \cite{Watrous03,Borodin84}.
 
@@ -234,53 +235,83 @@ Therefore the power of classical and quantum space-bounded classes are character
 
 \subsection{Relationship with Matchgates}
 
-Matchgates are a subclass of quantum gates introduced by Valiant \cite{Val02SIComp}, who also showed that nearest neighbor matchgate circuits (which we will just call matchgate computations) are classically simulable. Matchgate computations were further shown to be equivalent to a one-dimensional model of noninteracting fermions by Terhal and DiVincenzo \cite{TerDiV02PRA}; and equivalent to quantum logspace by Jozsa, Kraus, Miyake, and Watrous \cite{JozKraMiyWat10RSPA}. Our complete problems therefore elucidate the computational power of noninteracting fermions.
+Matchgates are a subclass of quantum gates introduced by Valiant \cite{Val02SIComp}, who also showed that nearest neighbor matchgate circuits (which we simply call matchgate computations) are classically simulable. Matchgate computations were further shown to be equivalent to a one-dimensional model of noninteracting fermions by Terhal and DiVincenzo \cite{TerDiV02PRA}; and equivalent to quantum logspace by Jozsa, Kraus, Miyake, and Watrous \cite{JozKraMiyWat10RSPA}. Our complete problems therefore elucidate the computational power of noninteracting fermions.
 
-We know that sampling from output distributions of matchgate computations gives us the power of $\BPL$; but what is the computational power of computing exactly the output probabilities of matchgate computations? We conjecture that this computational power corresponds to $\DET$, since amplitudes of noninteracting fermion circuits are related to determinants (and see also the discussion in the previous subsection). It is known that output probabilities of matchgate computations can be exactly calculated by an efficient classical algorithm \cite{JozMiy08RSPA}, which is consistent with our conjecture because $\DET \in \classfont{P}$.
+We know that sampling from output distributions of matchgate computations gives us the power of $\unitaryBQL$; but what is the computational power of computing exactly the output probabilities of matchgate computations? We conjecture that this computational power corresponds to $\DET$, since amplitudes of noninteracting fermion circuits are related to determinants (and see also the discussion in the previous subsection). It is known that output probabilities of matchgate computations can be exactly calculated by an efficient classical algorithm \cite{JozMiy08RSPA}, which is consistent with our conjecture because $\DET \in \classfont{P}$.
 
 \subsection{Quantum Merlin-Arthur with Small Gap}
-A consequence of our proof of completeness for the $\spechamiltonian{k(n)}$ problem is an equivalence between space-bounded quantum computations and quantum Merlin-Arthur proof systems. Here we give this equivalence for the polynomial space case: let $\QMA(c,s)$ denote the set of problems solvable by quantum Merlin-Arthur proof systems that in the YES case accepts with probability at least $c$ (the completeness), while in the NO case accepts with probability at most $s$ (the soundness). Then we show the following:
+A consequence of our proof of completeness for the $\spechamiltonian{k(n)}$ problem is an equivalence between space-bounded quantum computations and quantum Merlin-Arthur proof systems. Here we give this equivalence for the polynomial space case: let $\QMA(c,s)$ denote the set of problems solvable by quantum Merlin-Arthur proof systems that in the YES case accepts with probability at least $c$ (the completeness), while in the NO case accepts with probability at most $s$ (the soundness). Then:
 \begin{theorem} Let $\preciseQMA:= \cup_{c-s \ge 2^{-\poly}} \QMA(c,s)$ denote the variant of $\QMA$ with exponentially small completeness-soundness gap. Then
 $\preciseQMA = \PSPACE$.
 \end{theorem}
 
-The natural classical counterpart of $\preciseQMA$ is contained in $\NP^{\PP}$: given a classical witness, the verifier runs a classical computation that in the YES case accepts with probability at least $c$, or in the NO case accepts with probability at most $s$, where $c>s$. Note that in the classical case $c - s > \exp(-\poly)$ is automatically satisfied. Since $\NP^{\PP}$ is in the counting hierarchy, the entirety of which is contained in $\PSPACE$ (see e.g., \cite{allenderwagner}), we see that the quantum proof protocol is strictly stronger than the classical one, unless the counting hierarchy collapses to the second level.
+The natural classical counterpart of $\preciseQMA$ is contained in $\NP^{\PP}$: given a classical witness, the verifier runs a classical computation that in the YES case accepts with probability at least $c$, or in the NO case accepts with probability at most $s$, where $c>s$. %Note that in the classical case $c - s > \exp(-\poly)$ is automatically satisfied. 
+Since $\NP^{\PP}$ is in the counting hierarchy, the entirety of which is contained in $\PSPACE$ (see e.g., \cite{allenderwagner}), we see that the quantum proof protocol is strictly stronger than the classical one, unless the counting hierarchy collapses to the second level.
 
 We also show that the \emph{local} Hamiltonian problem is $\PSPACE$-complete when the promise gap is exponentially small. This is in contrast to the usual case when the gap is polynomially small, where the problem is $\QMA$-complete. Perhaps more surprisingly, $\preciseQMA = \PSPACE$ is more powerful than $\PostBQP=\PP$, the class of problems solvable with postselected quantum computation \cite{aaronson05}.
 
 Another consequence concerns Projected Entangled Pair States, or PEPS, a natural extension of matrix product states to two and higher spatial dimensions, which can be described as the ground state of certain frustration-free local Hamiltonians \cite{vc04}. Our results show that in the setting of unbounded-error quantum computation, PEPS do not capture the full computational complexity of general local Hamiltonian ground states unless $\PP=\PSPACE$. We leave open the problem of extending this separation to the usual bounded-error situation.
 
 Lastly, we are able to strengthen our characterization to show that $\preciseQMA$ contains $\PSPACE$, even when restricted to having perfect completeness.  This allows us to prove that testing if a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem.
-
-\section{$\psham{k(n)}$}
-
-\begin{definition}
-[$\psham{k(n)}$ problem] \label{def: spechamiltonian}
+\section{Proof techniques}
+In the following, we sketch the proofs of $\BQSPACE[k(n)]$-completeness for our problems of interest, which we will define.
+%\subsection{$\psham{k(n)}$}
+%\begin{definition}
+%[$\psham{k(n)}$ problem] \label{def: spechamiltonian}
+%Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, such that % the maximum entry in absolute value 
+% $\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output $0$ otherwise.
+%\end{definition}
+%\begin{theorem} \label{thm: spechamiltonian}
+%For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\psham{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+%\end{theorem}
+\subsection{$\spechamiltonian{k(n)}$ is $\BQSPACE[k(n)]$-complete}
+\begin{definition}[$\spechamiltonian{k(n)}$ problem] \label{def: spechamiltonian}
 Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, such that % the maximum entry in absolute value 
- $\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
+$\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
 \end{definition}
 
-\begin{theorem} \label{thm: spechamiltonian}
-For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\psham{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
-\end{theorem}
+%\begin{theorem} \label{thm: spechamiltonian}
+%For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\spechamiltonian{\mathcal{O}(k(n))}$ is complete for \\ $\BQSPACE[\mathcal{O}(k(n))]$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+%\end{theorem}
 
-\subsection{$\psham{k(n)}\in k(n)$-bounded $\preciseQMA$}
-\subsection{$k(n)$-bounded $\preciseQMA\subseteq\BQSPACE[k(n)]$}
-\section{$\matrixinversion{k(n)}$}
+For simplicity, we only sketch the proof of completeness of the $k(n) = \poly$ case, i.e. we show that $\spechamiltonian{\poly}$ is complete for $\BQSPACE[\poly] = \PSPACE$. Our proof consists of showing three results: $\spechamiltonian{\poly}$ is contained in $\preciseQMA$; $\preciseQMA \subseteq \PSPACE$; and $\spechamiltonian{\poly}$ is $\PSPACE$-hard.
+
+To show that $\spechamiltonian{\poly} \in \preciseQMA$, we give a $\preciseQMA$ protocol to solve $\spechamiltonian{\poly}$. The verifier (Arthur) asks the prover (Merlin) to send the ground state $\ket{\psi}$ of $H$, and Arthur performs phase estimation with \emph{one} bit of precision on the operator $e^{-iH}$ and state $\ket{\psi}$, accepting on outcome 0. It can be straightforwardly shown that assuming a perfect implementation of $e^{-iH}$, Arthur's acceptance probability is inverse exponentially higher in the YES case compared to the NO case. Of course, we cannot hope to implement $e^{-iH}$ exactly; but recently discovered Hamiltonian simulation methods can approximate $e^{-iH}$ to exponentially small error (see e.g., \cite{berry14,berry15}), and are therefore sufficently precise to preserve the exponentially small gap.
+
+To show that $\preciseQMA \subseteq \PSPACE$, we construct space-efficient versions of the ``in-place'' $\QMA$ gap amplification schemes pioneered by Marriott and Watrous \cite{mw05}% based on the phase estimation approach by Nagaj, Wocjan, and Zhang \cite{nwz11}
+; also see \cite{nwz11,fklmn16} for even more space-efficient methods. We use these error reduction procedures to first reduce the error of any $\preciseQMA$ scheme to exponentially small, blowing up the number of operations used but still using polynomial space. Then, we replace the witness by a completely mixed state, which yields a computation with exponentially small gap but with \emph{no} witness. Finally, we amplify the gap of our scheme again, yielding a computation in $\BQSPACE[\poly]$ (and therefore in $\PSPACE$).
+
+Finally, our proof that $\spechamiltonian{\poly}$ is $\PSPACE$-hard is based on a variant of Kitaev's clock construction \cite{ksv02}, with a few additional technical issues to tackle (e.g. before applying the clock construction we need to amplify the gap through our space-efficient amplification methods).
+
+\subsection{$\matrixinversion{k(n)}$ is $\BQSPACE[k(n)]$-complete}
+
 \begin{definition}[\matrixinversion{k(n)}] \label{def: matrix invert}
 Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
  or $|H^{-1}(s,t)|\leq a$ for some constants $0 \le a < b \le 1$; determine which is the case.
  \end{definition}
-\begin{theorem} \label{thm: matrix invert}
-For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\matrixinversion{\mathcal{O}(k(n))}$ is complete for $\BQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
-\end{theorem}
 
-%Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. 
-In particular, if we take $k = \bigoh(\log n)$ we get the following:
-\begin{corollary}
-The problem of approximating, to $1/\poly(n)$ precision, an entry of the inverse of an $n \times n$ PSD matrix with condition number at most $\poly(n)$ is $\unitaryBQL$-complete under $\Logspace$-reductions.
-\end{corollary}
+%\begin{theorem} \label{thm: matrix invert}
+%For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\matrixinversion{\mathcal{O}(k(n))}$ is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+%\end{theorem}
 
+As we mentioned earlier, Ta-Shma \cite{tashma} (inspired by \cite{HHL}) developed a quantum logspace algorithm, with intermediate measurements, for $\matrixinversion{\log(n)}$, which corresponds to inverting an $n \times n$ matrix with condition number at most $\poly(n)$. Ta-Shma starts by giving an phase estimated-based logspace procedure that on input $\ket{v}$, produces a state proportional to $H^{-1}\ket{v}$ with probability $1/\poly$. He then develops a consistent version of phase estimation, and uses it to perform tomography on $A^{-1}\ket{v}$ for different input $\ket{v}$ (thus using intermediate measurements); the analysis is somewhat involved. We sidestep much of this analysis by using amplitude amplification and phase estimation to estimate $|\bra{s} H^{-1} \ket{t}| = |H^{-1}(s,t)|$ to high probability, in the process removing intermediate measurements. We further extend this algorithm to the case where $k(n) = \omega(\log(n))$.
+
+We establish $\BQSPACE[k(n)]$-hardness using a similar argument to Harrow, Hassidim, and Lloyd \cite{HHL}, in which given a quantum circuit acting on $k(n)$ qubits we can construct a succinctly described $2^{k(n)}\times 2^{k(n)}$ matrix $H$, so that a single element of $H^{-1}$ is proportional to the success probability of the circuit.  This finishes the proof of our claim.  
+%\section{$\matrixinversion{k(n)}$}
+%\begin{definition}[\matrixinversion{k(n)}] \label{def: matrix invert}
+%Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
+% or $|H^{-1}(s,t)|\leq a$ for some constants $0 \le a < b \le 1$; determine which is the case.
+% \end{definition}
+%\begin{theorem} \label{thm: matrix invert}
+%For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\matrixinversion{\mathcal{O}(k(n))}$ is complete for $\BQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+%\end{theorem}
+%
+%%Here the subscript $\Unitary$ means that our quantum computation is unitary: there are no intermediate measurements. 
+%In particular, if we take $k = \bigoh(\log n)$ we get the following:
+%\begin{corollary}
+%The problem of approximating, to $1/\poly(n)$ precision, an entry of the inverse of an $n \times n$ PSD matrix with condition number at most $\poly(n)$ is $\unitaryBQL$-complete under $\Logspace$-reductions.
+%\end{corollary}
+%
  \bibliographystyle{alpha}
 \bibliography{completespace}
 \end{document} 
