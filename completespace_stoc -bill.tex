@@ -1,0 +1,1064 @@
+\documentclass[11pt]{article}
+\usepackage{etex}
+%\usepackage{geometry} % to change the page dimensions
+%\geometry{margin=1in} % for example, change the margins to 2 inches all round
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{varioref}
+\usepackage{verbatim} 
+\usepackage{multicol}
+\usepackage{lmodern}
+
+
+\usepackage{enumerate}
+\usepackage[normalem]{ulem}
+%\usepackage[margin=1in]{geometry}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{authblk}
+\usepackage{paralist}
+
+%%%%%%%%%%%%%%%%
+%Next two lines change the font!!
+%\usepackage{mathptmx}
+%\usepackage{newtxmath}
+%%%%%%%%%%%%%%%
+
+\usepackage{mathrsfs}
+
+\usepackage{url}\urlstyle{same}
+\usepackage{xspace}
+\usepackage{thm-restate}
+
+\usepackage{hyperref}
+\hypersetup{
+    bookmarksnumbered=true, % If Acrobat bookmarks are requested, include section numbers
+    unicode=false, % non-Latin characters in Acrobat bookmarks
+    pdfstartview={}, % fits the width of the page to the window
+    pdftitle={}, % title
+    pdfauthor={}, % author
+    pdfsubject={}, % subject of the document
+    pdfcreator={}, % creator of the document
+    pdfproducer={}, % producer of the document
+    pdfkeywords={}, % list of keywords
+    pdfnewwindow=true, % links in new window
+    colorlinks=true, % false: boxed links; true: colored links
+    linkcolor=blue, % color of internal links
+    citecolor=blue, % color of links to bibliography
+    filecolor=blue, % color of file links
+    urlcolor=blue % color of external links
+}
+
+%-----------------------------------------------------------------------------%
+% Theorem-like environments and related macros:
+%-----------------------------------------------------------------------------%
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{condition}[theorem]{Condition}
+\theoremstyle{definition}
+\newtheorem{alg}[theorem]{Algorithm}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem*{pr_sk}{Proof Sketch}
+\newtheorem*{alg_in}{Input}
+\newtheorem*{alg_out}{Output}
+
+
+\usepackage{tikz} 
+
+\input{Qcircuit}
+%\input{macros}
+\makeatother
+
+
+%Bill's complexity class commmands\
+
+\newcommand\EXP{{\sf{EXP}}}
+\newcommand\BQL{{\sf{BQ_{U}L}}}
+\newcommand\DET{{\sf{DET}}}
+\newcommand\PLclass{{\sf{PL}}}
+\newcommand\QMA{{\sf{QMA}}}
+\newcommand\QCMA{{\sf{QCMA}}}
+\newcommand\QSPACE{{\sf{Q_{U}SPACE}}}
+\newcommand\DSPACE{{\sf{SPACE}}}
+\newcommand\QIP{{\sf{QIP}}}
+\newcommand\PQSPACE{{\sf{PQ_{U}SPACE}}}
+\newcommand\BQSPACE{{\sf{BQSPACE}}}
+\newcommand\PSPACE{{\sf{PSPACE}}}
+\newcommand\BQPSPACE{{\sf{BQ_{U}PSPACE}}}
+\newcommand\FPSPACE{{\sf{FPSPACE}}}
+\newcommand\PP{\sf{PP}}
+\newcommand\expQCMA{{\sf{QCMA_{exp,poly}}}}
+\newcommand\NP{{\sf{NP}}}
+\newcommand\AM{{\sf{AM}}}
+\newcommand\BQP{{\sf{BQP}}}
+\newcommand\PostBQP{{\sf{PostBQP}}}
+\newcommand\PQP{{\sf{PQP}}}
+\newcommand\Logspace{{\sf{L}}}
+\newcommand\NL{{\sf{NL}}}
+\newcommand\BPL{{\sf{BPL}}}
+\newcommand\QCIP{{\sf{QCIP}}}
+\newcommand\preciseQMA{{\sf{PreciseQMA}}}
+\newcommand\bddQMA[5]{{\left(#1,#2\right)}\textit{-bounded }\QMA_{#3}(#4,#5)}
+\newcommand\PQPSPACE{{\sf{PQ_{U}PSPACE}}}
+\newcommand\revPSPACE{{\sf{revPSPACE}}}
+\newcommand\succdet{\textit{Succinct Determinant Checking}}
+\newcommand\gappedsucc{\textit{Gapped Succinct Matrix Singularity}}
+\newcommand\preciselh{\textit{Precise Local Hamiltonian}}
+\newcommand\preciseklh{\textit{Precise }$k$\textit{-Local Hamiltonian}}
+\newcommand\preciseilh[1]{\textit{Precise }\ensuremath{#1}\textit{-Local Hamiltonian}}
+\newcommand\matrixinvert[1]{{\ensuremath{#1}}\textit{-Well-conditioned Matrix Inversion}}
+\newcommand\spechamiltonian[1]{#1\textit{-Minimum Eigenvalue}}
+\newcommand\qca[1]{\ensuremath{#1}\textit{-Quantum Circuit Acceptance}}
+\newcommand{\zero}{\ensuremath{0^{\otimes{k(n)}}}}
+
+%%These duplicate BQSPACE definitions above!
+\newcommand{\classfont}{\sf}
+\newcommand{\Unitary}{\mathbf{U}}
+\newcommand{\unitaryBQL}{{\classfont{BQ}_\Unitary\classfont{L}}}
+\newcommand{\unitaryQMASPACE}{{\classfont{QMA}_\Unitary\classfont{SPACE}}}
+\newcommand{\unitaryQSPACE}[3]{{\classfont{Q}_\Unitary\classfont{SPACE}}[#1](#2,#3)}
+\newcommand{\unitaryBQSPACE}[1]{{\classfont{BQ}_\Unitary\classfont{SPACE}}[#1]}
+%
+%\newcommand{\eq}[1]{(\hyperref[eq:#1]{\ref*{eq:#1}})}
+\newcommand\bigoh{\mathcal{O}}
+
+\newcommand{\ee}{\mathcal{E}}
+\newcommand{\ii}{\mathbb{I}}
+\newcommand{\rl}{\rangle\langle}
+\newcommand{\mg}{\mathcal{G}}
+\newcommand{\hn}[1]{\|#1\|^H_{1\rightarrow 1}}
+\newcommand{\ve}[1]{|#1\rangle\!\rangle}
+\newcommand{\ro}[1]{\langle\!\langle#1|}
+\newcommand{\bkett}[1]{|#1\rangle\!\rangle\langle\!\langle#1|}
+%\newcommand{\ket}[1]{|#1\rangle}
+%\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\bk}[1]{|#1\rangle\langle#1|}
+\newcommand{\polylog}{\textrm{polylog}}
+
+\newcommand{\tth}[0]{\textsuperscript{th}}
+\newcommand{\st}[0]{\textsuperscript{st}}
+\newcommand{\nd}[0]{\textsuperscript{nd}}
+\newcommand{\rd}[0]{\textsuperscript{rd}}
+
+
+\usepackage{xcolor}
+\newcommand{\todo}[1]{{\color{red}{[{\bf TODO:}#1]}}}
+\newcommand{\wf}[1]{{\color{violet}{[{\bf wf:}#1]}}}
+\newcommand{\cl}[1]{{\color{purple}{[{\bf cl:}#1]}}}
+\newcommand{\tocite}[1]{{\color{blue}{[{\bf CITE:}#1]}}}
+\newcommand{\tocheck}[1]{{\color{red}{[{\bf TO CHECK:}#1]}}}
+
+\DeclareMathAlphabet{\matheu}{U}{eus}{m}{n}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\id}{id}
+\newcommand{\Favg}{\overline{F}}
+\newcommand{\Paulis}{{\matheu P}}
+\newcommand{\Clifs}{{\matheu C}}
+\newcommand{\Hilb}{{\matheu H}}
+\newcommand{\T}{{\matheu T}}
+\newcommand{\sop}[1]{{\mathcal #1}}
+\newcommand{\PL}[1]{{#1}^{P\!L}}
+\newcommand{\BHn}{{{\mathcal B}({\mathcal H}^{\otimes n})}}
+\newcommand{\I}{{\mathbb I}}
+\newcommand{\CNOT}{{\mathrm{CNOT}}}
+\newcommand{\plr}[1]{\hat{#1}} %pauli-liouville-represenation
+%\newcommand{\poly}{\textrm{poly}}
+\DeclareMathOperator{\poly}{poly}
+
+%\newcommand{\ket}[1]{|{#1}\rangle}
+%\newcommand{\bra}[1]{\langle{#1}|}
+\newcommand{\braket}[2]{\langle{#1}|{#2}\rangle}
+\newcommand{\ketbra}[2]{|{#1}\rangle\!\langle{#2}|}
+\newcommand{\kket}[1]{|{#1}\rangle\!\rangle}
+\newcommand{\bbra}[1]{\langle\!\langle{#1}|}
+\newcommand{\bbrakket}[2]{\langle\!\langle{#1}|{#2}\rangle\!\rangle}
+
+\newcommand{\no}{\nonumber\\}
+\newcommand{\even}{_\textrm{even}}
+\newcommand{\odd}{_\textrm{odd}}
+
+\newcommand{\ns}{{\textsc{ns}}}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\se}{\succcurlyeq}
+\newcommand{\di}{\textrm{diag}}
+\newcommand{\orcl}{{\pmb{\sop O}}}
+\newcommand{\SA}{{\mathbf{S}_X^n}}
+\newcommand{\SB}{{\mathbf{S}_Y^n}}
+\newcommand{\Si}{{\mathbf{S}_1}}
+\newcommand{\Sj}{{\mathbf{S}_2}}
+\newcommand{\SU}{S_U}
+\newcommand{\Ugroup}[1]{\mathbf{U}^{#1}}
+\usepackage{mathtools}
+\newcommand{\pc}{preimage-correct}
+\newcommand{\rpc}{randomized-preimage-correct}
+\newcommand{\spi}{\pmb{\sigma}_{\textrm{pre}}}
+\newcommand{\sperm}{S_{\textrm{pre}}}
+\newcommand{\Swit}{\mathbf{S}_{i,\textrm{wit}}}
+\newcommand{\Sprime}{\mathbf{S}''}
+\newcommand{\porcl}{{\pmb{\sop P}}}
+
+
+%-----------------------------------------------------------------------------%
+
+
+
+\begin{document}
+
+
+%+Title
+\begin{titlepage}
+\title{A Complete Characterization of Unitary Quantum Space}
+%\author{Bill Fefferman\thanks{Joint Center for Quantum Information and Computer Science (QuICS), University of Maryland, wjf@umd.edu} \and Cedric Yen-Yu Lin\thanks{QuICS, University of Maryland, cedricl@umiacs.umd.edu}}
+\author[1]{Bill Fefferman\thanks{wjf@umd.edu}}
+\author[1]{Cedric Yen-Yu Lin\thanks{cedricl@umiacs.umd.edu}}
+\affil[1]{Joint Center for Quantum Information and Computer Science (QuICS), University of Maryland}
+\date{\today}
+%\date{}
+\maketitle
+%\medskip
+\begin{abstract}
+We give two complete characterizations of unitary quantum space-bounded classes.  The first is based on the Matrix Inversion problem for well-conditioned matrices.  We show that given the size-$n$ efficient encoding of a $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ well-conditioned matrix $H$, approximating a particular entry of $H^{-1}$ is complete for the class of problems solvable by a quantum algorithm that uses $\mathcal{O}(k(n))$ space and performs all quantum measurements at the end of the computation. In particular, the problem of computing entries of $H^{-1}$ for an explicit well-conditioned $n \times n$ matrix $H$ is complete for unitary quantum logspace.
+
+We then show that the problem of approximating to high precision the least eigenvalue of a positive semidefinite matrix $H$, encoded as a classical algorithm, gives a second characterization of unitary quantum space complexity. In the process we also establish an equivalence between unitary quantum space-bounded classes and certain $\QMA$ proof systems. As  consequences, we establish that $\QMA$ with exponentially small completeness-soundness gap is equal to $\PSPACE$, that determining whether a local Hamiltonian is frustration-free is $\PSPACE$-complete, and give a provable setting in which the ability to prepare PEPS states gives less computational power than the ability to prepare the ground state of a generic local Hamiltonian.
+\end{abstract}
+\thispagestyle{empty}
+\end{titlepage}
+\clearpage
+\setcounter{page}{1}
+\section{Introduction}
+%My suggestion: we put all motivation in the introduction and then give proof sketches of the two main results in the next two sections
+How powerful is quantum computation with a restricted number of qubits? In this work we will study unitary quantum space-bounded classes - those problems solvable using a given amount of (quantum and classical) space, with all quantum measurements performed at the end of the computation. We give two sets of complete problems for these classes; to the best of our knowledge, these are the first natural complete problems proposed for quantum space-bounded classes. 
+
+The first problem we consider, the $\matrixinvert{k(n)}$ problem, is a well-conditioned version of the ubiquitous matrix inversion problem. The second problem we consider, the $\spechamiltonian{k(n)}$ problem, asks us to compute the minimum eigenvalue of a Hermitian matrix to high precision -- in the context of quantum complexity, this is a natural generalization of the familiar local Hamiltonian problem \cite{ksv02}. Interestingly enough, the first (resp. second) problem is the space-bounded variant of a $\BQP$-complete \cite{HHL} (resp. $\QMA$-complete \cite{ksv02}) problem; their complexities coincide in the space-bounded regime. For the sake of readability, we defer precise definitions of these problems and statements of our results until Section \ref{sec: results}.
+
+We now proceed to give some justification for the importance of our results.  In the following discussion, $\unitaryBQSPACE{k(n)}$ refers to the class of problems solvable with bounded error by a quantum algorithm running in $\mathcal{O}(k(n))$; the subscript $\Unitary$ indicates that the algorithm is unitary, i.e. employs no intermediate measurements.
+
+\subsection{Background and Motivation}
+The Matrix Inversion problem is of central importance in computational complexity theory.  Matrix inversion is known to be complete for $\DET$, the class of functions as hard as computing the determinant of an integer matrix, which can be solved in classical $\mathcal{O}(\log^{2}(n))$ space \cite{berkowitz, cook}. It is a major open problem to determine if Matrix Inversion can be solved in classical logarithmic space, which would imply $\Logspace=\NL=\DET$.
+ 
+Recently, Ta-Shma \cite{tashma}, building on work of Harrow, Hassidim, and Lloyd \cite{HHL}, showed that a well-conditioned $n \times n$ matrix can be inverted (up to some approximation error) by a quantum $O(\log n)$ space algorithm using intermediate measurements. Similarly, Ta-Shma also gives an algorithm for computing eigenvalues of a Hermitian matrix with similar space. These algorithms achieve a quadratic advantage in space over the best known classical algorithms, which require $\Omega(\log^2n)$ space.  This is the maximum quantum advantage possible, since Watrous has shown $\BQSPACE[k(n)]\subseteq\DSPACE[\bigoh(k(n)^2)]$ \cite{Watrous99,Watrous03} even for quantum algorithms with intermediate measurements.
+
+Using our completeness result for matrix inversion, and noticing that our algorithm for matrix inversion (Theorem \ref{thm: matrix inversion alg}) actually gives a high-precision approximation, gives the following corollary:
+\begin{corollary}
+The problem of approximating, to constant precision, an entry of the inverse of an $n \times n$ PSD matrix with condition number at most $\poly(n)$ is $\unitaryBQL$-complete under $\Logspace$-reductions, where $\unitaryBQL$ is the set of problems solvable in unitary quantum logspace. This problem remains in $\unitaryBQL$ even if $1/\poly(n)$ precision is required.
+\end{corollary}
+
+This corollary (and a similar one for computing the minimum eigenvalue) improves upon Ta-Shma's result \cite{tashma} in two ways. First our algorithms  solve these problems without needing intermediate measurements.  Unlike in time complexity, where the ``Principle of safe storage'' gives a procedure to time efficiently defer intermediate measurements, these methods may incur an exponential blow-up in space.  
+
+Of course one might wonder why we care so much about avoiding intermediate measurements.  Principally, removing intermediate measurements from the computation allows us to give matching hardness results, showing the optimality of our algorithms.  This is the second way our results improve on those of Ta-Shma.  In particular, our proofs will crucially use space-efficient methods for the amplification of unitary quantum computations, which simply are not known in the non-unitary model.  This is because the techniques require applying the inverse of the circuit, which of course is impossible if the circuit contains intermediate measurements.  We will also rely on ideas from Kitaev's clock construction, which constructs a local Hamiltonian from a unitary quantum circuit. 
+
+Specifically, we will show that the problems of inverting well-conditioned matrices and computing minimum eigenvalues of Hermitian matrices are hard for unitary quantum logspace under $\Logspace$-reductions. In the case of our algorithm for Matrix Inversion, this means that the upper bound on the condition number bound is unlikely to be improved upon.  Likewise, this gives some of the strongest evidence that the general Matrix inversion problem cannot be solved in $\Logspace$, since otherwise our results would immediately imply $\Logspace=\unitaryBQL$, which seems quite unlikely. 
+
+Interestingly, although our algorithms for both problems use different techniques from those of Ta-Shma, our algorithm for computing the minimum eigenvalue is completely different.  In particular, our algorithm crucially relies on new methods for space efficient $\QMA$ amplification, together with some of the most powerful recent results in Hamiltonian simulation \cite{berry14,berry15}.
+
+Concurrently with our work, Doron, Sarid, and Ta-Shma have shown that analogous problems for stochastic matrices (e.g. computing the eigenvalue gap) are complete for classical randomized logspace, or $\BPL$ \cite{dt15,dst16}. In addition, Le Gall has shown that analogous problems for Laplacian matrices can be solved in $\BPL$ \cite{legall16}. Since it is straightforward to see that Well-conditioned Matrix Inversion reduces to Integer Matrix Inversion, we obtain a direct proof that $\unitaryBQL\subseteq\DET$, which was previously known indirectly via the containments $\unitaryBQL\subseteq\PLclass\subseteq\DET$ \cite{Watrous03,Borodin84}.
+
+Therefore the power of classical and quantum space-bounded classes are characterized by the ability to approximate solutions of different problems in $\DET$ (stochastic matrices for the former, and Hermitian matrices for the latter). This could shed light on the differences between deterministic, randomized, and quantum space complexity. An open question is to find a class of interesting matrices whose inverse (or eigenvalues) can be computed in \emph{deterministic} logspace.
+
+Interestingly, Harrow, Hassidim and Lloyd \cite{HHL} showed that a suitably scaled version of the Matrix Inversion problem also characterizes the class of problems solvable by quantum computation with a given time bound. In particular, they show that a quantum circuit acting on $n$ qubits with $T$ gates can be simulated by inverting a sparse matrix of dimension $2^n\kappa$ where the condition number $\kappa$ is $O(T^2)$.  Thus by appropriately bounding the condition number and dimension of the matrix we can give problems complete for quantum time or quantum space \wf{Insert a chart here?}. In fact we can strengthen these results to settings with a simultaneously bounded amount of space and time, see Section \ref{sec: timespace}. 
+\subsection{Relationship with Matchgates} \label{sec: matchgates}
+
+Matchgates are a subclass of quantum gates introduced by Valiant \cite{Val02SIComp}, who also showed that nearest neighbor matchgate circuits (which we will just call matchgate computations) are classically simulable. Matchgate computations were further shown to be equivalent to a one-dimensional model of noninteracting fermions by Terhal and DiVincenzo \cite{TerDiV02PRA}; and equivalent to unitary quantum logspace by Jozsa, Kraus, Miyake, and Watrous \cite{JozKraMiyWat10RSPA}. Our complete problems therefore elucidate the computational power of noninteracting fermions.
+
+We know that sampling from output distributions of matchgate computations gives us the power of $\BPL$; but what is the computational power of computing exactly the output probabilities of matchgate computations? We conjecture that this computational power corresponds to $\DET$, since amplitudes of noninteracting fermion circuits are related to determinants (and see also the discussion in the previous subsection). It is known that output probabilities of matchgate computations can be exactly calculated by an efficient classical algorithm \cite{JozMiy08RSPA}, which is consistent with our conjecture because $\DET \in \classfont{P}$.
+
+\subsection{Quantum Merlin-Arthur with Small Gap}
+A consequence of our proof of completeness for the $\spechamiltonian{k(n)}$ problem is an equivalence between space-bounded quantum computations and quantum Merlin-Arthur proof systems. Here we give this equivalence for the polynomial space case: let $\QMA(c,s)$ denote the set of problems solvable by quantum Merlin-Arthur proof systems that in the YES case accepts with probability at least $c$ (the completeness), while in the NO case accepts with probability at most $s$ (the soundness). Then we show the following:
+\begin{corollary} \label{cor: preciseqma}
+Let $\preciseQMA:= \cup_{c-s \ge 2^{-\poly}} \QMA(c,s)$ denote the variant of $\QMA$ with exponentially small completeness-soundness gap. Then
+$\preciseQMA = \BQPSPACE =  \PSPACE$.
+\end{corollary}
+The second equality is due to Watrous \cite{Watrous99,Watrous03}. We give similar equivalences for space-bounded quantum computations with and without a witness for other space bounds as well; see Theorem \ref{thm: equivalence}.
+
+It is interesting to note that $\preciseQMA$ is likely far more powerful than its classical counterpart. The analogous classical complexity class is contained in $\NP^{\PP}$: given a classical witness, the verifier runs a classical computation that in the YES case accepts with probability at least $c$, or in the NO case accepts with probability at most $s$, where $c>s$. Note that in the classical case $c - s > \exp(-\poly)$ is automatically satisfied. Since $\NP^{\PP}$ is in the counting hierarchy, the entirety of which is contained in $\PSPACE$ (see e.g., \cite{allenderwagner}), we see that the quantum proof protocol is strictly stronger than the classical one, unless the counting hierarchy collapses to the second level.
+
+We also show that the \emph{local} Hamiltonian problem is $\PSPACE$-complete when the promise gap is exponentially small (for details see Appendix \ref{app:localhamiltonian}). This is in contrast to the usual case when the gap is polynomially small, where the problem is $\QMA$-complete. Perhaps more surprisingly, $\preciseQMA = \PSPACE$ is more powerful than $\PostBQP=\PP$, the class of problems solvable with postselected quantum computation \cite{aaronson05}.
+Another consequence concerns Projected Entangled Pair States, or PEPS, a natural extension of matrix product states to two and higher spatial dimensions, which can be described as the ground state of certain frustration-free local Hamiltonians \cite{vc04}. A characterization of the computational power of PEPS was given in \cite{swv07}, and can be summarized as follows: let $O_{PEPS}$ be a quantum oracle that, given the description of a PEPS, outputs the PEPS (so the output is quantum). Then $\BQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PostBQP = \PP$, where (following Aaronson \cite{aaronson05}) the subscript  denotes that only classical nonadaptive queries to the oracle are allowed. Moreover, let $\PQP$ stand for the set of problems solvable by a quantum computer with \emph{unbounded error}; then it can be straightforwardly shown that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$ as well (see Appendix \ref{app:peps}).
+
+On the other hand, suppose we have an oracle $O_{LH}$ that given the description of a local Hamiltonian, outputs a ground state of the Hamiltonian. Then our results show that $\preciseQMA = \PSPACE \subseteq \PQP^{O_{LH}}_{\parallel,\text{classical}}$. This shows that in the setting of unbounded-error quantum computation, PEPS do not capture the full computational complexity of general local Hamiltonian ground states unless $\PP=\PSPACE$. We leave open the problem of determining the complexity of $\BQP^{O_{LH}}_{\parallel,\text{classical}}$.
+
+Lastly, we are able to strengthen our characterization to show that $\preciseQMA$ contains $\PSPACE$ (see Appendix \ref{app:perfectcompleteness}), even when restricted to having perfect completeness.  This allows us to prove that testing if a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem (Appendix \ref{app:localhamiltonian}).
+
+ \section{Preliminaries}
+\subsection{Quantum circuits}
+We will assume a working knowledge of quantum information. For an introduction, see \cite{nc00}.
+
+A \emph{quantum circuit} consists of a series of quantum gates each taken from some universal gateset, such as the gateset consisting of Hadamard and Toffoli gates \cite{shi}. % A \emph{description} of the quantum circuit is a string consisting of the gates in the circuit, together with the qubits that each gate acts on.
+ For functions $f,g:\mathbb{N}\rightarrow\mathbb{N}$, we say a family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$ is \emph{$f$-time $g$-space uniformly generated} if there exists a deterministic classical Turing machine that on input $x\in\{0,1\}^n$ and $i>0$ outputs the $i$-th gate of $Q_x$ within time $f(n)$ and workspace $g(n)$ \cite{nc00}.  
+ 
+Our restriction to a specific gateset is without loss of generality, even for logarithmic space algorithms:  there exists a deterministic algorithm that given any unitary quantum gate $U$ and a parameter $\epsilon$, outputs a sequence of at most $\polylog({1/\epsilon})$ gates from any universal quantum gateset that approximates $U$ to precision $\epsilon$ in space $\bigoh({\log({1/\epsilon})})$ and time $\polylog({1/\epsilon})$ \cite{mw12}.  This improves the Solovay-Kitaev theorem, which guarantees a space bound of $\polylog(1/\epsilon)$; see e.g., \cite{nc00}.
+ %\begin{theorem}[\cite{mw12}]  For every universal set $S$ of unitary gates that is closed under adjoint, every language solvable by a bounded-error quantum %
+\subsection{Space-bounded computation} \label{sec: space bounded computation}
+For our model of unitary quantum space-bounded computation, we consider a quantum system with purely classical control, because there are no intermediate quantum measurements to condition future operations on. Specifically, we use the following definition (see Appendix \ref{app: space bounded} for more details):
+
+\begin{definition} \label{def: qspace}
+Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le \poly(n)$. A promise problem $L=(L_{yes},L_{no})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
+ If $x \in L_{yes}$:
+\begin{equation}
+\bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \ge c.
+\end{equation}
+Whereas if $x \in L_{no}$:
+\begin{equation}
+\bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \le s.
+\end{equation}
+Here $out$ denotes a single qubit we measure at the end of the computation; no intermediate measurements are allowed.  
+Furthermore, we require $c$ and $s$ to be computable in classical $\bigoh(k(n))$-space.
+%For the purposes of this work, we will demand that the space bound $k(n)$ is at least $\bigoh(\log{n})$ and no more than $2^{\poly(n)}$.  
+\end{definition}
+
+For the rest of the paper we will always assume that $\Omega(\log(n)) \le k(n) \le \poly(n)$.
+
+The bound $T=2^{\mathcal{O}(k)}$ on the circuit size comes from that any classical Turing machine generating $Q_x$ using space $\bigoh(k(|x|))$ has at most $2^{\mathcal{O}(k)}$ configurations. We note that $2^{\mathcal{O}(k)}$ gates suffice to approximate any gate on $\bigoh(k)$ qubits to high accuracy (see e.g. \cite[Chapter~4]{nc00}). The $\poly(|x|)$ time bound on the classical control can be assumed without loss of generality; see Appendix \ref{app: space bounded} for details.
+
+\begin{definition} $\unitaryBQSPACE{k}=\unitaryQSPACE{k}{2/3}{1/3}$.\end{definition}
+%\begin{definition}$\PQSPACE[k]=\QSPACE[k](1/2,1/2)$.\end{definition}
+\begin{theorem}[Watrous \cite{Watrous99,Watrous03}]\label{thm:pqpspace} $\unitaryBQSPACE{\poly}=\PSPACE$.
+\end{theorem}
+
+We now define space- and time-bounded analogues of $\QMA$:
+\begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\bddQMA{t}{k}{m}{c}{s}$ if there exists a $t$ time and $(k+m)$ space uniformly generated family of quantum circuits $\{ V_x\}_{x\in\{0,1\}^*}$, each of size at most $t(|x|)$, acting on $k(|x|)+m(|x|)$ qubits, so that:\\
+
+If $x \in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that:
+\begin{equation}
+\left(\bra{\psi}\otimes \bra{0^k}\right) V^\dagger_x \ket{1}\bra{1}_{out} V_x \left(\ket{\psi}\otimes \ket{0^k}\right) \ge c.
+\end{equation}
+Whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have:
+\begin{equation}
+\left(\bra{\psi}\otimes \bra{0^k}\right) V^\dagger_x \ket{1}\bra{1}_{out} V_x \left(\ket{\psi}\otimes \ket{0^k}\right) \le s.
+\end{equation}
+$out$ denotes a single qubit measured at the end of the computation; no intermediate measurements are allowed.  
+Here $c$ and $s$ are computable in classical $\bigoh(t(n))$-time and $\bigoh(k(n)+m(n))$-space.
+  \end{definition}
+
+\begin{definition} $\QMA=\bddQMA{\poly}{\poly}{\poly}{2/3}{1/3}$.
+\end{definition}
+\begin{definition} $\preciseQMA=\bigcup_{c \in (0,1]}\bddQMA{\poly}{\poly}{\poly}{c}{c-2^{-\poly}}$.
+\end{definition}
+
+\subsection{Other definitions and results}
+We use the following definition of \emph{efficient encodings} of matrices:
+\begin{definition}\label{def: efficient encoding}Let $M$ be a $2^{k} \times 2^{k}$ matrix, and $\mathcal{A}$ be a classical algorithm (e.g. a Turing machine) specified using $n$ bits. We say that $\mathcal{A}$ is an \emph{efficient encoding} of $M$ if on input $i\in\{0,1\}^k$, $\mathcal{A}$ outputs the non-zero entries of the $i$-th row, using at most $\poly(n)$ time and $\bigoh(k)$ workspace (not including the output size). Note that as a consequence $M$ has at most $\poly(n)$ nonzero entries in each row.
+\end{definition}
+We will often specify a matrix $M$ in the input by giving an efficient encoding of $M$. The size of the encoding is then the input size, which we will usually indicate by $n$.
+
+In our results we will implicitly assume the existence of algorithms that compute some common functions on $n$-bit numbers, such as $\sin,\cos,\arcsin,\arccos$ and exponentiation, to within $1/\poly(n)$ accuracy in classical $\bigoh (\log{n})$ space.  Algorithms for these tasks have been designed by Reif \cite{reif}.\footnote{Reif's algorithms actually take only $\bigoh (\log\log{n}\log\log\log{n})$ space, but for simplicity we only use the $\bigoh (\log{n})$ upper bound.}
+
+Finally, we will need new results from the Hamiltonian simulation literature:
+\begin{theorem}[\cite{berry14,bccks15,berry15}] \label{thm:ham_sim}
+Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
+\end{theorem}
+While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Also note that the maximum eigenvalue of $H$, $\|H\|$, satisfies $\|H\| \le \poly(n) \|H\|_{max}$.
+
+\section{The Minimum Eigenvalue Problem}\label{sec: Minimum Eigenvalue}
+The first problem that characterizes unitary quantum space is the $\spechamiltonian{k(n)}$ problem:
+\begin{definition}[$\spechamiltonian{k(n)}$ problem] \label{def: spechamiltonian}
+Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, such that % the maximum entry in absolute value 
+$\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
+\end{definition}
+
+\begin{theorem} \label{thm: spechamiltonian}
+For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\spechamiltonian{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+\end{theorem}
+\begin{proof}
+First we describe the upper-bound, proving containment in $\unitaryBQSPACE{k(n)}$.  The first step is to show that the $\spechamiltonian{k(n)}$ problem is in $\preciseQMA$ with a unitary verifier using $k(n)$ qubits of space, or more formally: 
+\begin{lemma} \label{lem:qma protocol}
+$\spechamiltonian{k(n)}$ is contained in $\bddQMA{\poly}{\bigoh(k(n))}{\bigoh(k(n))}{c}{s}$ for some $c,s$ such that $c - s > 2^{-\mathcal{O}(k(n))}$.
+\end{lemma}
+\begin{proof}
+We are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, and it is promised that the smallest eigenvalue $\lambda_{min}$ of $H$ is either at most $a$ or at least $b$. Merlin would like to convince us that $\lambda_{min} \le a$; he will send us a purported $k$-qubit eigenstate $\ket{\psi}$ of $H$ with eigenvalue $\lambda_{min}$. Choose $t = \pi / (\poly(n)\|H\|_{max}) \le \pi / \|H\|$; then all eigenvalues of $Ht$ lie in the range $[0,\pi]$, and the output of phase estimation on $\exp(-iHt)$ will be unambiguous. We perform, on $\psi$, phase estimation of $\exp(-iHt)$ with one bit of precision:
+\begin{align} \label{circ: poor man phase estimation}
+&\Qcircuit @C=1em @R=.7em {
+\lstick{\ket{0}}& \gate{H} & \ctrl{1} & \gate{H} & \rstick{\frac{1+e^{-i\lambda t}}{2}\ket{0} +\frac{1-e^{-i\lambda t}}{2}\ket{1} } \qw \\
+\lstick{\ket{\psi}}& \qw & \gate{e^{-iHt}}  & \qw & \rstick{\ket{\psi}} \qw
+}
+\end{align}
+Here the $H$ gates on the first qubit are Hadamard gates (and have nothing to do with the matrix $H$). Theorem \ref{thm:ham_sim} gives an implementation of $\exp(-iHt)$ up to error $\epsilon = 2^{-\Theta(k(n))}$ using $\poly(n)$ operations and $\bigoh(k(n))$ space.
+
+In Circuit (\ref{circ: poor man phase estimation}) we've assumed $\ket{\psi}$ is an eigenstate of $H$ with eigenvalue $\lambda$. If we measure the control qubit at the end, the probability we obtain 0 is $(1+\cos(\lambda t))/2$. Therefore if $\psi$ is a eigenstate with eigenvalue at most $a$, we can verify this with probability at least $c=(1+\cos(at))/2 - \epsilon$, where $\epsilon$ is the error in the implementation of $\exp(-iHt)$. Otherwise if $\lambda_{min} \ge b$, no state $\psi$ will be accepted with probability more than $s=(1+\cos(bt))/2 + \epsilon$. The separation between $c$ and $s$ is at least 
+\begin{align}
+(\cos(at)-\cos(bt)) - 2\epsilon &= 2 \sin \left(\frac{(a+b)t}{2}\right) \sin \left(\frac{(b-a)t}{2}\right) - 2\epsilon \ge 2^{-\mathcal{O}(k)}
+\end{align}
+since $\sin x = \Omega(x)$ for $x \in [0,1]$, $(a+b)t \ge (b-a)t = 2^{-\mathcal{O}(k(n))}$, as long as we choose $\epsilon = 2^{-\Theta(k(n))}$ to be sufficiently small enough. This therefore gives a $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k)}{c}{s}$ protocol for $c - s = 2^{-\mathcal{O}(k(n))}$, as desired. %%NOTE: To do: remove bounded QMA language and say "in preciseQMA" with bounded space verifier
+\end{proof}
+
+We now have a $k(n)$-space bounded $\preciseQMA$ protocol that uses a $k(n)$ qubit witness.  The next step is to amplify this protocol.  To do this we need to develop new {\emph{space-efficient}} $\QMA$ error amplification procedures.  We start by extending ideas used in the ``in-place'' $\QMA$ amplification procedure of Marriott and Watrous \cite{mw05}.  The Marriott and Watrous procedure does not require Merlin to send additional copies of his state.  However, the analysis still uses a Chernoff bound to reduce error, and so requires repeating the protocol $\bigoh(r/(c-s)^2)$ times to amplify a procedure with completeness $c$ and soundness $s$ to one with completeness $1-2^{-r}$ and soundness $2^{-r}$.  Recording the outcomes of each repetition uses an additional $r/(c-s)^2$ qubits of space.  Nagaj, Wocjan, and Zhang show that this can be improved using a phase estimation based procedure, to obtain the same completeness and soundness with only an additional $r\log{\frac{1}{c-s}}$ qubits \cite{nwz11}.  We manage to achieve these error bounds while using only $r+\log{\frac{1}{c-s}}$ additional qubits, which is needed for our result\footnote{Indeed, in recent work we were able to improve this result to achieve such amplification using only $\log{\frac{r}{c-s}}$ additional qubits of space \cite{fklmn16}.}. See Appendices \ref{app: space efficient amplification} and \ref{app: gap amplification} for more details.  
+
+We apply these techniques to our space bounded $\preciseQMA$ proctocol to obtain a new $\QMA$ protocol that uses the same amount of space but with completeness and soundness error exponentially small in the witness length, $k(n)$.
+
+Once we have this protocol we can consider the same verification procedure run on the maximally mixed state witness.  Equivalently, we can think of this procedure as running the same verification procedure with a uniformly chosen classical witness.  This protocol maintains the same space complexity, but doesn't require Merlin to send a witness.  We show that the resulting completeness and soundness bounds are now separated by $2^{-k(n)}$, which allows us to again amplify our protocol using our space-efficient amplification technique.  The time used by the resulting bounded error protocol is exponential in $k$, but crucially uses only $O(k(n))$ qubits of space, establishing our upper bound.  See Appendix \ref{app: removingwitness} for the details.
+
+The lower bound, showing $\BQSPACE[k(n)]$-hardness, is an application of Kitaev's clock construction \cite{ksv02} and our new space-efficient amplification procedure.  Using our uniformity condition, it is easy to see that any language in $\BQSPACE[k(n)]$ can be decided with a quantum circuit of size at most $2^{k(n)}$.  We first use our space-efficient  amplification procedure to reduce the error.  Then following Kitaev, we construct a Hamiltonian out of the amplified circuit.  It is straightforward to see that the resulting Hamiltonian is sparse and succinct, and that the ground state energy is inverse-exponentially lower in the case the circuit accepts than in the case it rejects.  The details are in Appendix \ref{sec: specham-hardness}.
+	
+\end{proof}
+
+
+
+
+A consequence of our proof is the following theorem, of which Corollary \ref{cor: preciseqma} is a special case:
+\begin{theorem} \label{thm: equivalence}
+$\unitaryBQSPACE{\mathcal{O}(k(n))}$ is equivalent to the class of problems characterized by having quantum Merlin Arthur proof systems running in polynomial time, $\mathcal{O}(k(n))$ witness size and space, and $2^{-\mathcal{O}(k(n))}$ completeness-soundness gap.
+\end{theorem}
+
+
+\section{The Well-Conditioned Matrix Inversion Problem} \label{sec: results}
+
+%\subsection{Summaries}
+%In the following, we define our two problems of interest, and sketch the proofs of $\unitaryBQSPACE{k(n)}$-completeness for these problems.
+%\subsection{$\psham{k(n)}$}
+%\begin{definition}
+%[$\psham{k(n)}$ problem] \label{def: spechamiltonian}
+%Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, such that % the maximum entry in absolute value 
+% $\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output $0$ otherwise.
+%\end{definition}
+%\begin{theorem} \label{thm: spechamiltonian}
+%For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\psham{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+%\end{theorem}
+
+%\subsubsection{$\matrixinvert{k(n)}$ is $\unitaryBQSPACE{k(n)}$-complete}
+We begin with a formal statement of the problem:
+\begin{definition}[\matrixinvert{k(n)}] \label{def: matrix invert}
+Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
+ or $|H^{-1}(s,t)|\leq a$ for some constants $0 \le a < b \le 1$; determine which is the case.
+ \end{definition}
+
+Our main theorem in this section states that this matrix inversion problem \emph{characterizes} $\unitaryBQSPACE{k(n)}$:
+\begin{theorem} \label{thm: matrix invert}
+For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\matrixinvert{\mathcal{O}(k(n))}$ is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+\end{theorem}
+%\subsection{$\matrixinvert{k(n)}\in\BQSPACE[k(n)]$}
+\begin{proof}
+We begin by giving a new space efficient algorithm for this matrix inversion problem:
+\begin{theorem} \label{thm: matrix inversion alg}
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+\begin{compactenum}
+\item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
+\item Approximate $\|H^{-1}\ket{b}\|$ to precision $\epsilon$.
+\item Approximate $|\bra{a}H^{-1}\ket{b}|$ to precision $\epsilon$.
+\end{compactenum}
+These circuits do not require intermediate measurements.
+\end{theorem}
+\begin{proof}
+
+
+We first briefly summarize the algorithm of Ta-Shma \cite{tashma}, which  is based on the linear system solving algorithm of Harrow, Hassidim and Lloyd \cite{HHL}.  In our language, Ta-Shma shows that $\matrixinvert{\bigoh(\log{n})}$ can be solved by a quantum logspace algorithm that uses intermediate measurements. This corresponds to inverting an $n \times n$ matrix with condition number at most $\poly(n)$.
+
+Our algorithm and Ta-Shma's share the same initial procedure.  In particular it is shown:  
+\begin{lemma}[Implicit in \cite{HHL,tashma}] \label{lem: matrix inversion lemma}
+There is a $\bigoh (k + \log(\kappa/\epsilon'))$-space uniform quantum unitary transformation $W_H$ over $k+\ell = \bigoh (k+ \log(\kappa/\epsilon'))$ qubits, such that for any $k$-qubit input state $\ket{b}$,
+\begin{equation}
+W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b} + \sqrt{1-\alpha^2} \ket{1}_{out} \otimes\ket{\psi'_b},
+\end{equation}
+where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$, $\alpha$ is a positive number satisfying $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, and ``out'' is a 1-qubit register.
+\end{lemma}
+\begin{proof}
+The proof of this lemma is implicit in the proof of \cite[Theorem~6.3]{tashma}, or can be obtained by combining \cite[Theorem~4.1]{tashma} with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}. The essential idea of the proof is to use phase estimation on $\exp(iH)$ to compute the eigenvalues $\lambda$ of the matrix $H$ into an auxilliary register; implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$; and finally uncompute the eigenvalues $\lambda$. Ta-Shma showed how to implement $\exp(iH)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general matrices with efficient encodings); alternatively the more recent sparse Hamiltonian simulation algorithms by Berry et al. (Theorem \ref{thm:ham_sim}) has the same space requirement and is more time efficient.
+\end{proof}
+Intuitively, Lemma \ref{lem: matrix inversion lemma} tells us that there exists a space efficient quantum algorithm that produces a state proportional to $H^{-1}\ket{b}$ with probability $1/\poly$.  Of course our goal is to produce a state with constant overlap to the state $\ket{0}_{out} \otimes \ket{\psi_b}$ together with an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$.  From here our algorithm differs from that of Ta-Shma and uses a combination of amplitude amplification and phase estimation.  This completely sidesteps both the somewhat complicated analysis and intermediate measurements of Ta-Shma's algorithm.  It is straightforward to further extend this algorithm to the case where $k(n) = \omega(\log(n))$.
+ 
+
+%(This idea is already present in the work of Nagaj et al. for QMA gap amplification \cite{nwz11}, or the Oblivious Amplitude Amplification technique in \cite{berry14,bccks15,berry15}.) 
+
+Specifically, consider the two projectors:
+\begin{equation}
+\Pi_0 = \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b}, \quad \Pi_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H.
+\end{equation}
+$\Pi_0$ projects onto the initial subspace, while $\Pi_1$ projects onto the initial states that would be accepted by the final measurement. By an argument similar to Grover's algorithm, if we implement the rotation $R=-(I-2\Pi_0)(I-2\Pi_1)$ $\bigoh (1/\alpha)$ times we will generate an output state with constant overlap with $\ket{0}_{out} \otimes \ket{\psi_b}$. $\alpha$ can be estimated by performing phase estimation on the operator $R$. \wf{Should this be clarified to satisfy the referee?  I'm not sure that's necessary...}
+We have addressed the first two tasks in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can choose $\Pi'_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will give an estimate for $|\bra{a}H^{-1}\ket{b}|$. See Appendix \ref{app: matrix inversion alg} for the full proof.
+\end{proof}
+%\subsection{$\matrixinvert{\bigoh(k(n))}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: matrix inversion hard}
+We establish that $\matrixinvert{k(n)}$ is $\unitaryBQSPACE{\mathcal{O}(k)}$-hard using a similar argument to Harrow, Hassidim, and Lloyd \cite{HHL}, in which given a quantum circuit acting on $k(n)$ qubits we can construct a succinctly described well-conditioned $2^{\mathcal{O}(k)}\times 2^{\mathcal{O}(k)}$ matrix $H$, so that a single element of $H^{-1}$ is proportional to the success probability of the circuit.  This establishes our proof.  See Appendix \ref{app: matrixinversion-hardness} for a detailed proof. 
+
+\end{proof}
+
+%\subsubsection{$\spechamiltonian{k(n)}$ is $\unitaryBQSPACE{k(n)}$-complete}
+
+%\subsection{Why unitary quantum space?}
+%All of our results in this paper are about unitary quantum space-bounded computations: we only allow unitary quantum gates in the circuits we consider, and in particular intermediate measurements are not allowed. As we noted, the standard method of deferring quantum measurements may incur an exponential blow-up in space; it is unknown whether non-unitary and unitary space-bounded quantum computations are equivalent (and in the former case there are many possible models to consider; see e.g. \cite{mw12} for many different definitions). Nevertheless, there are many advantages to considering
+%the unitary model:
+%
+%First, we note that unitary quantum computations can be space-efficiently amplified, by using refined versions of the ``in-place'' gap amplification schemes for QMA \cite{mw05,nwz11}; see Theorem \ref{thm: specham-hardness}, or \cite{fklmn16} for even more efficient methods. Similar strong results for non-unitary quantum computations are not known -- these in-place amplification methods require being able to apply the inverse of the quantum circuit, which is impossible in the non-unitary case.
+%
+%Secondly, our paper gives complete problems for unitary space-bounded classes, while analogous problems for the non-unitary case are unknown. The hardness reductions we use (based on \cite{HHL,ksv02}) seem to require that the quantum circuit is unitary. Thus we have a complete characterization of unitary space in terms of the hardest problems solvable in these classes.
+%
+%Finally, unitary quantum logspace is physically well-motivated as well, by the connection to matchgates
+%and noninteracting fermions (Section \ref{thm: specham-hardness}).
+
+%Therefore we consider that the unitary model is perhaps simplest and the most natural for the study of quantum space complexity. Further work on this model could be illuminating on the differences between classical and quantum space complexity.
+
+
+%%Bill's note: End of preliminary section
+
+%\section{Characterization 2: The $\spechamiltonian{k(n)}$ Problem}
+%%We will now show an alternate characterization of unitary quantum space via another complete problem for $\unitaryBQSPACE{k(n)}$, for any function $k(n)$ at least $\Omega(\log n)$ and at most $\exp(\bigoh (n))$. Here completeness is defined under a reduction computable by a \emph{classical} algorithm in polynomial time and $\mathcal{O}(k(n))$ space.
+%%\begin{definition}[$\spechamiltonian{k(n)}$ problem]
+%%Given as input is the size-$n$ efficient encoding of a $2^{\mathcal{O}(k(n))} \times 2^{\mathcal{O}(k(n))}$ positive semidefinite matrix $H$, such that the maximum entry in absolute value $\|H\|_{max}$ is upper bounded by a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a$ and $b$ are some real numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output 0 otherwise.
+%%\end{definition}
+%We will now prove Theorem \ref{thm: spechamiltonian}; this gives an alternate characterization of unitary quantum space via the complete problem $\spechamiltonian{k(n)}$ (see Definition \ref{def: spechamiltonian}). We do so by three steps: in Section \ref{subsec:specham-in-bddqma} we show containment in a generalized $\QMA$ class; in Section \ref{subsec:bddqma-in-bqspace} we show that this generalized $\QMA$ class is contained in $\unitaryBQSPACE{k(n)}$; and finally in Section \ref{sec: specham-hardness} we show $\unitaryBQSPACE{k(n)}$-hardness of $\spechamiltonian{k(n)}$.
+%%\subsection{$\spechamiltonian{k(n)}$ is in $\unitaryBQSPACE{k(n)}$}
+%%We show the main result of this section by proving first, in Section \ref{subsec:specham-in-bddqma}, that $\spechamiltonian{k(n)}$ is in $k(n)$-Space-bounded $\preciseQMA$ and then in Section \ref{subsec:bddqma-in-bqspace} that $k(n)$-Space-bounded $\preciseQMA$ is in $\unitaryBQSPACE{k(n)}$.
+%\subsection{A generalized $\QMA$ proof system for $\spechamiltonian{k(n)}$}\label{subsec:specham-in-bddqma}
+%This section will be devoted to showing the following result:
+%\begin{theorem} \label{lem:qma protocol}
+%$\spechamiltonian{k(n)}$ is contained in $\bddQMA{\poly}{\bigoh(k(n))}{\bigoh(k(n))}{c}{s}$ for some $c,s$ such that $c - s > 2^{-\mathcal{O}(k(n))}$.
+%\end{theorem}
+%Our strategy is to use a stripped-down version of phase estimation on $e^{-iHt}$ to estimate an eigenvalue of $H$. To simulate $e^{-iHt}$ we use the following result for sparse Hamiltonian simulation:
+%\begin{theorem}[\cite{berry14,bccks15,berry15}] \label{thm:ham_sim}
+%Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
+%\end{theorem}
+%While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Also note that the maximum eigenvalue of $H$, $\|H\|$, satisfies $\|H\| \le \poly(n) \|H\|_{max}$.
+%%\begin{remark}
+%%Suppose a matrix $H$ has at most $n$ nonzero entries per row, each of which is no more than $\|H\|_{max}$ in absolute value. Then $\| H \| \le n\|H\|_{max}$.
+%%\end{remark}
+%\begin{proof}[Proof of Theorem \ref{lem:qma protocol}]
+%We are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, and it is promised that the smallest eigenvalue $\lambda_{min}$ of $H$ is either  at most $a$ or at least $b$. Merlin would like to convince us that $\lambda_{min} \le a$; he will send us a purported $k$-qubit eigenstate $\ket{\psi}$ of $H$ with eigenvalue $\lambda_{min}$. Choose $t = \pi / (\poly(n)\|H\|_{max}) \le \pi / \|H\|$; then all eigenvalues of $Ht$ lie in the range $[0,\pi]$, and the output of phase estimation on $\exp(-iHt)$ will be unambiguous. We preform, on $\psi$, phase estimation of $\exp(-iHt)$ with one bit of precision:
+%\begin{align} \label{circ: poor man phase estimation}
+%&\Qcircuit @C=1em @R=.7em {
+%\lstick{\ket{0}}& \gate{H} & \ctrl{1} & \gate{H} & \rstick{\frac{1+e^{-i\lambda t}}{2}\ket{0} +\frac{1-e^{-i\lambda t}}{2}\ket{1} } \qw \\
+%\lstick{\ket{\psi}}& \qw & \gate{e^{-iHt}}  & \qw & \rstick{\ket{\psi}} \qw
+%}
+%\end{align}
+%Here the $H$ gates on the first qubit are Hadamard gates (and have nothing to do with the matrix $H$). Theorem \ref{thm:ham_sim} gives an implementation of $\exp(-iHt)$ up to error $\epsilon = 2^{-\Theta(k(n))}$ using $\poly(n)$ operations and $\bigoh(k(n))$ space.
+%
+%In Circuit (\ref{circ: poor man phase estimation}) we've assumed $\ket{\psi}$ is an eigenstate of $H$ with eigenvalue $\lambda$. If we measure the control qubit at the end, the probability we obtain 0 is $(1+\cos(\lambda t))/2$. Therefore if $\psi$ is a eigenstate with eigenvalue at most $a$, we can verify this with probability at least $c=(1+\cos(at))/2 - \epsilon$, where $\epsilon$ is the error in the implementation of $\exp(-iHt)$. Otherwise if $\lambda_{min} \ge b$, no state $\psi$ will be accepted with probability more than $s=(1+\cos(bt))/2 + \epsilon$. The separation between $c$ and $s$ is at least 
+%\begin{align}
+%(\cos(at)-\cos(bt)) - 2\epsilon &= 2 \sin \left(\frac{(a+b)t}{2}\right) \sin \left(\frac{(b-a)t}{2}\right) - 2\epsilon \ge 2^{-\mathcal{O}(k)}
+%\end{align}
+%since $\sin x = \Omega(x)$ for $x \in [0,1]$, $(a+b)t \ge (b-a)t = 2^{-\mathcal{O}(k(n))}$, as long as we choose $\epsilon = 2^{-\Theta(k(n))}$ to be sufficiently small enough. This therefore gives a $\bddQMA{\poly}{\Theta(k(n))}{\Theta(k)}{c}{s}$ protocol for $c - s = 2^{-\mathcal{O}(k(n))}$, as desired.
+%\end{proof}
+%
+%\subsection{$\bigcup_{c \in (0,1]}{\bddQMA{poly}{\bigoh(k)}{\bigoh(k)}{c}{c-2^{-\bigoh(k)}}}$ is in $\unitaryBQSPACE{k(n)}$} \label{subsec:bddqma-in-bqspace}
+%%%HERE
+%In this section we will establish the following result:
+%\begin{theorem} \label{thm: pspace upper bound}$
+%\bigcup_{c \in (0,1]}\bddQMA{\poly}{\bigoh(k)}{\bigoh(k)}{c}{c-2^{-\bigoh(k)}} \subseteq \unitaryBQSPACE{k(n)}$.
+%\end{theorem}
+%The results of this section have been independently obtained in \cite{fklmn16} as well using a different method (based on \cite{kln15} instead of \cite{nwz11}), with stronger results for some of the statements; for example in Lemma \ref{lem: gap amp 2} the completeness and soundness parameters of the right hand side can be replaced by $1-2^{-2^{r}}$ and $2^{-2^{r}}$, at the price of possibly increasing the time bound. Nevertheless the proof in \cite{fklmn16} is somewhat more complicated, and therefore we have included our proof in this paper.
+%
+%The proof will be broken up into two steps: we first show that we can reduce the error of these small-gap $\QMA$ protocols to exponentially small in the witness size, without substantially increasing the space or witness size. Then we show that guessing a random witness suffices to distinguish the YES and NO cases with sufficient probability.
+%
+
+%Now we can prove the main result in this section by putting together Theorems \ref{lem:qma protocol} and \ref{thm: pspace upper bound}:
+%
+%\begin{corollary}\label{cor: specham-upper-bound}
+%$\spechamiltonian{k(n)}\in\unitaryQSPACE{\Theta(k)}{2/3}{1/3}$.
+%\end{corollary}
+
+
+\section{Open Problems}
+This work leaves open several questions that may lead to interesting follow-up work:
+\begin{compactenum}
+\begin{item} Can we use our $\preciseQMA=\PSPACE$ result to prove upper or lower bounds for other complexity classes? \end{item}
+\begin{item} Here we have shown $\preciseQMA=\PSPACE$.  Ito, Kobayashi and Watrous  have shown that $\QIP$ with doubly-exponentially small completeness-soundness gap is equal to $\EXP$ \cite{ikw12}.  What can be said about the power of $\QIP$ with exponentially small completeness-soundness gap?\end{item}
+\begin{item}In this paper we studied unitary quantum space complexity classes, and showed that \matrixinvert{k(n)} and \spechamiltonian{k(n)} characterize unitary quantum space complexity.  Can similar hardness results be shown for non-unitary quantum space complexity classes?\end{item}
+\end{compactenum}
+
+
+\section{Acknowledgements}
+We are grateful to Andrew Childs, Sevag Gharibian, Aram Harrow, Hirotada Kobayashi, Tomoyuki Morimae, Harumichi Nishimura, Martin Schwarz, John Watrous, and Xiaodi Wu for helpful conversations, and to John Watrous for comments on a preliminary draft. This work was supported by the Department of Defense.
+
+\appendix
+
+\section{More details on space-bounded computation}\label{app: space bounded}
+For this section, it would be helpful to keep in mind that we always assume the space bound $k(n)$ always satisfies $\Omega(\log(n)) \le k(n) \le \poly(n)$.
+
+We start with the definitions of classical bounded space computation. In discussion of space-bounded classes, we usually consider Turing machines with two tapes, a read-only input tape and a work tape; only the space used on the work tape is counted. For $k:\mathbb{N}\rightarrow\mathbb{N}$, a function $f:\{0,1\}^{*}\rightarrow\{0,1\}^*$ is said to be computable in $k(n)$ space if any bit of $f(x)$ can be computed by a deterministic Turing machine using space $\bigoh(k(|x|))$ on the work tape.  For example, $\Logspace$ is the class of functions that can be computed in $\bigoh(\log{n})$ space.
+
+We now discuss quantum space-bounded complexity classes; for a fuller discussion see \cite{Watrous09}. A straightforward way to define quantum space-bounded classes is to consider a Turing machine with three tapes: a read-only classical input tape, a classical work tape, and a quantum work tape (with two heads) consisting of qubits. This is the model considered in \cite{tashma} and \cite{Watrous03}, except that they allow intermediate measurements (and \cite{Watrous03} allows even more general quantum operations). In this work we consider only computations with no intermediate measurements: we can therefore impose that there are no measurements on the quantum work tape until the register reaches a specified end state, following which a single measurement is performed on the quantum tape and the algorithm accepts or rejects according to the measurement. Therefore the operations performed by the algorithm will not depend on the quantum tape, since there is no way to read information out of it until the end of the algorithm.
+
+Instead of working with Turing machines, in quantum computation it is much more customary (and convenient) to work with quantum circuits. For the setup above, since the operations on the quantum tape are completely classically controlled, we can equivalently consider a quantum circuit generated by a classical space-bounded Turing machine that computes the quantum gates one-by-one and applies them in sequence. If the classical Turing machine is $\mathcal{O}(k(n))$-space bounded, it has at most $2^{\mathcal{O}(k)}$ configurations, and therefore there are at most $2^{\mathcal{O}(k)}$ quantum gates in the circuit. 
+
+Moreover, the $\mathcal{O}(k)$-space bounded classical Turing machine can be replaced by a classical circuit on $\mathcal{O}(k)$ bits, such that there is a $\poly(n)$-time $\mathcal{O}(k)$-space Turing machine that on input $i$ generates the $i$-th gate of the circuit (see e.g. \cite[Section~6.8]{ab09}). The classical circuit can then be bundled into the quantum circuit, and we obtain a quantum circuit with at most $2^{\mathcal{O}(k)}$ gates, such that each individual gate can be generated in classical $\poly(n)$-time and $\mathcal{O}(k)$-space. This justifies the definition of the complexity class $\QSPACE[k(n)](c,s)$:
+
+\begingroup
+\def\thedefinition{\ref{def: qspace}}
+\begin{definition}
+Let $k(n)$ be a function satisfying $\Omega(\log(n)) \le k(n) \le \poly(n)$. A promise problem $L=(L_{yes},L_{no})$ is in $\QSPACE[k(n)](c,s)$ if there exists a $\poly(|x|)$-time $\mathcal{O}(k)$-space uniformly generated family of quantum circuits $\{Q_x\}_{x\in\{0,1\}^*}$, where each circuit $Q_x=U_{x,T}U_{x,T-1}\cdots U_{x,1}$ has $T=2^{\mathcal{O}(k)}$ gates, and acts on $\mathcal{O}(k(|x|))$ qubits, such that:\\
+ If $x \in L_{yes}$:
+\begin{equation}
+\bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \ge c.
+\end{equation}
+Whereas if $x \in L_{no}$:
+\begin{equation}
+\bra{0^k} Q^\dagger_x \ket{1}\bra{1}_{out} Q_x \ket{0^k} \le s.
+\end{equation}
+Here $out$ denotes a single qubit we measure at the end of the computation; no intermediate measurements are allowed.  
+Furthermore, we require $c$ and $s$ to be computable in classical $\bigoh(k(n))$-space.
+%For the purposes of this work, we will demand that the space bound $k(n)$ is at least $\bigoh(\log{n})$ and no more than $2^{\poly(n)}$.  
+\end{definition}
+\addtocounter{theorem}{-1}
+\endgroup
+
+
+
+\section{Proof that \matrixinvert{\bigoh(k(n))} $\in \unitaryBQSPACE{k(n)}$}\label{app: matrix inversion alg}
+
+\begingroup
+\def\thetheorem{\ref{thm: matrix inversion alg}}
+\begin{theorem}
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+\begin{compactenum}
+\item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
+\item Estimate $\|H^{-1}\ket{b}\|$ up to precision $\epsilon$.
+\item Estimate  $|\bra{a}H^{-1}\ket{b}|$ up to precision $\epsilon$.
+\end{compactenum}
+These circuits do not require intermediate measurements.
+\end{theorem}
+\addtocounter{theorem}{-1}
+\endgroup
+
+\begin{proof}
+We first show the first item, i.e. generating the state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$. Choose $\epsilon' = \mathcal{O}(\epsilon/\kappa)$ in the statement of Lemma \ref{lem: matrix inversion lemma}, keeping in mind for the rest of the proof that $\log(\kappa/\epsilon') = \mathcal{O}(\log(\kappa/\epsilon))$. Note that $\ket{\psi_b}$ can be obtained by computing $W_HU_b\ket{0}_{all} = W_H (\ket{0}_{anc} \otimes \ket{b})$, and then postselecting on the output qubit being in state $\ket{0}$. To obtain $\ket{\psi_b}$ with high probability we can repeat this procedure many times until success. We can then get a good approximation to $\frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} $ by tracing out the other ancilla qubits. For our setting we would like to get by with a low space requirement and without using intermediate measurements, so instead of repeating until success, we will apply amplitude amplification to the above unitary $W_H$. Define the projectors $\Pi_0$ and $\Pi_1$ by
+\begin{align}
+\Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
+\Pi_1 &= W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H
+\end{align}
+Define $\ket{v} = \ket{0}_{anc}\otimes \ket{b}$, and write
+\begin{align}
+\ket{v} &= \sin \theta \ket{w} +\cos \theta\ket{w^\perp}, \\
+\ket{w} &= \sin \theta \ket{v} + \cos \theta\ket{v^\perp}
+\end{align}
+where $\ket{v^\perp}$, $\ket{w}$, and $\ket{w^\perp}$ are normalized states such that 
+\begin{align}
+\Pi_0\ket{v} = \ket{v},&\quad \Pi_0\ket{v^\perp} = 0 \\
+\Pi_1\ket{w} = \ket{w},&\quad \Pi_1\ket{w^\perp} = 0.
+\end{align}
+Note that
+\begin{equation} 
+(\bra{0}_{anc} \otimes I) W_H (\ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b}) (\ket{0}_{anc} \otimes \ket{b}) = W_H \Pi_1\Pi_0(\ket{0}_{anc} \otimes \ket{b}) \propto W_H \ket{w},
+\end{equation}
+and therefore $W_H\ket{w}$ is the postmeasurement state we desire. The success probability of the postselection step is simply $\bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2 = \sin^2\theta$. 
+
+Consider now the rotation operator $R=-(I-2\Pi_0)(I-2\Pi_1)$; it is straightforward to verify that for any $\phi$,
+\begin{equation}
+R[\sin(\phi) \ket{w} + \cos(\phi) \ket{w^\perp}] = \sin(\phi + 2\theta) \ket{w} + \cos(\phi + 2\theta) \ket{w^\perp}.
+\end{equation}
+Therefore if we start from $\ket{v}$ and apply the rotation $R$ a total of
+\begin{equation}
+\frac{\pi}{4\theta} - \frac{1}{2}
+\end{equation}
+times, the resulting quantum state will be close to $\ket{w}$. Here recall $\theta = \sin^{-1}\alpha$. Projecting into the image of $\Pi_1$ and then applying $W_H$ will then give the desired postmeasurement state $W_H\ket{w}$. To do this, however, we need to know what $\theta$ is. Since $R$ is a rotation on the two-dimensional subspace spanned by $\{\ket{v},\ket{w}\}$ with rotation angle $2\theta$, $R$ has eigenvalues $\exp(\pm i2\theta)$ in this subspace. Performing phase estimation on $R$ will therefore give an estimate of $\theta/\pi$. We would like to obtain an estimate $\gamma$ such that 
+\begin{equation} \label{eq: gamma}
+\left|\frac{\gamma\pi}{\theta} - 1\right| \le  \frac{\epsilon'}{2}
+\end{equation}
+holds with probability $1-\poly(\epsilon' / \kappa)2^{-\mathcal{O}(k)}$.
+
+We now look at the space requirements of phase estimation. First of all, note that since both $W_H$ and $U_b$ are circuits on at most $\bigoh (k + \log(\kappa/\epsilon))$ qubits, $R$ also only requires $\bigoh (k + \log(\kappa/\epsilon))$ space. Also, we have that
+\begin{align}
+\alpha &\ge \frac{\|H^{-1}\ket{b}\|}{\kappa} - \epsilon' \\
+&\ge \frac{1}{\kappa} - \epsilon'.
+\end{align}
+Since we can always take $\epsilon' \le 1/(2\kappa)$ (this doesn't change the space guarantee of $\bigoh (k+\log(\kappa/\epsilon))$ in Theorem 1), phase estimation of $R$ to precision $\poly(\epsilon/\kappa)$ suffices to output an $\gamma$ such that (\ref{eq: gamma}) holds. To do so with failure probability $\poly(\epsilon \kappa^{-1}2^{-\mathcal{O}(k)})$ requires at most $\bigoh(k+\log(\kappa/\epsilon))$ extra ancilla qubits.
+
+Finally, we apply the rotation $R$ to $\ket{v} = \sin \theta \ket{w} +\cos \theta\ket{w^\perp}$ a total of $\lfloor1/(4\gamma)\rfloor$ times. The resulting state is
+\begin{equation}
+R^{\lfloor1/(4\gamma)\rfloor}\ket{v} = \sin\left[\left(2\left\lfloor\frac{1}{4\gamma}\right\rfloor+1\right)\theta\right] \ket{w} + \cos\left[\left(2\left\lfloor\frac{1}{4\gamma}\right\rfloor+1\right)\theta\right] \ket{w^\perp}
+\end{equation}
+(\ref{eq: gamma}) implies $|\theta/(\pi\gamma) - 1| \le \epsilon'$ (as long as $\epsilon' \le 1/2$), and a straightforward calculation shows that $|(2\lfloor1/(4\gamma)\rfloor+1) \theta - \pi/2| \le \frac{\pi}{2}+\theta$. Therefore as long as $\theta \le \pi/4$, the resulting state will have constant overlap with $\ket{w}$, and our procedure will succeed with constant probability (which we can verify by applying the projection $\Pi_1$). If instead $\theta > \pi/4$ (as we can determine from our estimate $\gamma$), we can perform the projection $\Pi_1$ to the initial state $\ket{v}$ directly and succeed with constant probability.
+
+Note that in the process we have also calculated an estimate for $\theta = \sin^{-1}\alpha$ up to $\bigoh(\epsilon')$ error, and since $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$ we can also output an estimate for $\|H^{-1}\ket{b}\|$ up to precision $\mathcal{O}(\kappa \epsilon') = \mathcal{O}(\epsilon)$.
+
+Finally, if an estimate for $|\bra{a} H^{-1} \ket{b}|$ is desired, we can consider instead the following modification to $\Pi_0$ and $\Pi_1$:
+\begin{align}
+\Pi_0 &= \ket{0}\bra{0}_{anc} \otimes \ket{b}\bra{b} \\
+\Pi'_1 &= W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H
+\end{align}
+Since $(\ket{0}\bra{0}_{out} \otimes I) W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b}$, we see that 
+\begin{equation}
+\bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2\left|\left(\bra{0}^{\otimes \ell-1} \otimes \bra{a}\right) \ket{\psi_b}\right|^2.
+\end{equation}
+$\bra{v}\Pi_0\Pi_1\Pi_0\ket{v}$ can be estimated in the same way that $\alpha$ has been estimated. Recalling that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$ and $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, this allows us to estimate $|\bra{a} H^{-1} \ket{b}|$ to $\bigoh (\epsilon)$ precision.
+\end{proof}
+
+
+
+
+%Matrix Inversion Hardness section moved here
+\section{$\matrixinvert{k(n)}$ is hard for $\BQSPACE[k(n)]$}\label{app: matrixinversion-hardness}
+We begin our hardness proof by considering the following simple hard problem for $\unitaryBQSPACE{k(n)}$:
+\begin{definition}[\qca{k(n)}]
+	Given as input is the description of a quantum circuit $Q$ acting on $k(n)$ qubits with $T = 2^{\mathcal{O}(k(n))}$ 1- or 2-qubit gates.  It is promised that either the matrix entry $|\langle {\zero}|Q|{\zero}\rangle| \geq 2/3$ or $|\langle {\zero}|Q|{\zero}\rangle| \leq 1/3$; determine which is the case.
+\end{definition}
+\begin{lemma}[Implicit in \cite{bbbv,dawsonnielsen}]\label{lem: quantum circuit acceptance}
+$\bigoh(\qca{k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard under classical $\poly(n)$-time, $\bigoh(k(n))$-space reductions.
+\end{lemma}
+\begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof here for completeness.  Suppose we are given an $x\in \{0,1\}^n$ and would like to determine if $x\in L_{yes}$ for some $L=\{L_{yes},L_{no}\}\in\unitaryBQSPACE{k}$.  There is a quantum circuit on $k(n)$ qubits, $Q_x=U_TU_{T-1}\cdots U_1$ of size $T=2^{\mathcal{O}(k(n))}$ that decides $x$.  That is, 
+\begin{equation}
+Q_x|\zero\rangle = \sqrt{p_x} |1\rangle_{out}|\psi_x^1\rangle + \sqrt{1-p_x} |0\rangle_{out} |\psi_x^0\rangle.
+\end{equation}
+where $out$ indicates the designated output qubit, and $|\psi_x^1\rangle$, $|\psi_x^0\rangle$ are $(k-1)$-qubit states; $p_x$ is the probability that the computation accepts, so $p_x \ge 2/3$ if $x \in L_{yes}$ and $p_x \le 1/3$ if $x \in L_{no}$.
+
+We now describe a reduction which creates a related circuit $\tilde{Q}_x$ with a single matrix entry that is proportional to the acceptance probability of $Q_x$.  This new circuit $\tilde{Q}_x$ takes the same number of input qubits as $Q_x$ as well as an additional ancillary qubit.  $\tilde{Q}_x$ runs $Q_x$, then using a single CNOT gate copies the state of the output qubit to the ancillary qubit, flips the ancillary qubit, and finally applies the inverse, $Q_x^{\dagger}$, to the input qubits. It is straightforward to check that
+\begin{equation}
+\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle = p_x.
+\end{equation}
+Therefore knowing the single matrix entry $\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle$ is sufficient to decide if $x \in L_{yes}$. Moreover, $\tilde{Q}_x$ can be computed from $Q_x$ using polynomial time and $\mathcal{O}(k)$ space, and this completes the proof.
+\end{proof}
+
+\begin{theorem}
+$\matrixinvert{\bigoh(k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard under classical reductions computable in polynomial time and $\bigoh (k(n))$ space.
+\end{theorem}
+\begin{proof}
+We will show that $\matrixinvert{k(n)}$ is as hard as $\qca{k(n)}$.  Given an instance of the latter, i.e., a circuit on $k(n)$ qubits, $Q=U_TU_{T-1}\cdots U_1$ with $T = 2^{\mathcal{O}(k(n))}$, define the following unitary of dimension $3T2^k$:
+\[U=\sum_{t=1}^{T}|t+1\rangle\langle t|\otimes U_t+|t+T+1\rangle\langle t+T|\otimes I+|t+2T+1\bmod{3T}\rangle\langle t+2T|\otimes U_{T+1-t}^{\dagger}\]	
+Crucially, note that for any $t$ in the range $[T,2T]$ and any state $|\psi\rangle$ on $k(n)$ qubits: 
+\begin{equation}\label{eqn:fullclock}
+	U^t|1\rangle|\psi\rangle=|t+1\rangle\otimes Q|\psi\rangle
+\end{equation}
+Furthermore $U^{3T}=I$, a fact we will soon exploit. We now construct the Hermitian matrix:
+\begin{equation}
+H=\begin{bmatrix}
+    0 & I-Ue^{-1/T}\\
+   I-U^{\dagger}e^{-1/T} &  0
+\end{bmatrix}
+\end{equation}
+ $H$ has dimension $N=6T2^k$ and condition number $\kappa\leq 2T=2^{\bigoh (k)}$.  Notice that given as input a description of $Q$ we can compute each entry of $H$ to within $2^{-\mathcal{O}(k(n))}$ error in $\mathcal{O}(k(n))$ space, via space efficient algorithms for exponentiation \cite{reif}.
+   Furthermore, $H^{-1}$ is the following matrix:
+\begin{equation}
+\begin{bmatrix}
+    0 & \left(I-U^\dagger e^{-1/T}\right)^{-1}\\
+   \left(I-Ue^{-1/T}\right)^{-1} &  0
+\end{bmatrix}
+\end{equation}
+$\left(I-Ue^{-1/T}\right)^{-1}$ is just the power series $\sum_{j=0}^\infty U^j e^{-j/T}=\frac{1}{1-e^{-3}}\sum_{j=0}^{3T-1} U^{j} e^{-j/T}$, where we've used $U^{3T}=I$. Therefore for any fixed $t \in [0,3T-1]$,
+ \begin{align}
+\langle\zero|\langle t+1|\left(I-Ue^{-1/T}\right)^{-1}|1\rangle|\zero\rangle
+%&=\langle\zero|\langle t+1|\left(\sum_{j=0}^\infty U^j e^{-j/T}\right)|1\rangle|\zero\rangle \\
+%&= \left( \sum_{x=0}^\infty e^{-3jT/T} \right) 
+&= \frac{1}{1-e^{-3}}\langle\zero|\langle t+1|\left(\sum_{j'=0}^{3T-1} U^{j'} e^{-j'/T}\right)|1\rangle|\zero\rangle
+\end{align}
+which is a particular entry in $H^{-1}$. In the second line we've used $j = 3Tx + j'$ for some integers $x$ and $j' \in [0,3T-1]$, and that $U^{3T}=I$.  For any $t \in [T,2T]$, as a consequence of Equation \ref{eqn:fullclock} the above quantity equals
+\begin{equation}
+\frac{e^{-t/T}}{1-e^{-3}}\langle\zero|Q|\zero\rangle.
+\end{equation}
+In particular, an estimation of this entry of $H^{-1}$ will solve \qca{k(n)}.
+\end{proof}
+
+
+
+%End Matrix inversion hardness section
+\section{$\spechamiltonian{k(n)}\in\unitaryBQSPACE{k(n)}$ proof details}
+\subsection{In-place gap amplification of $\QMA$ protocols with phase estimation}\label{app: space efficient amplification}
+
+We start out by proving the following lemma, which proves ``in-place'' gap amplification of $\QMA$ using phase estimation.
+This is very similar to Nagaj et. al's in-place gap amplification technique \cite{nwz11} (see Lemma \ref{lem: gap amp 1} in Appendix \ref{app: gap amplification}), except they use less time but more space.
+\begin{lemma} \label{lem: gap amp 2}
+For any functions $t,k,r>0$, 
+\[
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{t2^r}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
+\]
+\end{lemma}
+\begin{proof}
+	Let $L=(L_{yes}, L_{no})$ be a promise problem in $\QMA(c,s)$ and $\{V_x\}_{x\in\{0,1\}^*}$ the corresponding uniform family of verification circuits.
+Define the projectors:
+\begin{equation}
+\Pi_0 = I_m \otimes \ket{0^k}\bra{0^k}, \quad \Pi_1 = V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
+\end{equation}
+and the corresponding reflections
+%\begin{equation}
+$R_0 = 2\Pi_0 - I, R_1 = 2\Pi_1 - I$.
+%\end{equation}
+Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
+Now consider the following procedure:
+\begin{compactenum}
+\item Perform phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with precision $\bigoh (c-s)$ and failure probability $2^{-r}$.
+\item Output YES if the phase is at most $(\phi_{c}+\phi_{s})/2$; otherwise output NO.
+\end{compactenum}
+%One way of performing phase estimation to high confidence would be to perform it to much higher precision and discard the higher order bits. 
+Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure can be implemented by a circuit of size $\mathcal{O}(2^{r}t/(c-s))$ using $\mathcal{O}(r+\log[1/(c-s)])$ extra ancilla qubits. Using the standard analysis of in-place $\QMA$ error reduction \cite{mw05,nwz11}, it can be shown that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
+\end{proof}
+
+In Appendix \ref{app: gap amplification} we will prove the following stronger error reduction lemma that gives the same space bound but uses less time; this better time bound will be required for proving Theorem \ref{thm: specham-hardness}.
+
+\begin{theorem} \label{thm: gap amp}
+For any functions $t,k,r>0$, 
+\[
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
+\]
+\end{theorem}
+
+
+Thus, we get the following corollaries:
+\begin{corollary} \label{obvious2} For any $r = \mathcal{O}(k)$,
+$
+\unitaryQSPACE{k}{c}{c-2^{-\bigoh (k)}} \subseteq
+\unitaryQSPACE{\Theta(k)}{1-2^{-r}}{2^{-r}}$.
+\end{corollary}
+This corollary shows that error reduction is possible for unitary quantum $\bigoh(k)$-space bounded classes, as long as the completeness-soundness gap is at least $2^{-\bigoh (k)}$.
+\begin{proof}
+This follows from Theorem \ref{thm: gap amp} by taking $m=0$, $s = c-2^{-\Theta(k)}$, and $r = \Theta(k)$.
+\end{proof}
+\begin{corollary}\label{obvious1}
+\[
+\bddQMA{t}{k}{m}{c}{c-2^{-\Theta(k)}}\subseteq\bddQMA{\mathcal{O}\left(t2^{\Theta(k)}\right)}{\mathcal{O}\left(k\right)}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}.
+\]
+\end{corollary}
+\begin{proof}
+This follows from Theorem \ref{thm: gap amp} by taking $s = c-2^{-\Theta(k)}$ and $r = m+2$.
+\end{proof}
+\subsection{Removing the witness of an amplified $\QMA$ protocol}\label{app: removingwitness}
+\begin{theorem} \label{thm:pqpspace simulation} For any function $t=2^{\bigoh(k+m)}$,
+\[
+\bddQMA{t}{k}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}\subseteq
+\unitaryQSPACE{k+m}{3/4\cdot 2^{-m}}{1/4 \cdot 2^{-m}}.
+\]
+\end{theorem}
+\begin{proof}
+The proof is very similar to that of \cite[Theorem 3.6]{mw05}. For any functions $m, k$, consider a problem $L\in\bddQMA{t}{k}{m}{1-2^{-(m+2)}}{2^{-(m+2)}}$, and let $\{V'_x\}_{x\in\{0,1\}^*}$ be a uniform family of verification circuits for $L$ with completeness $1-2^{-(m+2)}$ and soundness $2^{-(m+2)}$. 
+%The acceptance probability of $V'_x$ on witness $\psi$ is
+%\begin{equation}
+%\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right)
+%\end{equation}
+%If $x\in L_{yes}$ there exists an $m$-qubit state $\ket{\psi}$ such that
+%\begin{equation}
+%\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \ge 1-2^{-(m+2)}
+%\end{equation}
+%whereas if $x \in L_{no}$, for all $m$-qubit states $\ket{\psi}$ we have
+%\begin{equation}
+%\left(\bra{\psi}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(\ket{\psi}\otimes \ket{0^p}\right) \le 2^{-(m+2)}.
+%\end{equation}
+For convenience, define the $2^m \times 2^m$ matrix:
+\begin{equation}
+Q_x := \left(I_{2^m}\otimes \bra{0^p}\right) V'^\dagger_x \ket{1}\bra{1}_{out} V'_x \left(I_{2^m}\otimes \ket{0^p}\right).
+\end{equation}
+$Q_x$ is positive semidefinite, and $\bra{\psi}Q_x\ket{\psi}$ is the acceptance probability of $V'_x$ on witness $\psi$. Thus
+\begin{equation}
+x\in L_{yes} \Rightarrow \tr[Q_x]\ge 1 - 2^{-(m+2)} \ge 3/4
+\end{equation}
+since the trace is at least the largest eigenvalue, and $m\geq 0$; likewise,
+\begin{equation}
+x\in L_{no} \Rightarrow \tr[Q_x]\le 2^m \cdot 2^{-(m+2)} = 1/4
+\end{equation}
+since the trace is the sum of the $2^m$ eigenvalues, each of which is at most $2^{-(m+2)}$. 
+
+Therefore our problem reduces to determining whether the trace of $Q_x$ is at least $3/4$ or at most $1/4$.  Now we show that using the totally mixed state $2^{-m}I_m$ (alternatively, preparing $m$ EPR pairs and taking a qubit from each pair) as the witness of the verification procedure encoded by $Q_x$, succeeds with the desired completeness and soundness bounds.  The acceptance probability is given by
+%\begin{equation}
+$\tr(Q_x 2^{-m}I_m) = 2^{-m} \tr(Q_x)$,
+%\end{equation}
+which is at least $2^{-m} \cdot 3/4$ if $x\in L_{yes}$, and at most $2^{-m} \cdot 1/4$ if $x\in L_{no}$. Thus we have reduced the problem $L$ to determining if a quantum computation with \emph{no} witness, acting on $k+m$ qubits, accepts with probability at least $3/4 \cdot 2^{-m}$ or at most $s'=1/4 \cdot 2^{-m}$.
+\end{proof}
+We can finally finish the proof of Theorem \ref{thm: pspace upper bound}.
+\begin{proof}[Proof of Theorem \ref{thm: pspace upper bound}]
+This follows from Corollary \ref{obvious1}, Theorem \ref{thm:pqpspace simulation}, and Corollary \ref{obvious2}.
+\end{proof}
+
+
+
+
+\section{$\spechamiltonian{\bigoh(k(n))}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: specham-hardness}
+
+\begin{theorem}\label{thm: specham-hardness}
+$\spechamiltonian{\bigoh(k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard under classical poly-time $\bigoh(k(n))$-space reductions.
+\end{theorem}
+\begin{proof}
+Let $L=(L_{yes},L_{no})$ be a problem in $\unitaryBQSPACE{k(n)}$, and suppose it has a verifier that uses $t=2^{\bigoh(k)}$ gates with completeness $2/3$ and soundness $1/3$. By Theorem \ref{thm: gap amp}, we can   amplify the gap to get a new verifier circuit that uses $T=\mathcal{O}(rt)$ gates, and has completeness $c=1-2^{-r}$ and soundness $s=2^{-r}$. Choose $r=\bigoh(k)$ large enough so that $c \ge 1 - 1/T^3$ and $s \le 1/T^3$, and suppose $V_x=V_{x,T}V_{x,T-1}\cdots V_{x,1}$ is the new (gap-amplified) verifier circuit for $L$ acting on $k$ qubits. Consider the Kitaev clock Hamiltonian:
+\begin{equation}
+H = H_{in} + H_{prop} + H_{out}
+\end{equation}
+defined on the Hilbert space $\mathbb{C}^{2^k} \otimes \mathbb{C}^{T+1}$, where
+\begin{equation}
+H_{in} = \ket{0^k}\bra{0^k} \otimes \ket{0}\bra{0}, \quad
+H_{out} = (\ket{1}\bra{1}_{out} \otimes I_{k-1}) \otimes \ket{T}\bra{T}
+\end{equation}
+\begin{equation}
+H_{prop} = \sum_{j=1}^T \frac{1}{2} \left[ - V_{x,j} \otimes \ket{j}\bra{j-1} - V_{x,j}^\dagger \otimes \ket{j-1}\bra{j} + I \otimes (\ket{j}\bra{j} + \ket{j-1}\bra{j-1}) \right].
+\end{equation}
+$H$ is a sparse matrix - in fact, there are only a constant number of nonzero terms in each row. Since each gate $V_{x,j}$ can be computed in classical polynomial time and $k(n)$ space, it follows that so can the nonzero entries of $H$. Moreover, let $\lambda_{min}$ be the minimum eigenvalue of $H$; then it was shown by Kitaev \cite{ksv02} that if $x \in L_{yes}$ then $\lambda_{min} \le a = (1-c)/(T+1)$, while if $x \in L_{no}$ then $\lambda_{min} \ge b = (1-s)/T^3$. Since $c \ge 1-1/T^3$ and $s \le 1/T^3$ we see that $2^{-\mathcal{O}(k)} < b-a$. 
+\end{proof}
+Notice that Theorems \ref{thm: spechamiltonian} and \ref{thm: equivalence} follow from Theorems \ref{lem:qma protocol}, \ref{thm: pspace upper bound}, and Theorem \ref{thm: specham-hardness}. In particular, considering the polynomial space case in Theorem \ref{thm: equivalence} proves Corollary \ref{cor: preciseqma}, that $\preciseQMA=\PSPACE$.
+%Notice that, using Watrous' result of $\BQSPACE[poly]=\PSPACE$ (our Theorem \ref{thm:pqpspace}), we can use Theorem \ref{thm: pspace upper bound} to give us that $\preciseQMA\subseteq\PSPACE$ while Theorem \ref{lem:qma protocol} together with Theorem \ref{thm: specham-hardness} give us the lower bound $\PSPACE\subseteq\preciseQMA$.  Therefore, we have:
+%\begin{corollary} $\preciseQMA=\PSPACE$. \end{corollary}
+
+Finally, we end with two results particular to the polynomial space case. First of all, in the equality $\preciseQMA=\PSPACE$, we can actually achieve perfect completeness ($c=1$) for the $\QMA$ proof protocol, assuming the underlying gate set contains the Hadamard and Toffoli gates. Moreover for perfect completeness we do not require that $c-s > 2^{-\poly}$:
+\begin{proposition} \label{prop: perfect completeness} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
+\[
+\PSPACE = \QMA(1,1-2^{-\poly}) = \bigcup_{s < 1}\QMA(1,s),
+\]
+where we assume that the gateset we use contains the Hadamard and Toffoli gates. In the last term, the union is taken over all functions $s(n)$ such that $s(n) < 1$ for all $n$.
+\end{proposition}
+The containment $\QMA(1,s) \subseteq \PSPACE$ is known \cite{ikw12}. We prove this proposition in Appendix~\ref{app:perfectcompleteness}.
+
+Our second result concerns the $\QMA$-complete Local Hamiltonian problem. We consider the variant of the local Hamiltonian problem where the promise gap is only exponentially small: 
+\begin{definition}[\preciseklh]\label{def: precise local hamiltonian}
+Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_j\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
+\end{definition}
+Our result is that this problem is $\PSPACE$-complete:
+\begin{theorem} \label{thm: precise local hamiltonian}
+For any $3 \le k \le \mathcal{O}(\log(n))$, \preciseklh \ is $\preciseQMA$-complete, and hence $\PSPACE$-complete.
+\end{theorem}
+%We note that this can be seen as restricting $H$ in the $\spechamiltonian{\poly(n)}$ problem to be a local Hamiltonian; our result is that this problem remains $\PSPACE$-hard. For a proof, see Appendix \ref{app:localhamiltonian}.
+See Appendix \ref{app:localhamiltonian} for a proof. Combined with the perfect completeness results of Appendix \ref{app:perfectcompleteness}, this will also give a proof that determining whether a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem (Theorem \ref{thm: frustration free} in Appendix \ref{app:localhamiltonian}).
+
+
+
+\section{Achieving Perfect Completeness for $\preciseQMA$}\label{app:perfectcompleteness}
+%\begin{definition}We say a promise problem $L=(L_{yes},L_{no})$ is in $\revPSPACE$ (reversible polynomial space) if it can be decided by a polynomial space reversible Turing machine, i.e., a machine in which every configuration has at most one immediate predecessor.  	
+%\end{definition}
+%
+%\begin{theorem}[Bennett\cite{bennett89}]\label{thm:revpspace}$\revPSPACE=\PSPACE$.
+%\end{theorem}
+We now consider the problem of achieving prefect completeness for $\preciseQMA$. Specifically, we will show the following:
+\begingroup
+\def\theproposition{\ref{prop: perfect completeness}}
+\begin{proposition} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
+\[
+\PSPACE = \QMA(1,1-2^{-\poly}) = \bigcup_{s < 1}\QMA(1,s),
+\]
+where we assume that the gateset we use contains the Hadamard and Toffoli gates. In the last term, the union is taken over all functions $s(n)$ such that $s(n) < 1$ for all $n$.
+\end{proposition}
+\addtocounter{theorem}{-1}
+\endgroup
+
+
+Since $\PSPACE = \preciseQMA$, this proposition shows that any $\preciseQMA$ protocol can be reduced to a different $\preciseQMA$ protocol with perfect completeness, i.e. in the YES case Arthur accepts Merlin's witness with probability 1. The reduction is rather roundabout, however, and it would be interesting to see if a more direct reduction can be found.
+
+The second equality follows from the first equality and the result by \cite{ikw12} that $\QMA(1,s) \subseteq \PSPACE$. We will therefore only prove the first equality.
+
+Looking back at Circuit \ref{circ: poor man phase estimation}, we see that we \emph{almost} have perfect completeness in our protocol already - if the Hamiltonian simulation of $e^{-iHt}$ could be done without error, then indeed the protocol has perfect completeness. Our strategy will be perform a different unitary that can be performed exactly, but, like $e^{-iHt}$, also allows us to use phase estimation to distinguish the eigenvalues of $H$.
+
+Given a sparse Hamiltonian $H$ (with at most $d$ nonzero entries per row) and a number $X \ge \max_{j,\ell}|H_{j\ell}|$ that upper bounds the absolute value of entries of $H$, Andrew Childs defined an efficiently implementable quantum walk \cite{berry14,childs10}. Each step of the quantum walk is a unitary $U$ with eigenvalues $e^{i\tilde{\lambda}}$, where 
+\begin{equation}
+\tilde{\lambda} = \arcsin \frac{\lambda}{Xd}
+\end{equation}
+with $\lambda$ representing eigenvalues of $H$. Note that the YES case $\lambda = 0$ corresponds to $\tilde{\lambda}=0$, and the NO case $\lambda \ge 2^{-g(n)}$ corresponds to $\tilde{\lambda} \ge 2^{-g(n)}/(Xd)$ since $\arcsin x \ge x$ for $|x| \le 1$. In the latter case the $\tilde{\lambda}$ can be at most exponentially small, and therefore the stripped down version of phase estimation still suffices to tell the two cases apart with exponentially small probability.
+
+We now note that the Hamiltonian $H$ we obtain from the hardness reduction from $\PSPACE$ (Theorem \ref{thm: specham-hardness}) is of a very special form. Specifically, since $\unitaryBQSPACE{\poly}=\PSPACE$, we can assume the verifier circuit $V_x$ is deterministic, so it has completeness 1 and soundness 0. Moreover, all of its gates are classical, and hence all entries of the Kitaev clock Hamiltonian $H$ are $0$, $\pm 1/2$, or $1$.
+
+For the matrix $H$ satisfying the above, $U$ can be implemented exactly with a standard gateset; perfect completeness of the protocol will then follow. If $H$ is a $N \times N$ matrix (where $N=2^n$), $U$ is (see presentation in \cite[Section~3.1~and~Lemma~10]{berry15}) a unitary defined on the enlarged Hilbert space $\mathbb{C}^{2N} \otimes \mathbb{C}^{2N} = (\mathbb{C}^{N} \otimes \mathbb{C}^2) \otimes  (\mathbb{C}^{N} \otimes \mathbb{C}^2)$, as follows:
+\begin{equation}
+U = ST(I_{2N} \otimes (I_{2N} - 2\ket{0}\bra{0}_{2N})) T^\dagger
+\end{equation}
+where the $2N$ subscript indicates a register of dimension $2N$, the unitary $S$ swaps the two registers, and the unitary $T$ is defined by
+\begin{equation}
+T = \sum_{j=0}^{N-1}\sum_{b \in \{0,1\}} (\ket{j}\bra{j} \otimes \ket{b}\bra{b}) \otimes \ket{\varphi_{jb}}\bra{0}_{2N}
+\end{equation}
+with $\ket{\varphi_{j1}} = \ket{0}_N\ket{1}$ and
+\begin{equation}
+\ket{\varphi_{jb}} = \frac{1}{\sqrt{d}} \sum_{\ell \in F_j} \ket{\ell}\left(\sqrt{\frac{H^*_{j\ell}}{X}}\ket{0} + \sqrt{1-\frac{|H^*_{j\ell}|}{X}}\ket{1}\right),
+\end{equation}
+where $F_j$ index the nonzero entries in the $j$-th row. Recall that for any $j,\ell$, $H_{j\ell}=0$, $\pm 1/2$, or $1$, and hence we can take $X=1$. If we furthermore assume $d$ is a power of 2 (which we can always do by adding indices of zero entries to $F_j$), it is straightforward to see that both $S$ and $T$ can be implemented using just Hadamard gates and classical gates (Pauli-$X$, controlled-$X$, and Toffoli gates) - the latter of which can be implemented using just Toffoli gates and access to a qubit in the $\ket{1}$ state (which can be provided by the prover). Therefore $U$ can be exactly implemented in any gateset that allows Hadamard gates and Toffoli gates to be implemented exactly.
+
+\section{Precise Local Hamiltonian Problem}\label{app:localhamiltonian}
+Recall the following definition:
+\begingroup
+\def\thedefinition{\ref{def: precise local hamiltonian}}
+\begin{definition}[\preciseklh]
+Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$ and $\|H_j\| \le \poly(n)$, and numbers $a < b$ satisfying $b - a > 2^{-\poly(n)}$. It is promised that the smallest eigenvalue of $H$ is either at most $a$ or at least $b$. Output 1 if the smallest eigenvalue of $H$ is at most $a$, and output 0 otherwise.
+\end{definition}
+\endgroup
+In this section we will prove the following:
+\begingroup
+\def\thetheorem{\ref{thm: precise local hamiltonian}}
+\begin{theorem}
+For any $3 \le k \le \mathcal{O}(\log(n))$, \preciseklh \ is $\preciseQMA$-complete, and hence $\PSPACE$-complete.
+\end{theorem}
+\endgroup
+\begin{proof}
+This proof follows straightforwardly by adapting the proof of \cite{ksv02} and \cite{kr03}. The proof of containment in $\preciseQMA$ is identical to the containment of the usual Local Hamiltonian problem in $\QMA$; see \cite{ksv02} for details.
+
+To show $\preciseQMA$-hardness, we note that for a $\QMA$-verification procedure with $T$ gates, completeness $c$ and soundness $s$, \cite{kr03} reduces this to a 3-local Hamiltonian with lowest eigenvalue no more than $(1-c) / (T+1)$ in the YES case, or no less than $(1-s) / T^3$ in the NO case. For this to specify a valid \preciselh \ problem we need that
+\begin{equation} \label{eq:preciselh_condition}
+\frac{1-s}{T^3} - \frac{1-c}{T+1} > 2^{-\poly(n)}.
+\end{equation}
+Recalling that we showed that perfect completeness can be assumed for $\preciseQMA$-hard problems, we can take $c=1$, $s = 1-2^{-\poly(n)}$ and the above inequality trivially holds. Hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
+\end{proof}
+In fact, even just testing whether a $k$-Local Hamiltonian is frustration-free is $\PSPACE$-complete: \begin{definition} [\emph{Frustration-Free $k$-Local Hamiltonian}] Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$, each term $H_j$ is positive semidefinite, and $\|H_j\| \le \poly(n)$. Output 1 if the smallest eigenvalue of $H$ is zero, and output 0 otherwise.
+\end{definition}
+\begin{theorem} \label{thm: frustration free}
+Frustration-Free $k$-Local Hamiltonian is $\PSPACE$-complete.
+\end{theorem}
+\begin{proof}
+The containment in $\PSPACE$ follows from the proof of the containment of the usual Local Hamiltonian problem in $\QMA$ \cite{ksv02}, along with Proposition \ref{prop: perfect completeness}. $\PSPACE$-hardness follows from the proof of Theorem \ref{thm: precise local hamiltonian}, by taking $c=1$ in the proof.
+\end{proof}
+\section{In-place gap amplification} \label{app: gap amplification}
+In this appendix we will prove Theorem \ref{thm: gap amp}. To do so we first start out with the following weaker result:
+\begin{lemma}[Implicit in Nagaj, Wocjan, and Zhang \cite{nwz11}] \label{lem: gap amp 1}
+For any functions $t,k,r>0$, 
+\[
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
+\]
+\end{lemma}
+\begin{proof}
+	Let $L=(L_{yes}, L_{no})$ be a promise problem in $\QMA(c,s)$ and $\{V_x\}_{x\in\{0,1\}^*}$ the corresponding uniform family of verification circuits.
+Define the projectors:
+\begin{align}
+\Pi_0 &= I_m \otimes \ket{0^k}\bra{0^k} \\
+\Pi_1 &= V^\dagger_x \left(\ket{1}\bra{1}_{out} \otimes I_{m+k-1}\right) V_x
+\end{align}
+and the corresponding reflections:
+\begin{equation}
+R_0 = 2\Pi_0 - I, \quad R_1 = 2\Pi_1 - I.
+\end{equation}
+Define $\phi_c = \arccos\sqrt{c}/\pi$ and $\phi_s = \arccos\sqrt{s}/\pi$ (recalling that these functions can be computed to precision $\bigoh (c-s)$ in space $\bigoh (\log[1/(c-s)])$. 
+Now consider the following procedure:
+\begin{compactenum}
+\item Perform $r$ trials of phase estimation of the operator $R_1R_0$ on the state $\ket{\psi}\otimes \ket{0^k}$, with  precision $\mathcal{O}(c-s)$ and $1/16$ failure probability. 
+\item If the median of the $r$ results is at most $(\phi_{c}+\phi_{s})/2$, output YES; otherwise output NO.
+\end{compactenum}
+Phase estimation of an operator $U$ up to precision $a$ and failure probability $\epsilon$ requires $\alpha := \lceil\log_2(1/a)\rceil + \log_2[2+1/(2\epsilon)]$ additional ancilla qubits and $2^\alpha = \mathcal{O}(1/(a\epsilon))$ applications of the control-$U$ operation (see e.g. \cite{nc00}).  Thus, the above procedure, which uses $r$ applications of phase estimation to precision $\mathcal{O}(c-s)$, can be implemented by a circuit of size $\mathcal{O}(rt/(c-s))$ using $\mathcal{O}(r\log[1/(c-s)])$ extra ancilla qubits. Using the standard analysis of in-place $\QMA$ error reduction \cite{mw05,nwz11}, it can be seen that this procedure has completeness probability at least $1-2^{-r}$ and soundness at most $2^{-r}$.
+\end{proof}
+We can now prove Theorem \ref{thm: gap amp}, which we restate below:
+\begingroup
+\def\thetheorem{\ref{thm: gap amp}}
+\begin{theorem}
+For any functions $t,k,r>0$, 
+\[
+\bddQMA{t}{k}{m}{c}{s}\subseteq\bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}}.
+\]
+\end{theorem}
+\addtocounter{theorem}{-1}
+\endgroup
+
+\begin{proof}
+\begin{align}
+\bddQMA{t}{k}{m}{c}{s} &\subseteq \bddQMA{\mathcal{O}\left(\frac{t}{c-s}\right)}{\mathcal{O}\left(k+\log\left(\frac{1}{c-s}\right)\right)}{m}{3/4}{1/4}  \nonumber \\
+&\subseteq \bddQMA{\mathcal{O}\left(\frac{rt}{c-s}\right)}{\mathcal{O}\left(k+r+\log\left(\frac{1}{c-s}\right)\right)}{m}{1-2^{-r}}{2^{-r}} \nonumber
+\end{align}
+where the first line follows by taking $r=2$ in Lemma \ref{lem: gap amp 2}, and the second line follows from Lemma~\ref{lem: gap amp 1}.
+\end{proof}
+
+\section{Proof sketch of $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} = \PP$} \label{app:peps}
+Since $\PP \subseteq \BQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ \cite{swv07}, we only need to show that $\PQP^{O_{PEPS}}_{\parallel,\text{classical}} \subseteq \PP$. In \cite{swv07} it was noted that all PEPS can be seen as the output of a quantum circuit followed by a postselected measurement. Therefore $\PQP^{O_{PEPS}}_{\parallel,\text{classical}}$ corresponds to the problems that can be decided by a quantum circuit, followed by a postselected measurement (since the queries to $O_{PEPS}$ are classical and nonadaptive, we can compose them into one single postselection), followed by a measurement. In the YES case the measurement outputs 1 with probability at least $c$, whereas in the NO case the measurement outputs 1 with probability at most $s$, with $c > s$. The standard counting argument placing $\BQP$ inside $\PP$ then applies to this case as well; see for instance \cite[Propositions~2~and~3]{aaronson05}.
+
+
+%\section{$\bigoh(\qca{k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard}\label{app:qca}
+%\begingroup
+%\def\thelemma{\ref{lem: quantum circuit acceptance}}
+%\begin{lemma}
+%$\bigoh(\qca{k(n))}$ is $\unitaryBQSPACE{k(n)}$-hard under classical $\poly(n)$-time, $\bigoh(k(n))$-space reductions.
+%\end{lemma}
+%\addtocounter{theorem}{-1}
+%\endgroup
+%
+%\begin{proof}This lemma is implicit in e.g., \cite{bbbv,dawsonnielsen}.  We include the proof here for completeness.  Suppose we are given an $x\in \{0,1\}^n$ and would like to determine if $x\in L_{yes}$ for some $L=\{L_{yes},L_{no}\}\in\unitaryBQSPACE{k}$.  There is a quantum circuit on $k(n)$ qubits, $Q_x=U_TU_{T-1}\cdots U_1$ of size $T=2^{\mathcal{O}(k(n))}$ that decides $x$.  That is, 
+%\begin{equation}
+%Q_x|\zero\rangle = \sqrt{p_x} |1\rangle_{out}|\psi_x^1\rangle + \sqrt{1-p_x} |0\rangle_{out} |\psi_x^0\rangle.
+%\end{equation}
+%where $out$ indicates the designated output qubit, and $|\psi_x^1\rangle$, $|\psi_x^0\rangle$ are $(k-1)$-qubit states; $p_x$ is the probability that the computation accepts, so $p_x \ge 2/3$ if $x \in L_{yes}$ and $p_x \le 1/3$ if $x \in L_{no}$.
+%
+%We now describe a reduction which creates a related circuit $\tilde{Q}_x$ with a single matrix entry that is proportional to the acceptance probability of $Q_x$.  This new circuit $\tilde{Q}_x$ takes the same number of input qubits as $Q_x$ as well as an additional ancillary qubit.  $\tilde{Q}_x$ runs $Q_x$, then using a single CNOT gate copies the state of the output qubit to the ancillary qubit, flips the ancillary qubit, and finally applies the inverse, $Q_x^{\dagger}$, to the input qubits. It is straightforward to check that
+%\begin{equation}
+%\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle = p_x.
+%\end{equation}
+%Therefore knowing the single matrix entry $\langle 0|\langle \zero|\tilde{Q}_x|\zero\rangle|0\rangle$ is sufficient to decide if $x \in L_{yes}$. Moreover, $\tilde{Q}_x$ can be computed from $Q_x$ using polynomial time and $\mathcal{O}(k)$ space, and this completes the proof.
+%\end{proof}
+
+ \bibliography{completespace}
+\bibliographystyle{plain}
+
+\end{document}
