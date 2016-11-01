@@ -120,7 +120,7 @@
 \newcommand\preciseklh{\textit{Precise }$k$\textit{-Local Hamiltonian}}
 \newcommand\preciseilh[1]{\textit{Precise }\ensuremath{#1}\textit{-Local Hamiltonian}}
 \newcommand\matrixinvert[1]{{\ensuremath{#1}}\textit{-Well-conditioned Matrix Inversion}}
-\newcommand\spechamiltonian[1]{#1\textit{-Minimum Eigenvalue}}
+\newcommand\spechamiltonian[1]{\ensuremath{#1}\textit{-Minimum Eigenvalue}}
 \newcommand\qca[1]{\ensuremath{#1}\textit{-Quantum Circuit Acceptance}}
 \newcommand{\zero}{\ensuremath{0^{\otimes{k(n)}}}}
 
@@ -294,7 +294,7 @@ Another consequence concerns Projected Entangled Pair States, or PEPS, a natural
 
 On the other hand, suppose we have an oracle $O_{LH}$ that given the description of a local Hamiltonian, outputs a ground state of the Hamiltonian. Then our results show that $\preciseQMA = \PSPACE \subseteq \PQP^{O_{LH}}_{\parallel,\text{classical}}$. This shows that in the setting of unbounded-error quantum computation, PEPS do not capture the full computational complexity of general local Hamiltonian ground states unless $\PP=\PSPACE$. We leave open the problem of determining the complexity of $\BQP^{O_{LH}}_{\parallel,\text{classical}}$.
 
-Lastly, we are able to strengthen our characterization to show that $\preciseQMA$ contains $\PSPACE$ (see Appendix \ref{app:perfectcompleteness}), even when restricted to having perfect completeness.  This allows us to prove that testing if a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem (Appendix \ref{app:localhamiltonian}).
+Lastly, we are able to strengthen our characterization to show that $\preciseQMA$ contains $\PSPACE$ (see Appendix \ref{app:perfectcompleteness}), even when restricted to having perfect completeness.  This allows us to prove that testing if a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem (Appendix \ref{app:localhamiltonian}). We note that if the local Hamiltonian is promised to have a ground state energy of at least $1/\poly$ if it is frustrated, then this is the Quantum Satisfiability problem defined by Bravyi, which is known to be $\QMA_1$ complete \cite{bravyi06,gn13}. Our results show that if the promise gap is removed then we instead get $\PSPACE$-completeness.
 
  \section{Preliminaries}
 \subsection{Quantum circuits}
@@ -365,6 +365,86 @@ Finally, we will need new results from the Hamiltonian simulation literature:
 Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ Hermitian matrix $H$. Then treated as a Hamiltonian, the time evolution $\exp(-iHt)$ can be simulated using $\text{\emph{poly}}(n,k,\|H\|_{max}, t, \log(1/\epsilon))$ operations and $\bigoh(k+\log(t/\epsilon))$ space.
 \end{theorem}
 While the space complexity was not explicitly stated in \cite{berry14,bccks15,berry15}, it can be seen from the analysis (see e.g. \cite{bccks15}). The crucial thing to notice in Theorem \ref{thm:ham_sim} is the polylogarithmic scaling in the error $\epsilon$; this implies that we can obtain polynomial precision in $\exp(-iHt)$ using only polynomially many operations. Also note that the maximum eigenvalue of $H$, $\|H\|$, satisfies $\|H\| \le \poly(n) \|H\|_{max}$.
+
+
+\section{The Well-Conditioned Matrix Inversion Problem} \label{sec: results}
+
+%\subsection{Summaries}
+%In the following, we define our two problems of interest, and sketch the proofs of $\unitaryBQSPACE{k(n)}$-completeness for these problems.
+%\subsection{$\psham{k(n)}$}
+%\begin{definition}
+%[$\psham{k(n)}$ problem] \label{def: spechamiltonian}
+%Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, such that % the maximum entry in absolute value 
+% $\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output $0$ otherwise.
+%\end{definition}
+%\begin{theorem} \label{thm: spechamiltonian}
+%For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\psham{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+%\end{theorem}
+
+%\subsubsection{$\matrixinvert{k(n)}$ is $\unitaryBQSPACE{k(n)}$-complete}
+We begin with a formal statement of the problem:
+\begin{definition}[\matrixinvert{k(n)}] \label{def: matrix invert}
+Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
+ or $|H^{-1}(s,t)|\leq a$ for some constants $0 \le a < b \le 1$; determine which is the case.
+ \end{definition}
+
+%Our main theorem in this section states that this matrix inversion problem \emph{characterizes} $\unitaryBQSPACE{k(n)}$:
+\begin{theorem} \label{thm: matrix invert}
+For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\matrixinvert{\mathcal{O}(k(n))}$ is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
+\end{theorem}
+%\subsection{$\matrixinvert{k(n)}\in\BQSPACE[k(n)]$}
+\begin{proof}
+We begin by giving a new space efficient algorithm for this matrix inversion problem:
+\begin{theorem} \label{thm: matrix inversion alg}
+%Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits and using at most $T$ gates. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniformly generated quantum circuits with $\poly(T,k,\kappa,1/\epsilon)$ gates and $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+\begin{compactenum}
+\item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
+\item Approximate $\|H^{-1}\ket{b}\|$ to precision $\epsilon$.
+\item Approximate $|\bra{a}H^{-1}\ket{b}|$ to precision $\epsilon$.
+\end{compactenum}
+These circuits do not require intermediate measurements.
+\end{theorem}
+\begin{proof}
+
+
+We first briefly summarize the algorithm of Ta-Shma \cite{tashma}, which  is based on the linear systems solver of Harrow, Hassidim and Lloyd \cite{HHL}.  In our language, Ta-Shma shows that $\matrixinvert{\bigoh(\log{n})}$ can be solved by a quantum logspace algorithm that uses intermediate measurements. This corresponds to inverting an $n \times n$ matrix with condition number at most $\poly(n)$.
+
+Our algorithm and Ta-Shma's share the same initial procedure.  In particular it is shown:  
+\begin{lemma}[Implicit in \cite{HHL,tashma}] \label{lem: matrix inversion lemma}
+%There is a $\bigoh (k + \log(\kappa/\epsilon'))$-space uniform quantum unitary transformation $W_H$ over $k+\ell = \bigoh (k+ \log(\kappa/\epsilon'))$ qubits, such that for any $k$-qubit input state $\ket{b}$,
+There is a $\poly$-time $\bigoh (k + \log(\kappa/\epsilon'))$-space uniform quantum unitary transformation $W_H$ over $k+\ell = \bigoh (k+ \log(\kappa/\epsilon'))$ qubits and using $\poly(k,\kappa/\epsilon')$ gates, such that for any $k$-qubit input state $\ket{b}$,
+\begin{equation}
+W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b} + \sqrt{1-\alpha^2} \ket{1}_{out} \otimes\ket{\psi'_b},
+\end{equation}
+where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$, $\alpha$ is a positive number satisfying $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, and ``out'' is a 1-qubit register.
+\end{lemma}
+This lemma can be obtained by combining the Hamiltonian simulation algorithms of Berry et al. (Theorem \ref{thm:ham_sim}) with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}; a version without the time bound is implicit in the proof of \cite[Theorem~6.3]{tashma}. For completeness, we sketch the proof below.
+\begin{proof}[Proof sketch]
+Decompose $\ket{b}$ into the eigenbasis of $H$: $\ket{b} = \sum_{\lambda} a_\lambda \ket{v_\lambda}$, where $\lambda$ are eigenvalues of $H$ and $H\ket{v_\lambda} = \lambda \ket{v_\lambda}$. The following procedure satisfies Lemma \ref{lem: matrix inversion lemma} (all steps are approximate):
+\begin{enumerate}
+\item Perform phase estimation on the operator $\exp(iH)$ and state $\ket{b}$ to compute the eigenvalues of $H$ into an ancilliary register, obtaining the state $\sum_{\lambda} a_\lambda \ket{v_\lambda}\ket{\lambda}$.
+\item Implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$, to obtain the state $\sum_{\lambda} a_\lambda \ket{v_\lambda}\ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$.
+\item Uncompute the eigenvalues $\lambda$ by running phase estimation in reverse, obtaining the state
+$\sum_{\lambda} a_\lambda \ket{v_\lambda}\ket{0}^{\ell-1}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$. Note that $\sum_{\lambda} a_\lambda \ket{v_\lambda}\ket{0}^{\ell-1}(\kappa\lambda)^{-1}\ket{0} = \frac{1}{\kappa} H^{-1}\ket{b}$.
+\end{enumerate}
+An appropriate error analysis of this procedure is the technical bulk of the proof; we direct the reader to \cite{HHL}. For Step 1, Ta-Shma showed how to implement $\exp(iH)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general matrices with efficient encodings); recent sparse Hamiltonian simulation algorithms (Theorem \ref{thm:ham_sim}) give a time efficient way to do this.
+\end{proof}
+Intuitively, Lemma \ref{lem: matrix inversion lemma} tells us that there exists a space efficient quantum algorithm that produces a state proportional to $H^{-1}\ket{b}$ with probability at least $1/\kappa$.  Of course our goal is to produce a state with constant overlap to the state $\ket{0}_{out} \otimes \ket{\psi_b}$ together with an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$.  From here our algorithm differs from that of Ta-Shma and uses a combination of amplitude amplification and phase estimation.  This completely sidesteps both the somewhat complicated analysis and intermediate measurements of Ta-Shma's algorithm. 
+
+%(This idea is already present in the work of Nagaj et al. for QMA gap amplification \cite{nwz11}, or the Oblivious Amplitude Amplification technique in \cite{berry14,bccks15,berry15}.) 
+
+Specifically, consider the two projectors
+\begin{equation}
+\Pi_0 = \ket{0}\bra{0}^{\otimes \ell} \otimes \ket{b}\bra{b}, \quad \Pi_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H.
+\end{equation}
+$\Pi_0$ projects onto the initial subspace, while $\Pi_1$ projects onto the initial states that would be accepted by the final measurement. The rotation $R=-(I-2\Pi_1)(I-2\Pi_0)$ has eigenvalues $e^{\pm i2\sin^{-1}\alpha}$ with eigenvectors $\ket{\psi_+}$, such that $\ket{0}^{\otimes \ell} \otimes \ket{b} = (\ket{\psi_+}+\ket{\psi_-})/\sqrt{2}$ is a uniform superposition of the two eigenvectors. Therefore phase estimation on the operator $R$ and input state $\ket{0}^{\otimes \ell} \otimes \ket{b}$ suffices to give an estimate of $\alpha$. Furthermore both eigenvectors have constant overlap with $W_H^{\dagger}\ket{\psi_b}$, so applying $W_H$ to the residual state of phase estimation allows us to complete the first task as well.
+
+We have addressed the first two tasks in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can choose $\Pi'_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will give an estimate for $|\bra{a}H^{-1}\ket{b}|$. See Appendix \ref{app: matrix inversion alg} for the full proof.
+\end{proof}
+%\subsection{$\matrixinvert{\bigoh(k(n))}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: matrix inversion hard}
+We establish that $\matrixinvert{k(n)}$ is $\unitaryBQSPACE{\mathcal{O}(k)}$-hard using a similar argument to Harrow, Hassidim, and Lloyd \cite{HHL}, in which given a quantum circuit acting on $k(n)$ qubits we can construct a succinctly described well-conditioned $2^{\mathcal{O}(k)}\times 2^{\mathcal{O}(k)}$ matrix $H$, so that a single element of $H^{-1}$ is proportional to the success probability of the circuit.  See Appendix \ref{app: matrixinversion-hardness} for a detailed proof. 
+\end{proof}
 
 \section{The Minimum Eigenvalue Problem}\label{sec: Minimum Eigenvalue}
 Our first characterization of unitary quantum space is based on the following problem:
@@ -454,84 +534,6 @@ For any $3 \le k \le \mathcal{O}(\log(n))$, \preciseklh \ is $\preciseQMA$-compl
 %We note that this can be seen as restricting $H$ in the $\spechamiltonian{\poly(n)}$ problem to be a local Hamiltonian; our result is that this problem remains $\PSPACE$-hard. For a proof, see Appendix \ref{app:localhamiltonian}.
 See Appendix \ref{app:localhamiltonian} for a proof. Combined with the perfect completeness results of Appendix \ref{app:perfectcompleteness}, this will also give a proof that determining whether a local Hamiltonian is frustration-free is a $\PSPACE$-complete problem (Theorem \ref{thm: frustration free} in Appendix \ref{app:localhamiltonian}).
 
-\section{The Well-Conditioned Matrix Inversion Problem} \label{sec: results}
-
-%\subsection{Summaries}
-%In the following, we define our two problems of interest, and sketch the proofs of $\unitaryBQSPACE{k(n)}$-completeness for these problems.
-%\subsection{$\psham{k(n)}$}
-%\begin{definition}
-%[$\psham{k(n)}$ problem] \label{def: spechamiltonian}
-%Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$, such that % the maximum entry in absolute value 
-% $\|H\|_{max} = \max_{s,t}|H(s,t)|$ is at most a constant. Let $\lambda_{min}$ be the minimum eigenvalue of $H$. It is promised that either $\lambda_{min} \le a$ or $\lambda_{min} \ge b$, where $a(n)$ and $b(n)$ are numbers such that $b-a > 2^{-\mathcal{O}(k(n))}$. Output 1 if $\lambda_{min} \le a$, and output $0$ otherwise.
-%\end{definition}
-%\begin{theorem} \label{thm: spechamiltonian}
-%For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\psham{\mathcal{O}(k(n))}$ is complete for \\ $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
-%\end{theorem}
-
-%\subsubsection{$\matrixinvert{k(n)}$ is $\unitaryBQSPACE{k(n)}$-complete}
-We begin with a formal statement of the problem:
-\begin{definition}[\matrixinvert{k(n)}] \label{def: matrix invert}
-Given as input is the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ positive semidefinite matrix $H$ with a known upper bound $\kappa = 2^{\mathcal{O}(k(n))}$ on the condition number, so that $\kappa^{-1}I\preceq H \preceq I$, and $s,t\in \lbrace 0,1\rbrace^{k(n)}$. It is promised that either $|H^{-1}(s,t)|\geq b$
- or $|H^{-1}(s,t)|\leq a$ for some constants $0 \le a < b \le 1$; determine which is the case.
- \end{definition}
-
-%Our main theorem in this section states that this matrix inversion problem \emph{characterizes} $\unitaryBQSPACE{k(n)}$:
-\begin{theorem} \label{thm: matrix invert}
-For $\Omega(\log(n)) \le k(n) \le \poly(n)$, $\matrixinvert{\mathcal{O}(k(n))}$ is complete for $\unitaryBQSPACE{\mathcal{O}(k(n))}$ under classical reductions using $\poly(n)$ time and $\mathcal{O}(k(n))$ space.
-\end{theorem}
-%\subsection{$\matrixinvert{k(n)}\in\BQSPACE[k(n)]$}
-\begin{proof}
-We begin by giving a new space efficient algorithm for this matrix inversion problem:
-\begin{theorem} \label{thm: matrix inversion alg}
-%Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
-Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits and using at most $T$ gates. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniformly generated quantum circuits with $\poly(T,k,\kappa,1/\epsilon)$ gates and $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
-\begin{compactenum}
-\item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
-\item Approximate $\|H^{-1}\ket{b}\|$ to precision $\epsilon$.
-\item Approximate $|\bra{a}H^{-1}\ket{b}|$ to precision $\epsilon$.
-\end{compactenum}
-These circuits do not require intermediate measurements.
-\end{theorem}
-\begin{proof}
-
-
-We first briefly summarize the algorithm of Ta-Shma \cite{tashma}, which  is based on the linear systems solver of Harrow, Hassidim and Lloyd \cite{HHL}.  In our language, Ta-Shma shows that $\matrixinvert{\bigoh(\log{n})}$ can be solved by a quantum logspace algorithm that uses intermediate measurements. This corresponds to inverting an $n \times n$ matrix with condition number at most $\poly(n)$.
-
-Our algorithm and Ta-Shma's share the same initial procedure.  In particular it is shown:  
-\begin{lemma}[Implicit in \cite{HHL,tashma}] \label{lem: matrix inversion lemma}
-%There is a $\bigoh (k + \log(\kappa/\epsilon'))$-space uniform quantum unitary transformation $W_H$ over $k+\ell = \bigoh (k+ \log(\kappa/\epsilon'))$ qubits, such that for any $k$-qubit input state $\ket{b}$,
-There is a $\bigoh (k + \log(\kappa/\epsilon'))$-space uniform quantum unitary transformation $W_H$ over $k+\ell = \bigoh (k+ \log(\kappa/\epsilon'))$ qubits and using $\poly(k,\kappa/\epsilon')$ gates, such that for any $k$-qubit input state $\ket{b}$,
-\begin{equation}
-W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b} + \sqrt{1-\alpha^2} \ket{1}_{out} \otimes\ket{\psi'_b},
-\end{equation}
-where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$, $\alpha$ is a positive number satisfying $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, and ``out'' is a 1-qubit register.
-\end{lemma}
-This lemma can be obtained by combining the Hamiltonian simulation algorithms of Berry et al. (Theorem \ref{thm:ham_sim}) with the analysis of Harrow, Hassidim and Lloyd \cite{HHL}; a version without the time bound is implicit in the proof of \cite[Theorem~6.3]{tashma}. For completeness, we sketch the proof below.
-\begin{proof}[Proof sketch]
-Decompose $\ket{b}$ into the eigenbasis of $H$: $\ket{b} = \sum_{\lambda} a_\lambda \ket{v_\lambda}$, where $\lambda$ are eigenvalues of $H$ and $H\ket{v_\lambda} = \lambda \ket{v_\lambda}$. The following procedure satisfies Lemma \ref{lem: matrix inversion lemma} (all steps are approximate):
-\begin{enumerate}
-\item Perform phase estimation on the operator $\exp(iH)$ and state $\ket{b}$ to compute the eigenvalues of $H$ into an ancilliary register, obtaining the state $\sum_{\lambda} a_\lambda \ket{v_\lambda}\ket{\lambda}$.
-\item Implement the unitary transformation $\ket{\lambda}\ket{0} \rightarrow \ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$, to obtain the state $\sum_{\lambda} a_\lambda \ket{v_\lambda}\ket{\lambda}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$.
-\item Uncompute the eigenvalues $\lambda$ by running phase estimation in reverse, obtaining the state
-$\sum_{\lambda} a_\lambda \ket{v_\lambda}\ket{0}^{\ell-1}[(\kappa\lambda)^{-1}\ket{0}+(\sqrt{1-(\kappa\lambda)^{-2}}\ket{1}]$. Note that $\sum_{\lambda} a_\lambda \ket{v_\lambda}\ket{0}^{\ell-1}(\kappa\lambda)^{-1}\ket{0} = \frac{1}{\kappa} H^{-1}\ket{b}$.
-\end{enumerate}
-An appropriate error analysis of this procedure is the technical bulk of the proof; we direct the reader to \cite{HHL}. For Step 1, Ta-Shma showed how to implement $\exp(iH)$ in $\bigoh (k+\log(1/\epsilon))$ space \cite[Theorem~4.1]{tashma} (their proof works for general matrices with efficient encodings); recent sparse Hamiltonian simulation algorithms (Theorem \ref{thm:ham_sim}) give a time efficient way to do this.
-\end{proof}
-Intuitively, Lemma \ref{lem: matrix inversion lemma} tells us that there exists a space efficient quantum algorithm that produces a state proportional to $H^{-1}\ket{b}$ with probability at least $1/\kappa$.  Of course our goal is to produce a state with constant overlap to the state $\ket{0}_{out} \otimes \ket{\psi_b}$ together with an estimate for $\alpha \approx \|H^{-1}\ket{b}\|$.  From here our algorithm differs from that of Ta-Shma and uses a combination of amplitude amplification and phase estimation.  This completely sidesteps both the somewhat complicated analysis and intermediate measurements of Ta-Shma's algorithm. 
-
-%(This idea is already present in the work of Nagaj et al. for QMA gap amplification \cite{nwz11}, or the Oblivious Amplitude Amplification technique in \cite{berry14,bccks15,berry15}.) 
-
-Specifically, consider the two projectors
-\begin{equation}
-\Pi_0 = \ket{0}\bra{0}^{\otimes \ell} \otimes \ket{b}\bra{b}, \quad \Pi_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) W_H.
-\end{equation}
-$\Pi_0$ projects onto the initial subspace, while $\Pi_1$ projects onto the initial states that would be accepted by the final measurement. By an argument similar to Grover's algorithm, if we implement the rotation $R=-(I-2\Pi_0)(I-2\Pi_1)$ $\bigoh (1/\alpha)$ times we will generate an output state with constant overlap with $\ket{0}_{out} \otimes \ket{\psi_b}$. $\alpha$ can be estimated by performing phase estimation on the operator $R$. \wf{Should this be clarified to satisfy the referee?  I'm not sure that's necessary...}
-
-We have addressed the first two tasks in Theorem \ref{thm: matrix inversion alg}. For the third task (approximating $|\bra{a}H^{-1}\ket{b}|$), we can choose $\Pi'_1 = W_H^\dagger (\ket{0}\bra{0}_{out} \otimes I) (I_{anc} \otimes \ket{a}\bra{a})(\ket{0}\bra{0}_{out} \otimes I) W_H$ instead, and phase estimation on $R=-(I-2\Pi_0)(I-2\Pi'_1)$ will give an estimate for $|\bra{a}H^{-1}\ket{b}|$. See Appendix \ref{app: matrix inversion alg} for the full proof.
-\end{proof}
-%\subsection{$\matrixinvert{\bigoh(k(n))}$ is hard for $\unitaryBQSPACE{k(n)}$} \label{sec: matrix inversion hard}
-We establish that $\matrixinvert{k(n)}$ is $\unitaryBQSPACE{\mathcal{O}(k)}$-hard using a similar argument to Harrow, Hassidim, and Lloyd \cite{HHL}, in which given a quantum circuit acting on $k(n)$ qubits we can construct a succinctly described well-conditioned $2^{\mathcal{O}(k)}\times 2^{\mathcal{O}(k)}$ matrix $H$, so that a single element of $H^{-1}$ is proportional to the success probability of the circuit.  See Appendix \ref{app: matrixinversion-hardness} for a detailed proof. 
-\end{proof}
 \section{Complete problems for time- and space- bounded classes} \label{sec: time and space}
 As we noted in the introduction, variants of the problems we consider are already known to be complete for other time-bounded quantum complexity classes. 
 For example, consider the problem of inverting an efficiently encoded $2^{\bigoh(k(n))} \times 2^{\bigoh(k(n))}$ matrix with condition number at most $\kappa(n)$. If $\kappa(n), k(n) = \poly(n)$, this problem is known to be $\BQP$-complete \cite{HHL}. Theorem \ref {thm: matrix invert} says that this problem is instead $\unitaryBQSPACE{\bigoh(k)}$-complete if $\kappa = 2^{\bigoh(k)}$. %Our results imply that this problem is $\unitaryBQL$-complete for $k(n) = \bigoh(\log(n))$ and $\kappa = \poly$; and $\PSPACE$-complete for $k(n) = \poly$ and $\kappa = 2^{\poly}$. 
@@ -684,7 +686,8 @@ Furthermore, we require $c$ and $s$ to be computable in classical $\bigoh(k(n))$
 \begingroup
 \def\thetheorem{\ref{thm: matrix inversion alg}}
 \begin{theorem}
-Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+%Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniform quantum circuits over $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
+Fix functions $k(n)$, $\kappa(n)$, and $\epsilon(n)$. Suppose we are given the size-$n$ efficient encoding of a $2^{k(n)} \times 2^{k(n)}$ PSD matrix $H$ such that $\kappa^{-1} I \preceq H \preceq I$. We are also given $\poly(n)$-time $\mathcal{O}(k+\log(\kappa/\epsilon))$-space uniform quantum circuits $U_a$ and $U_b$ acting on $k$ qubits and using at most $T$ gates. Let $U_a\ket{0}^{\otimes k(n)} = \ket{a}$ and $U_b\ket{0}^{\otimes k(n)} = \ket{b}$. The following tasks can be performed with $\poly(n)$-time $O(k+\log(\kappa/\epsilon))$-space uniformly generated quantum circuits with $\poly(T,k,\kappa,1/\epsilon)$ gates and $\bigoh (k+\log(\kappa/\epsilon))$ qubits:
 \begin{compactenum}
 \item With at least constant probability, output an approximation of the quantum state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$ up to error $\epsilon$.
 \item Estimate $\|H^{-1}\ket{b}\|$ up to precision $\epsilon$.
@@ -695,6 +698,22 @@ These circuits do not require intermediate measurements.
 \addtocounter{theorem}{-1}
 \endgroup
 
+For convenience we also restate the following lemma:
+\begingroup
+\def\thelemma{\ref{lem: matrix inversion lemma}}
+\begin{lemma}[Implicit in \cite{HHL,tashma}]
+%There is a $\bigoh (k + \log(\kappa/\epsilon'))$-space uniform quantum unitary transformation $W_H$ over $k+\ell = \bigoh (k+ \log(\kappa/\epsilon'))$ qubits, such that for any $k$-qubit input state $\ket{b}$,
+There is a $\poly$-time $\bigoh (k + \log(\kappa/\epsilon'))$-space uniform quantum unitary transformation $W_H$ over $k+\ell = \bigoh (k+ \log(\kappa/\epsilon'))$ qubits and using $\poly(k,\kappa/\epsilon')$ gates, such that for any $k$-qubit input state $\ket{b}$,
+\begin{equation}
+W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b} + \sqrt{1-\alpha^2} \ket{1}_{out} \otimes\ket{\psi'_b},
+\end{equation}
+where $\ket{\psi_b}$ and $\ket{\psi'_b}$ are normalized states such that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$, $\alpha$ is a positive number satisfying $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, and ``out'' is a 1-qubit register.
+\end{lemma}
+\addtocounter{theorem}{-1}
+\endgroup
+
+Before we start the proof, we note that for ease of exposition we will actually use a limited number of intermediate measurements of up to $\bigoh(k+\log(\kappa/\epsilon))$ qubits. These intermediate measurements are not necessary, since they can be deferred to the end of the computation using only $\bigoh(k+\log(\kappa/\epsilon))$ extra space, which fits within our space bound. (It is only when the number of intermediate measurements used is superlinear in the amount of space available that we cannot defer measurements.)
+
 \begin{proof}
 We first show the first item, i.e. generating the state $H^{-1}\ket{b} / \|H^{-1}\ket{b}\|$. Choose $\epsilon' = \mathcal{O}(\epsilon/\kappa)$ in the statement of Lemma \ref{lem: matrix inversion lemma}, keeping in mind for the rest of the proof that $\log(\kappa/\epsilon') = \mathcal{O}(\log(\kappa/\epsilon))$. Note that $\ket{\psi_b}$ can be obtained by computing $W_HU_b\ket{0}_{all} = W_H (\ket{0}_{anc} \otimes \ket{b})$, and then postselecting on the output qubit being in state $\ket{0}$. To obtain $\ket{\psi_b}$ with high probability we can repeat this procedure many times until success. We can then get a good approximation to $\frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} $ by tracing out the other ancilla qubits. For our setting we would like to get by with a low space requirement and without using intermediate measurements, so instead of repeating until success, we will apply amplitude amplification to the above unitary $W_H$. Define the projectors $\Pi_0$ and $\Pi_1$ by
 \begin{align}
@@ -703,7 +722,7 @@ We first show the first item, i.e. generating the state $H^{-1}\ket{b} / \|H^{-1
 \end{align}
 Define $\ket{v} = \ket{0}_{anc}\otimes \ket{b}$, and write
 \begin{align}
-\ket{v} &= \sin \theta \ket{w} +\cos \theta\ket{w^\perp}, \\
+\ket{v} &= \sin \theta \ket{w} +\cos \theta\ket{w^\perp}, \\ 
 \ket{w} &= \sin \theta \ket{v} + \cos \theta\ket{v^\perp}
 \end{align}
 where $\ket{v^\perp}$, $\ket{w}$, and $\ket{w^\perp}$ are normalized states such that 
@@ -717,34 +736,14 @@ Note that
 \end{equation}
 and therefore $W_H\ket{w}$ is the postmeasurement state we desire. The success probability of the postselection step is simply $\bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2 = \sin^2\theta$. 
 
-Consider now the rotation operator $R=-(I-2\Pi_0)(I-2\Pi_1)$; it is straightforward to verify that for any $\phi$,
-\begin{equation}
-R[\sin(\phi) \ket{w} + \cos(\phi) \ket{w^\perp}] = \sin(\phi + 2\theta) \ket{w} + \cos(\phi + 2\theta) \ket{w^\perp}.
-\end{equation}
-Therefore if we start from $\ket{v}$ and apply the rotation $R$ a total of
-\begin{equation}
-\frac{\pi}{4\theta} - \frac{1}{2}
-\end{equation}
-times, the resulting quantum state will be close to $\ket{w}$. Here recall $\theta = \sin^{-1}\alpha$. Projecting into the image of $\Pi_1$ and then applying $W_H$ will then give the desired postmeasurement state $W_H\ket{w}$. To do this, however, we need to know what $\theta$ is. Since $R$ is a rotation on the two-dimensional subspace spanned by $\{\ket{v},\ket{w}\}$ with rotation angle $2\theta$, $R$ has eigenvalues $\exp(\pm i2\theta)$ in this subspace. Performing phase estimation on $R$ will therefore give an estimate of $\theta/\pi$. We would like to obtain an estimate $\gamma$ such that 
-\begin{equation} \label{eq: gamma}
-\left|\frac{\gamma\pi}{\theta} - 1\right| \le  \frac{\epsilon'}{2}
-\end{equation}
-holds with probability $1-\poly(\epsilon' / \kappa)2^{-\mathcal{O}(k)}$.
-
-We now look at the space requirements of phase estimation. First of all, note that since both $W_H$ and $U_b$ are circuits on at most $\bigoh (k + \log(\kappa/\epsilon))$ qubits, $R$ also only requires $\bigoh (k + \log(\kappa/\epsilon))$ space. Also, we have that
+Consider now the operator $R=-(I-2\Pi_1)(I-2\Pi_0)$; by analogy from Grover's algorithm, it is easy to see that $R$ is a rotation operator with angle $2\theta$. It has eigenvalues $e^{\pm i2\theta}$, with the following eigenvectors:
 \begin{align}
-\alpha &\ge \frac{\|H^{-1}\ket{b}\|}{\kappa} - \epsilon' \\
-&\ge \frac{1}{\kappa} - \epsilon'.
+R\ket{\psi_+} = e^{i2\theta}\ket{\psi_+},&\quad \ket{\psi_+} \equiv \frac{1}{\sqrt{2}}\left(\ket{v} + i \ket{v^\perp} \right) = \frac{ie^{-i\theta}}{\sqrt{2}}\left(\ket{w} - i\ket{w^\perp} \right) \label{eq: psi+} \\
+R\ket{\psi_-} = e^{-i2\theta}\ket{\psi_-},&\quad \ket{\psi_-} \equiv \frac{1}{\sqrt{2}}\left(\ket{v} - i \ket{v^\perp} \right) = \frac{-ie^{i\theta}}{\sqrt{2}}\left(\ket{w} + i\ket{w^\perp} \right)
 \end{align}
-Since we can always take $\epsilon' \le 1/(2\kappa)$ (this doesn't change the space guarantee of $\bigoh (k+\log(\kappa/\epsilon))$ in Theorem 1), phase estimation of $R$ to precision $\poly(\epsilon/\kappa)$ suffices to output an $\gamma$ such that (\ref{eq: gamma}) holds. To do so with failure probability $\poly(\epsilon \kappa^{-1}2^{-\mathcal{O}(k)})$ requires at most $\bigoh(k+\log(\kappa/\epsilon))$ extra ancilla qubits.
+Note our initial state $\ket{v}$ is a uniform superposition of the eigenstates of $R$: $\ket{v} = 2^{-1/2} (\ket{\psi_+} + \ket{\psi_-})$. We perform phase estimation of the rotation operator $R$ on the state $\ket{v}$ with precision $\bigoh(\epsilon')$ and failure probability $\delta = 2^{-\bigoh(k)}\poly(\kappa/\epsilon)$; this requires $\poly(T,k,\kappa,1/\epsilon)$ gates and $\bigoh(k+\log(\kappa/\epsilon))$ extra ancilla qubits to perform, and with probability $1-\delta$ outputs an estimate for either $\theta$ or $-\theta$ with error $\bigoh(\epsilon')$. Taking the absolute value of the sine of the output, we obtain an estimate of $\alpha = \sin \theta$ with error $\bigoh(\epsilon') = \bigoh(\epsilon/\kappa)$. Since $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, this allows us to calculate an estimate for $\|H^{-1}\ket{b}\|$ up to precision $\mathcal{O}(\kappa \epsilon') = \mathcal{O}(\epsilon)$, with probability $1-2^{-\bigoh(k)}\poly(\kappa/\epsilon)$. This completes the second task.
 
-Finally, we apply the rotation $R$ to $\ket{v} = \sin \theta \ket{w} +\cos \theta\ket{w^\perp}$ a total of $\lfloor1/(4\gamma)\rfloor$ times. The resulting state is
-\begin{equation}
-R^{\lfloor1/(4\gamma)\rfloor}\ket{v} = \sin\left[\left(2\left\lfloor\frac{1}{4\gamma}\right\rfloor+1\right)\theta\right] \ket{w} + \cos\left[\left(2\left\lfloor\frac{1}{4\gamma}\right\rfloor+1\right)\theta\right] \ket{w^\perp}
-\end{equation}
-(\ref{eq: gamma}) implies $|\theta/(\pi\gamma) - 1| \le \epsilon'$ (as long as $\epsilon' \le 1/2$), and a straightforward calculation shows that $|(2\lfloor1/(4\gamma)\rfloor+1) \theta - \pi/2| \le \frac{\pi}{2}+\theta$. Therefore as long as $\theta \le \pi/4$, the resulting state will have constant overlap with $\ket{w}$, and our procedure will succeed with constant probability (which we can verify by applying the projection $\Pi_1$). If instead $\theta > \pi/4$ (as we can determine from our estimate $\gamma$), we can perform the projection $\Pi_1$ to the initial state $\ket{v}$ directly and succeed with constant probability.
-
-Note that in the process we have also calculated an estimate for $\theta = \sin^{-1}\alpha$ up to $\bigoh(\epsilon')$ error, and since $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$ we can also output an estimate for $\|H^{-1}\ket{b}\|$ up to precision $\mathcal{O}(\kappa \epsilon') = \mathcal{O}(\epsilon)$.
+To complete the first task, we note that the residual state after the phase estimation procedure is still a linear combination of $\ket{\psi_+}$ and $\ket{\psi_-}$. If the phase estimation procedure above had output an estimate $\tilde{\theta}_+ \approx_{\bigoh(\epsilon')} \theta$ (this happens with probability at least $(1-\delta)/2$), then because the we set the failure probability to be $\delta$, the residual state must be $\delta$-close to $\ket{\psi_+}$.  From \eqref{eq: psi+} we see that this residual state has constant overlap with $\ket{w}$. Similarly, if the phase estimation procedure had instead output an estimate close to $-\theta$ (this happens with probability at least $(1-\delta)/2$), then obtain a residual state $\delta$-close to $\ket{\psi_-}$, and hence with constant overlap with $\ket{w}$. By applying $W_H$ to our state and verifying the ancilla qubits are all zero, we obtain the desired state $W_H\ket{w}\approx H^{-1}\ket{b}$ with constant probability.
 
 Finally, if an estimate for $|\bra{a} H^{-1} \ket{b}|$ is desired, we can consider instead the following modification to $\Pi_0$ and $\Pi_1$:
 \begin{align}
@@ -753,9 +752,9 @@ Finally, if an estimate for $|\bra{a} H^{-1} \ket{b}|$ is desired, we can consid
 \end{align}
 Since $(\ket{0}\bra{0}_{out} \otimes I) W_H (\ket{0}^{\otimes \ell} \otimes \ket{b}) = \alpha \ket{0}_{out} \otimes \ket{\psi_b}$, we see that 
 \begin{equation}
-\bra{v}\Pi_0\Pi_1\Pi_0\ket{v} = \alpha^2\left|\left(\bra{0}^{\otimes \ell-1} \otimes \bra{a}\right) \ket{\psi_b}\right|^2.
+\bra{v}\Pi_0\Pi_1'\Pi_0\ket{v} = \alpha^2\left|\left(\bra{0}^{\otimes \ell-1} \otimes \bra{a}\right) \ket{\psi_b}\right|^2.
 \end{equation}
-$\bra{v}\Pi_0\Pi_1\Pi_0\ket{v}$ can be estimated in the same way that $\alpha$ has been estimated. Recalling that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$ and $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, this allows us to estimate $|\bra{a} H^{-1} \ket{b}|$ to $\bigoh (\epsilon)$ precision.
+$\bra{v}\Pi_0\Pi_1'\Pi_0\ket{v}$ can be estimated in the same way that $\alpha$ has been estimated. Recalling that $\| \ket{\psi_b} - \ket{0}^{\otimes \ell-1} \otimes \frac{H^{-1}\ket{b}} {\|H^{-1}\ket{b}\|} \| \le \epsilon'$ and $|\alpha - \frac{\|H^{-1}\ket{b}\|}{\kappa}| \le \epsilon'$, this allows us to estimate $|\bra{a} H^{-1} \ket{b}|$ to $\bigoh (\epsilon)$ precision.
 \end{proof}
 
 
@@ -967,7 +966,7 @@ $H$ is a sparse matrix - in fact, there are only a constant number of nonzero te
 %
 %\begin{theorem}[Bennett\cite{bennett89}]\label{thm:revpspace}$\revPSPACE=\PSPACE$.
 %\end{theorem}
-We now consider the problem of achieving prefect completeness for $\preciseQMA$. Specifically, we will show the following:
+We now consider the problem of achieving perfect completeness for $\preciseQMA$. Specifically, we will show the following:
 \begingroup
 \def\theproposition{\ref{prop: perfect completeness}}
 \begin{proposition} Let $\QMA(c,s) = \bddQMA{\poly}{\poly}{\poly}{c}{s}$. Then
