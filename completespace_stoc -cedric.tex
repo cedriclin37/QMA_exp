@@ -1005,7 +1005,7 @@ with $\ket{\varphi_{j1}} = \ket{0}_N\ket{1}$ and
 \begin{equation}
 \ket{\varphi_{jb}} = \frac{1}{\sqrt{d}} \sum_{\ell \in F_j} \ket{\ell}\left(\sqrt{\frac{H^*_{j\ell}}{X}}\ket{0} + \sqrt{1-\frac{|H^*_{j\ell}|}{X}}\ket{1}\right),
 \end{equation}
-where $F_j$ index the nonzero entries in the $j$-th row. Recall that for any $j,\ell$, $H_{j\ell}=0$, $\pm 1/2$, or $1$, and hence we can take $X=1$. If we furthermore assume $d$ is a power of 2 (which we can always do by adding indices of zero entries to $F_j$), it is straightforward to see that both $S$ and $T$ can be implemented using just Hadamard gates and classical gates (Pauli-$X$, controlled-$X$, and Toffoli gates) - the latter of which can be implemented using just Toffoli gates and access to a qubit in the $\ket{1}$ state (which can be provided by the prover). Therefore $U$ can be exactly implemented in any gateset that allows Hadamard gates and Toffoli gates to be implemented exactly.
+where $F_j$ index the nonzero entries in the $j$-th row. Recall that for any $j,\ell$, $H_{j\ell}=0$, $\pm 1/2$, or $1$, and hence we can take $X=1$. If we furthermore assume $d$ is a power of 2 (which we can always do by adding indices of zero entries to $F_j$), it is straightforward to see that both $S$ and $T$ can be implemented using just Hadamard gates and classical gates (Pauli-$X$, controlled-$X$, and Toffoli gates) - the latter of which can be implemented using just Toffoli gates and access to two qubits in the $\ket{1}$ state (which can be provided by the prover). Therefore $U$ can be exactly implemented in any gateset that allows Hadamard gates and Toffoli gates to be implemented exactly.
 
 \section{Precise Local Hamiltonian Problem}\label{app:localhamiltonian}
 Recall the following definition:
