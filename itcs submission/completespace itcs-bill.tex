@@ -809,7 +809,6 @@ with $\ket{\varphi_{j1}} = \ket{0}_N\ket{1}$ and
 where $F_j$ index the nonzero entries in the $j$-th row. Recall that for any $j,\ell$, $H_{j\ell}=0$, $\pm 1/2$, or $1$, and hence we can take $X=1$. If we furthermore assume $d$ is a power of 2 (which we can always do by adding indices of zero entries to $F_j$), it is straightforward to see that both $S$ and $T$ can be implemented using just Hadamard gates and classical gates (Pauli-$X$, controlled-$X$, and Toffoli gates) - the latter of which can be implemented using just Toffoli gates and access to a qubit in the $\ket{1}$ state (which can be provided by the prover). Therefore $U$ can be exactly implemented in any gateset that allows Hadamard gates and Toffoli gates to be implemented exactly.
 
 \section{Precise Local Hamiltonian Problem}\label{app:localhamiltonian}
-Recall the following definition:
 \begingroup
 \def\thedefinition{\ref{def: precise local hamiltonian}}
 \begin{definition}[\preciseklh]
@@ -823,15 +822,15 @@ We then have the following theorem:
 For any $3 \le k \le \mathcal{O}(\log(n))$, \preciseklh \ is $\preciseQMA$-complete, and hence $\PSPACE$-complete.
 \end{theorem}
 \endgroup
-%\begin{proof}
-%This proof follows straightforwardly by adapting the proof of \cite{ksv02} and \cite{kr03}. The proof of containment in $\preciseQMA$ is identical to the containment of the usual Local Hamiltonian problem in $\QMA$; see \cite{ksv02} for details.
-%
-%To show $\preciseQMA$-hardness, we note that for a $\QMA$-verification procedure with $T$ gates, completeness $c$ and soundness $s$, \cite{kr03} reduces this to a 3-local Hamiltonian with lowest eigenvalue no more than $(1-c) / (T+1)$ in the YES case, or no less than $(1-s) / T^3$ in the NO case. For this to specify a valid \preciselh \ problem we need that
-%\begin{equation} \label{eq:preciselh_condition}
-%\frac{1-s}{T^3} - \frac{1-c}{T+1} > 2^{-\poly(n)}.
-%\end{equation}
-%Recalling that we showed that perfect completeness can be assumed for $\preciseQMA$-hard problems, we can take $c=1$, $s = 1-2^{-\poly(n)}$ and the above inequality trivially holds. Hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
-%\end{proof}
+\begin{proof}
+This proof follows straightforwardly by adapting the proof of \cite{ksv02} and \cite{kr03}. The proof of containment in $\preciseQMA$ is identical to the containment of the usual Local Hamiltonian problem in $\QMA$; see \cite{ksv02} for details.
+
+To show $\preciseQMA$-hardness, we note that for a $\QMA$-verification procedure with $T$ gates, completeness $c$ and soundness $s$, \cite{kr03} reduces this to a 3-local Hamiltonian with lowest eigenvalue no more than $(1-c) / (T+1)$ in the YES case, or no less than $(1-s) / T^3$ in the NO case. For this to specify a valid \preciselh \ problem we need that
+\begin{equation} \label{eq:preciselh_condition}
+\frac{1-s}{T^3} - \frac{1-c}{T+1} > 2^{-\poly(n)}.
+\end{equation}
+Recalling that we showed that perfect completeness can be assumed for $\preciseQMA$-hard problems, we can take $c=1$, $s = 1-2^{-\poly(n)}$ and the above inequality trivially holds. Hence any problem in $\PSPACE$ can be reduced to a \preciseilh{3} problem.
+\end{proof}
 In fact, even just testing whether a $k$-Local Hamiltonian is frustration-free is $\PSPACE$-complete:\begin{definition} [\emph{Frustration-Free $k$-Local Hamiltonian}] Given as input is a $k$-local Hamiltonian $H=\sum_{j=1}^rH_j$ acting on $n$ qubits, satisfying $r \in \poly(n)$, each term $H_j$ is positive semidefinite, and $\|H_j\| \le \poly(n)$. Output 1 if the smallest eigenvalue of $H$ is zero, and output 0 otherwise.
 \end{definition}
 \begin{theorem} \label{thm: frustration free}
